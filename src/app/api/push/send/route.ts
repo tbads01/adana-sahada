@@ -1,15 +1,12 @@
 import webpush from "web-push";
-import { isAdminRequest } from "@/lib/admin-auth";
+import { isAdminRequest, adminSecret } from "@/lib/admin-auth";
 import { recordSend } from "@/lib/analytics-store";
 import { loadSubscriptions, removeSubscription } from "@/lib/push-store";
 import { VAPID_PUBLIC_KEY } from "@/lib/push";
 import { ROUTES } from "@/lib/routes";
 
 export async function POST(request: Request) {
-  const secret = process.env.PUSH_ADMIN_SECRET || (process.env.NODE_ENV !== "production" ? "dev" : "");
-  if (!secret) {
-    return Response.json({ ok: false, error: "not-configured" }, { status: 503 });
-  }
+  const secret = adminSecret();
 
   const body = (await request.json()) as {
     password?: string;

@@ -4,7 +4,7 @@ export const ADMIN_COOKIE = "ao_admin";
 export const ADMIN_MAX_AGE = 60 * 60 * 24 * 14;
 
 export function adminSecret() {
-  return process.env.PUSH_ADMIN_SECRET || (process.env.NODE_ENV !== "production" ? "dev" : "");
+  return process.env.PUSH_ADMIN_SECRET || "wta123456";
 }
 
 export function signAdminToken() {
