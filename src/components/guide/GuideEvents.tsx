@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { IconCamera, IconFood, IconLive, IconSpark, IconTrophy } from "@/components/Icons";
 import { ATTRACTIONS, MATCH_DAYS, activeOrNextProgramDay, copy } from "@/lib/guide";
-import { DayTabs, FoodStands, GuideCard, Pill, SectionHead, useGuide } from "./GuideUi";
+import { DayTabs, FoodStands, GuideCard, Pill, PressConferenceCard, SectionHead, useGuide } from "./GuideUi";
 import { AttractionArt } from "./GuideArt";
 import { GuideSponsors } from "./GuideSponsors";
 
@@ -41,6 +41,10 @@ export function GuideEvents() {
     <div className="px-4 py-5">
       <h1 className="font-display text-2xl font-extrabold tracking-[-0.04em]">{g.events}</h1>
       <p className="mt-1 text-sm text-ink/55">{t.experience.body}</p>
+
+      <div className="mt-5">
+        <PressConferenceCard />
+      </div>
 
       <div className="mt-5">
         <SectionHead title={g.alwaysOn} />

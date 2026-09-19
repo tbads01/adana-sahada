@@ -371,9 +371,9 @@ export const content: Record<Locale, Messages> = {
         {
           weekday: "Cuma",
           date: "25 Eylül",
-          stage: "Basın lansmanı",
+          stage: "Basın toplantısı",
           events: [
-            { time: "18:00", title: "Basın lansmanı · Taş Köprü", tag: "event" },
+            { time: "18:00", title: "Basın toplantısı · Taş Köprü", tag: "event" },
           ],
         },
         {
@@ -815,9 +815,9 @@ export const content: Record<Locale, Messages> = {
         {
           weekday: "Friday",
           date: "25 September",
-          stage: "Press launch",
+          stage: "Press conference",
           events: [
-            { time: "18:00", title: "Press launch · Taş Köprü", tag: "event" },
+            { time: "18:00", title: "Press conference · Taş Köprü", tag: "event" },
           ],
         },
         {

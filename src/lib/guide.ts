@@ -118,12 +118,12 @@ export const ANNOUNCEMENTS: Announcement[] = [
     pin: true,
     tag: { tr: "Etkinlik", en: "Events" },
     title: {
-      tr: "Basın lansmanı Cuma 18:00, Taş Köprü",
-      en: "Press launch Friday 18:00 at Taş Köprü",
+      tr: "Basın toplantısı Cuma 18:00, Taş Köprü",
+      en: "Press conference Friday 18:00 at Taş Köprü",
     },
     body: {
-      tr: "Adana Open basın lansmanı 25 Eylül Cuma 18:00’de Taş Köprü’de. Ertesi sabah eleme 10:30’da ATDSK’de başlar.",
-      en: "The Adana Open press launch is Friday 25 September at 18:00 on Taş Köprü. Qualifying starts 10:30 the next morning at ATDSK.",
+      tr: "Adana Open basın toplantısı 25 Eylül Cuma 18:00’de Taş Köprü’de. Ertesi sabah eleme 10:30’da ATDSK’de başlar.",
+      en: "The Adana Open press conference is Friday 25 September at 18:00 on Taş Köprü. Qualifying starts 10:30 the next morning at ATDSK.",
     },
     href: "/etkinlikler",
   },
@@ -184,20 +184,6 @@ export const ANNOUNCEMENTS: Announcement[] = [
       en: "Seat and entry details will land here when they are published. For now: info@adanaopen.com and Instagram @adana.open.",
     },
     href: "https://adanaopen.com/iletisim",
-  },
-  {
-    id: "livestream",
-    date: "2026-08-20",
-    tag: { tr: "Canlı", en: "Live" },
-    title: {
-      tr: "Canlı yayın linki turnuva haftasında",
-      en: "Livestream link during tournament week",
-    },
-    body: {
-      tr: "Resmi yayın adresi netleşince Canlı sayfasında ve Instagram’da paylaşılacak.",
-      en: "The official stream will appear on the Live page and on Instagram as soon as it is confirmed.",
-    },
-    href: "/canli",
   },
 ];
 
@@ -367,7 +353,20 @@ export const MATCH_DAYS = MATCH_PLAN.map((day) => ({
   iso: dateKeyToIso(day.dateKey),
 }));
 
+export const PRESS_CONFERENCE = {
+  iso: "2026-09-25",
+  time: "18:00",
+  endMinutes: 19 * 60,
+  title: { tr: "Basın toplantısı", en: "Press conference" },
+  place: { tr: "Taş Köprü", en: "Taş Köprü" },
+  when: { tr: "Cuma · 25 Eylül", en: "Friday · 25 September" },
+} as const;
+
 export type TimedEvent = { time: string; title: string; tag: "match" | "music" | "event" };
+
+export function isPressConferenceEvent(item: { title: string }) {
+  return /basın toplantısı|press conference/i.test(item.title);
+}
 
 export type Attraction = {
   id: string;
@@ -450,6 +449,13 @@ export function istanbulClock(now = Date.now()) {
   const iso = `${parts.year}-${parts.month}-${parts.day}`;
   const minutes = Number(parts.hour) * 60 + Number(parts.minute);
   return { iso, minutes, hour: Number(parts.hour), minute: Number(parts.minute) };
+}
+
+export function pressConferenceUpcoming(now = Date.now()) {
+  const clock = istanbulClock(now);
+  if (clock.iso < PRESS_CONFERENCE.iso) return true;
+  if (clock.iso > PRESS_CONFERENCE.iso) return false;
+  return clock.minutes < PRESS_CONFERENCE.endMinutes;
 }
 
 export function eventStartMinutes(time: string) {

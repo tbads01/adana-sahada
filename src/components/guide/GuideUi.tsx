@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { FOOD_COURT_STANDS, MATCH_DAYS } from "@/lib/guide";
+import { IconMegaphone } from "@/components/Icons";
+import { FOOD_COURT_STANDS, MATCH_DAYS, PRESS_CONFERENCE, copy, pressConferenceUpcoming } from "@/lib/guide";
 import { gCopy } from "@/lib/guide-content";
 import { useLanguage } from "@/lib/i18n";
+import { ROUTES } from "@/lib/routes";
 
 export function useGuide() {
   const lang = useLanguage();
@@ -52,6 +54,38 @@ export function FoodStands({ className = "" }: { className?: string }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+export function PressConferenceCard({
+  href = ROUTES.events,
+  className = "",
+}: {
+  href?: string;
+  className?: string;
+}) {
+  const { locale } = useGuide();
+  if (!pressConferenceUpcoming()) return null;
+
+  return (
+    <GuideCard href={href} className={`bg-yellow text-ink ${className}`}>
+      <div className="flex items-start gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink text-yellow">
+          <IconMegaphone className="h-5 w-5" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[0.62rem] font-bold tracking-[0.14em] text-ink/55 uppercase">
+            {copy(locale, PRESS_CONFERENCE.when)}
+          </p>
+          <p className="mt-1 font-display text-xl font-bold tracking-[-0.03em]">
+            {copy(locale, PRESS_CONFERENCE.title)}
+          </p>
+          <p className="mt-1 text-sm font-bold text-ink/70">
+            {PRESS_CONFERENCE.time} · {copy(locale, PRESS_CONFERENCE.place)}
+          </p>
+        </div>
+      </div>
+    </GuideCard>
   );
 }
 

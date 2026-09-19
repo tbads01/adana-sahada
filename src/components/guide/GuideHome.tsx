@@ -17,10 +17,10 @@ import {
   ATTRACTIONS,
   MATCH_DAYS,
   copy,
-  getLiveData,
   pickNextMatch,
   sortedAnnouncements,
   featuredDayEvents,
+  isPressConferenceEvent,
   tournamentPhase,
 } from "@/lib/guide";
 import { ROUTES } from "@/lib/routes";
@@ -28,7 +28,7 @@ import { INSTAGRAM, MAIN_SITE_URL, TOURNAMENT_START } from "@/lib/site";
 import { GuideSponsors } from "./GuideSponsors";
 import { GuideNotify } from "./GuideNotify";
 import { AttractionArt, CourtLines, TennisBall } from "./GuideArt";
-import { GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
+import { GuideCard, LiveDot, Pill, PressConferenceCard, SectionHead, useGuide } from "./GuideUi";
 
 function pad(n: number) {
   return String(Math.max(0, n)).padStart(2, "0");
@@ -50,8 +50,7 @@ export function GuideHome() {
   const stamp = now ?? Date.now();
   const nextMatch = pickNextMatch(t.schedule.days, stamp);
   const featured = featuredDayEvents(t.schedule.days, stamp);
-  const sideEvents = featured?.events.filter((item) => item.tag !== "match") ?? [];
-  const live = getLiveData();
+  const sideEvents = featured?.events.filter((item) => item.tag !== "match" && !isPressConferenceEvent(item)) ?? [];
   const news = sortedAnnouncements().slice(0, 3);
   const start = Date.parse(TOURNAMENT_START);
   const remain = now == null ? null : Math.max(0, start - now);
@@ -134,6 +133,8 @@ export function GuideHome() {
           )}
         </div>
 
+        <PressConferenceCard className="mt-4" />
+
         {nextMatch ? (
           <Link
             href={ROUTES.matches}
@@ -212,23 +213,6 @@ export function GuideHome() {
             ))}
           </div>
         </div>
-
-        <GuideCard href={live.stream.url || ROUTES.live} className="!bg-ink !text-paper">
-          <span className="flex items-start gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-yellow text-ink">
-              <IconPlay className="h-5 w-5" />
-            </span>
-            <span className="min-w-0">
-              <span className="flex items-center gap-2">
-                {live.stream.status === "live" ? <LiveDot /> : null}
-                <span className="font-display text-lg font-bold">
-                  {live.stream.status === "live" ? g.streamLive : g.streamSoon}
-                </span>
-              </span>
-              <span className="mt-0.5 block text-sm leading-relaxed text-paper/55">{g.streamHint}</span>
-            </span>
-          </span>
-        </GuideCard>
 
         <div>
           <SectionHead title={g.quick} />
