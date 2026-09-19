@@ -21,7 +21,7 @@ import {
   SITE_PHONE,
   SITE_PHONE_TEL,
 } from "@/lib/site";
-import { GuideCard, SectionHead, useGuide } from "./GuideUi";
+import { FoodStands, GuideCard, SectionHead, useGuide } from "./GuideUi";
 import { GuideSponsors } from "./GuideSponsors";
 
 const ICONS = {
@@ -93,6 +93,7 @@ export function GuideInfo() {
                     ) : null}
                   </div>
                 </div>
+                {item.id === "food" ? <FoodStands className="mt-3" /> : null}
               </GuideCard>
             );
           })}

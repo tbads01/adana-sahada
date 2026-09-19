@@ -493,7 +493,7 @@ export const content: Record<Locale, Messages> = {
         },
         {
           title: "Food Court",
-          desc: "Yeme-içme alanları.",
+          desc: "Gün boyu açık: Bun the Bun, Taco Maco, Ico Fried Chicken, Hayat Büfe, Bowl Art, Doğan Kaymaklı, Hüsnü Usta Et Döner, Major Chocolate ve Maki.",
           image: "/media/ai/food-court.jpg",
         },
         {
@@ -931,7 +931,7 @@ export const content: Record<Locale, Messages> = {
         },
         {
           title: "Food Court",
-          desc: "Food and beverage areas.",
+          desc: "Open all day: Bun the Bun, Taco Maco, Ico Fried Chicken, Hayat Büfe, Bowl Art, Doğan Kaymaklı, Hüsnü Usta Et Döner, Major Chocolate and Maki.",
           image: "/media/ai/food-court.jpg",
         },
         {

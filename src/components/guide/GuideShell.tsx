@@ -14,6 +14,7 @@ import {
 import { ROUTES } from "@/lib/routes";
 import { tournamentPhase } from "@/lib/guide";
 import { LiveDot, useGuide } from "./GuideUi";
+import { GuideNotify } from "./GuideNotify";
 
 const TABS = [
   { href: ROUTES.home, key: "now" as const, icon: IconNow },
@@ -56,6 +57,7 @@ export function GuideShell({ children }: { children: ReactNode }) {
               </span>
             </Link>
             <div className="ml-auto flex items-center gap-1.5">
+              <GuideNotify tone="header" />
               {live ? (
                 <span className="mr-1 inline-flex items-center gap-1.5 rounded-full bg-green/20 px-2 py-1 text-[0.58rem] font-bold tracking-wide text-green uppercase">
                   <LiveDot />

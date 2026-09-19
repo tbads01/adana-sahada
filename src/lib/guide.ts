@@ -223,8 +223,8 @@ export const INFO_ITEMS: InfoItem[] = [
     icon: "food",
     title: { tr: "Yeme-içme", en: "Food & drink" },
     body: {
-      tr: "Food court, Inf Kahve, kulüp restoranları ve teras. Havuz kenarı oturum alanı turnuva boyunca açık.",
-      en: "Food court, Inf Kahve, club restaurants and terrace. Poolside seating stays open through the week.",
+      tr: "Food court gün boyu açık. Inf Kahve ve kulüp terası ayrı. Havuz kenarı oturum alanı turnuva boyunca durur.",
+      en: "Food court is open all day. Inf Kahve and the club terrace sit apart. Poolside seating stays open through the week.",
     },
     href: "/etkinlikler",
     hrefLabel: { tr: "Günün programı", en: "Today’s programme" },
@@ -351,8 +351,19 @@ export type Attraction = {
   icon: "food" | "photo" | "spark" | "music" | "court";
   title: Copy;
   body: Copy;
-  image: string;
 };
+
+export const FOOD_COURT_STANDS = [
+  "Bun the Bun",
+  "Taco Maco",
+  "Ico Fried Chicken",
+  "Hayat Büfe",
+  "Bowl Art",
+  "Doğan Kaymaklı",
+  "Hüsnü Usta Et Döner",
+  "Major Chocolate",
+  "Maki",
+] as const;
 
 export const ATTRACTIONS: Attraction[] = [
   {
@@ -360,10 +371,9 @@ export const ATTRACTIONS: Attraction[] = [
     icon: "food",
     title: { tr: "Food Court", en: "Food court" },
     body: {
-      tr: "Gün boyu açık. Yeme-içme, Inf Kahve ve kulüp restoranları.",
-      en: "Open all day. Food, Inf Kahve and the club restaurants.",
+      tr: "Gün boyu açık. Dokuz stand.",
+      en: "Open all day. Nine stands.",
     },
-    image: "/media/ai/food-court.jpg",
   },
   {
     id: "photo",
@@ -373,7 +383,6 @@ export const ATTRACTIONS: Attraction[] = [
       tr: "Fan Zone ve kort kenarında çekim noktaları. Maskot ve marka duvarları.",
       en: "Fan Zone and court-side photo points. Mascot and brand walls.",
     },
-    image: "/media/ai/concept-03.jpg",
   },
   {
     id: "surprise",
@@ -383,7 +392,6 @@ export const ATTRACTIONS: Attraction[] = [
       tr: "Fan Zone’da gün içinde çekiliş ve yarışmalar. Saatler günlük programda.",
       en: "Raffles and contests in the Fan Zone. Times are on the daily programme.",
     },
-    image: "/media/ai/concept-03.jpg",
   },
   {
     id: "dj",
@@ -393,7 +401,6 @@ export const ATTRACTIONS: Attraction[] = [
       tr: "DJ Yusuf Erdem, çoğu gün 14:00–16:00. 3 Ekim’de sabah Coffee Disco.",
       en: "DJ Yusuf Erdem most days 14:00–16:00. Morning Coffee Disco on 3 October.",
     },
-    image: "/media/drone/drone-11.jpg",
   },
   {
     id: "show",
@@ -403,7 +410,6 @@ export const ATTRACTIONS: Attraction[] = [
       tr: "Ana tablo öncesi Fan Zone gösteri maçı. Tarih günün programında.",
       en: "Fan Zone exhibition before the main session. See the daily programme.",
     },
-    image: "/media/hero/venue-overview.jpg",
   },
 ];
 

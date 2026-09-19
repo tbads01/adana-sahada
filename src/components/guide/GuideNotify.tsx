@@ -13,7 +13,7 @@ async function ensureWorker() {
   return navigator.serviceWorker.register("/sw.js", { scope: "/" });
 }
 
-export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" }) {
+export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" | "header" }) {
   const { g, t } = useGuide();
   const [state, setState] = useState<"idle" | "on" | "denied" | "need-https" | "error">("idle");
 
@@ -96,16 +96,44 @@ export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" }) {
 
   const showButton = state === "idle" || state === "error";
 
+  if (tone === "header") {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          if (showButton) void enable();
+        }}
+        aria-label={showButton ? g.notifyEnable : copy}
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+          state === "on" ? "bg-green/20 text-green" : "bg-yellow text-ink"
+        }`}
+      >
+        <IconBell className="h-4 w-4" />
+      </button>
+    );
+  }
+
   if (tone === "hero") {
     return (
-      <div>
-        {showButton ? (
-          <button type="button" onClick={() => void enable()} className="btn btn-primary w-full !py-3">
-            {g.notifyEnable}
-          </button>
-        ) : null}
-        <p className={`text-center text-[0.72rem] leading-relaxed text-paper/55 ${showButton ? "mt-2" : ""}`}>{copy}</p>
-      </div>
+      <button
+        type="button"
+        onClick={() => {
+          if (showButton) void enable();
+        }}
+        className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left ${
+          state === "on" ? "bg-green text-ink" : "bg-yellow text-ink"
+        }`}
+      >
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink text-yellow">
+          <IconBell className="h-5 w-5" />
+        </span>
+        <span className="min-w-0">
+          <span className="block font-display text-base font-bold leading-tight">
+            {showButton ? g.notifyEnable : g.notifyTitle}
+          </span>
+          <span className="mt-0.5 block text-[0.72rem] font-bold leading-snug text-ink/65">{copy}</span>
+        </span>
+      </button>
     );
   }
 

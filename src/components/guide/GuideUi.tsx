@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { MATCH_DAYS } from "@/lib/guide";
+import { FOOD_COURT_STANDS, MATCH_DAYS } from "@/lib/guide";
 import { gCopy } from "@/lib/guide-content";
 import { useLanguage } from "@/lib/i18n";
 
@@ -37,6 +37,21 @@ export function Pill({
     <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[0.62rem] font-bold tracking-wide uppercase ${tones[tone]}`}>
       {children}
     </span>
+  );
+}
+
+export function FoodStands({ className = "" }: { className?: string }) {
+  return (
+    <ul className={`grid w-full min-w-0 grid-cols-2 gap-1.5 ${className}`}>
+      {FOOD_COURT_STANDS.map((name) => (
+        <li
+          key={name}
+          className="rounded-full bg-paper-soft px-2 py-[0.4rem] text-center text-[0.62rem] font-bold leading-tight text-ink/70"
+        >
+          {name}
+        </li>
+      ))}
+    </ul>
   );
 }
 

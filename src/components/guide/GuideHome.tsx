@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   IconCalendar,
-  IconCamera,
-  IconFood,
   IconLive,
   IconMegaphone,
   IconPin,
@@ -29,6 +27,7 @@ import { ROUTES } from "@/lib/routes";
 import { INSTAGRAM, MAIN_SITE_URL, TOURNAMENT_START } from "@/lib/site";
 import { GuideSponsors } from "./GuideSponsors";
 import { GuideNotify } from "./GuideNotify";
+import { AttractionArt, CourtLines, TennisBall } from "./GuideArt";
 import { GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
 
 function pad(n: number) {
@@ -97,12 +96,21 @@ export function GuideHome() {
 
   return (
     <div>
-      <section className="overflow-x-hidden bg-ink px-4 pt-5 pb-6 text-paper">
-        <p className="text-[0.62rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroKicker}</p>
+      <section className="relative overflow-x-hidden bg-ink px-4 pt-5 pb-6 text-paper">
+        <CourtLines className="pointer-events-none absolute -right-12 -top-10 h-56 w-80 text-white/12" />
+        <div className="relative z-10">
+        <div className="flex items-center gap-2">
+          <TennisBall className="h-7 w-7 shrink-0" />
+          <p className="text-[0.62rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroKicker}</p>
+        </div>
         <h1 className="mt-2 font-display text-[2rem] leading-none font-extrabold tracking-[-0.04em]">{g.heroTitle}</h1>
         <p className="mt-3 max-w-[20rem] text-sm leading-relaxed text-paper/70">{g.heroLead}</p>
 
-        <div className="mt-5 rounded-2xl bg-panel p-4">
+        <div className="mt-4">
+          <GuideNotify tone="hero" />
+        </div>
+
+        <div className="mt-4 rounded-2xl bg-panel p-4">
           {phase === "ended" ? (
             <p className="font-display text-xl font-bold">{g.phaseEnded}</p>
           ) : phase === "live" ? (
@@ -131,8 +139,12 @@ export function GuideHome() {
           <Link
             href={ROUTES.matches}
             prefetch={false}
-            className="mt-4 block overflow-hidden rounded-2xl bg-paper p-4 text-ink"
+            className="mt-4 flex items-start gap-3 overflow-hidden rounded-2xl bg-paper p-4 text-ink"
           >
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yellow text-ink">
+              {nextMatch.isLive ? <IconPlay className="h-5 w-5" /> : <IconCalendar className="h-5 w-5" />}
+            </span>
+            <span className="min-w-0">
             <Pill tone={nextMatch.isLive ? "live" : nextMatch.isToday ? "yellow" : "muted"}>
               {nextMatch.isLive ? (
                 <>
@@ -143,7 +155,7 @@ export function GuideHome() {
                 g.nextMatch
               )}
             </Pill>
-            <p className="mt-2 font-display text-xl font-bold tracking-[-0.03em]">{nextMatch.event.title}</p>
+            <p className="mt-2 font-display text-xl font-bold tracking-[-0.03em] text-ink">{nextMatch.event.title}</p>
             <p className="mt-1 text-sm text-ink/55">
               {label?.weekday} · {label?.date}
             </p>
@@ -151,11 +163,10 @@ export function GuideHome() {
               {nextMatch.event.time}
               {nextCourt ? ` · ${t.schedule.courts[nextCourt]}` : ""}
             </p>
+            </span>
           </Link>
         ) : null}
 
-        <div className="mt-4">
-          <GuideNotify tone="hero" />
         </div>
       </section>
 
@@ -168,14 +179,22 @@ export function GuideHome() {
               action={g.seeAll}
             />
             <div className="space-y-2">
-              {sideEvents.slice(0, 5).map((item) => (
+              {sideEvents.slice(0, 5).map((item) => {
+                const Icon = item.tag === "music" ? IconLive : item.tag === "match" ? IconTrophy : IconSpark;
+                return (
                 <GuideCard key={`${item.time}-${item.title}`} href={ROUTES.events}>
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="min-w-0 font-display text-base font-bold">{item.title}</p>
-                    <p className="shrink-0 text-sm font-bold tabular-nums text-ink/50">{item.time}</p>
+                  <div className="flex items-start gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-yellow text-ink">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <div className="flex min-w-0 flex-1 items-start justify-between gap-3">
+                      <p className="min-w-0 font-display text-base font-bold">{item.title}</p>
+                      <p className="shrink-0 text-sm font-bold tabular-nums text-ink/50">{item.time}</p>
+                    </div>
                   </div>
                 </GuideCard>
-              ))}
+                );
+              })}
             </div>
           </div>
         ) : null}
@@ -183,18 +202,15 @@ export function GuideHome() {
         <div>
           <SectionHead title={g.alwaysOn} href={ROUTES.events} action={g.seeAll} />
           <div className="grid grid-cols-2 gap-2">
-            {ATTRACTIONS.map((item) => {
-              const Icon = item.icon === "food" ? IconFood : item.icon === "photo" ? IconCamera : item.icon === "music" ? IconLive : item.icon === "court" ? IconTrophy : IconSpark;
-              return (
-                <GuideCard key={item.id} href={ROUTES.events}>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-yellow text-ink">
-                    <Icon className="h-4 w-4" />
-                  </span>
-                  <p className="mt-2 font-display text-sm font-bold">{copy(locale, item.title)}</p>
-                  <p className="mt-1 line-clamp-2 text-[0.7rem] leading-relaxed text-ink/50">{copy(locale, item.body)}</p>
-                </GuideCard>
-              );
-            })}
+            {ATTRACTIONS.map((item) => (
+              <GuideCard key={item.id} href={ROUTES.events}>
+                <span className="relative mb-2 block h-20 overflow-hidden rounded-xl">
+                  <AttractionArt id={item.icon} />
+                </span>
+                <p className="font-display text-sm font-bold">{copy(locale, item.title)}</p>
+                <p className="mt-1 line-clamp-2 text-[0.7rem] leading-relaxed text-ink/50">{copy(locale, item.body)}</p>
+              </GuideCard>
+            ))}
           </div>
         </div>
 
@@ -250,12 +266,19 @@ export function GuideHome() {
           <div className="space-y-2">
             {news.map((item) => (
               <GuideCard key={item.id} href={item.href}>
+                <div className="flex items-start gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-yellow text-ink">
+                    <IconMegaphone className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <Pill>{copy(locale, item.tag)}</Pill>
                   {item.pin ? <Pill tone="yellow">{g.pinned}</Pill> : null}
                 </div>
                 <p className="mt-2 font-display text-base font-bold tracking-[-0.02em]">{copy(locale, item.title)}</p>
                 <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-ink/55">{copy(locale, item.body)}</p>
+                  </div>
+                </div>
               </GuideCard>
             ))}
           </div>

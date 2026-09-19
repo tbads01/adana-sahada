@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import { IconCamera, IconFood, IconLive, IconSpark, IconTrophy } from "@/components/Icons";
 import { ATTRACTIONS, MATCH_DAYS, activeOrNextMatchDay, copy } from "@/lib/guide";
-import { DayTabs, GuideCard, Pill, SectionHead, useGuide } from "./GuideUi";
+import { DayTabs, FoodStands, GuideCard, Pill, SectionHead, useGuide } from "./GuideUi";
+import { AttractionArt } from "./GuideArt";
 import { GuideSponsors } from "./GuideSponsors";
 
 type Tag = "all" | "match" | "music" | "event";
@@ -50,8 +50,8 @@ export function GuideEvents() {
             return (
               <GuideCard key={item.id}>
                 <div className="flex gap-3">
-                  <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-paper-soft">
-                    <Image src={item.image} alt="" fill className="object-cover" sizes="64px" />
+                  <span className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-ink">
+                    <AttractionArt id={item.icon} />
                   </span>
                   <div className="min-w-0">
                     <span className="flex items-center gap-1.5 text-ink/40">
@@ -61,6 +61,7 @@ export function GuideEvents() {
                     <p className="mt-1 text-sm leading-relaxed text-ink/55">{copy(locale, item.body)}</p>
                   </div>
                 </div>
+                {item.id === "food" ? <FoodStands className="mt-3" /> : null}
               </GuideCard>
             );
           })}
@@ -91,15 +92,25 @@ export function GuideEvents() {
         {items.length === 0 ? (
           <p className="py-8 text-center text-sm text-ink/45">{g.noEvents}</p>
         ) : (
-          items.map((item) => (
-            <GuideCard key={`${item.time}-${item.title}`}>
-              <Pill tone={item.tag === "match" ? "ink" : item.tag === "music" ? "yellow" : "muted"}>
-                {item.tag === "match" ? g.filterMatch : item.tag === "music" ? g.filterMusic : g.filterEvent}
-              </Pill>
-              <p className="mt-2 font-display text-lg font-bold tracking-[-0.02em]">{item.title}</p>
-              <p className="mt-1 text-sm font-bold tabular-nums text-ink/55">{item.time}</p>
-            </GuideCard>
-          ))
+          items.map((item) => {
+            const Icon = item.tag === "match" ? IconTrophy : item.tag === "music" ? IconLive : IconSpark;
+            return (
+              <GuideCard key={`${item.time}-${item.title}`}>
+                <div className="flex items-start gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-yellow text-ink">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <Pill tone={item.tag === "match" ? "ink" : item.tag === "music" ? "yellow" : "muted"}>
+                      {item.tag === "match" ? g.filterMatch : item.tag === "music" ? g.filterMusic : g.filterEvent}
+                    </Pill>
+                    <p className="mt-2 font-display text-lg font-bold tracking-[-0.02em]">{item.title}</p>
+                    <p className="mt-1 text-sm font-bold tabular-nums text-ink/55">{item.time}</p>
+                  </div>
+                </div>
+              </GuideCard>
+            );
+          })
         )}
       </div>
 
