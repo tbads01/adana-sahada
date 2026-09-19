@@ -107,8 +107,7 @@ export function GuideHome() {
       <section className="relative overflow-visible bg-ink px-4 pt-5 pb-6 text-paper">
         <CourtLines className="pointer-events-none absolute -right-8 -top-8 h-56 w-80 text-white/12" />
         <div className="relative z-10">
-        <div className="flex items-start gap-2">
-          <div className="min-w-0 flex-1 pt-1">
+        <div className="pr-[6.5rem] pt-1">
             <div className="flex items-center gap-2">
               <TennisBall className="h-7 w-7 shrink-0" />
               <p className="text-[0.7rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroEyebrow}</p>
@@ -116,18 +115,6 @@ export function GuideHome() {
             <h1 className="mt-3 font-display text-[2.15rem] leading-[0.92] font-extrabold tracking-[-0.05em]">
               {phase === "live" ? g.heroTitleLive : phase === "ended" ? g.heroTitleEnded : g.heroTitleUpcoming}
             </h1>
-          </div>
-          <div className="w-[9.25rem] shrink-0 overflow-visible">
-            <Image
-              src="/media/brand/kaplan-bust.webp"
-              alt=""
-              width={635}
-              height={720}
-              className="h-auto w-full mix-blend-lighten"
-              sizes="148px"
-              priority
-            />
-          </div>
         </div>
 
         <GuideNotify tone="hero" />
@@ -159,6 +146,15 @@ export function GuideHome() {
 
         <PressConferenceCard className="mt-4" />
 
+        <Image
+          src="/media/brand/kaplan.webp"
+          alt=""
+          width={416}
+          height={717}
+          className="pointer-events-none absolute -right-4 top-0 z-20 block h-auto w-[6.5rem]"
+          sizes="104px"
+          priority
+        />
         </div>
       </section>
 

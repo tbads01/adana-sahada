@@ -219,3 +219,11 @@ export function IconBell(props: IconProps) {
     </Svg>
   );
 }
+
+export function IconChevron(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M9 5.5 16 12l-7 6.5" />
+    </Svg>
+  );
+}

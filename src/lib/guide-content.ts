@@ -83,7 +83,7 @@ export const guideCopy = {
     notifyTitle: "Bildirimler",
     notifyBody:
       "Maç saati, skor ve duyuru telefonunuza gelir. Bir kez izin verin — uygulama indirmeye gerek yok.",
-    notifyEnable: "Bildirimleri aç",
+    notifyEnable: "Bildirim izni ver",
     notifyOn: "Bildirimler açık",
     notifyDenied: "Tarayıcı bildirimi kapalı. Ayarlardan izin verin.",
     notifyNeedHttps: "Bildirim için siteyi HTTPS üzerinden veya ana ekrandan açın.",
@@ -91,7 +91,7 @@ export const guideCopy = {
     sendTitle: "Bildirim gönder",
     sendBody: "Bildirimleri açmış telefonlara maç veya duyuru yollayın.",
     sendHow:
-      "Ziyaretçi ana sayfada «Bildirimleri aç» der. Siz buradan başlık ve metin yazıp gönderirsiniz. Bildirime basınca seçtiğiniz sayfa açılır.",
+      "Ziyaretçi ana sayfada «Bildirim izni ver» der. Siz buradan başlık ve metin yazıp gönderirsiniz. Bildirime basınca seçtiğiniz sayfa açılır.",
     sendPassword: "Yönetici şifresi",
     sendHeadline: "Başlık",
     sendMessage: "Metin",
@@ -186,7 +186,7 @@ export const guideCopy = {
     notifyTitle: "Notifications",
     notifyBody:
       "Match times, scores and announcements come to your phone. Allow once — no app to download.",
-    notifyEnable: "Turn on alerts",
+    notifyEnable: "Allow notifications",
     notifyOn: "Alerts on",
     notifyDenied: "Notifications are blocked. Allow them in browser settings.",
     notifyNeedHttps: "Open the site on HTTPS or from your Home Screen for alerts.",
@@ -194,7 +194,7 @@ export const guideCopy = {
     sendTitle: "Send a notification",
     sendBody: "Push a match or announcement alert to phones that opted in.",
     sendHow:
-      "Visitors tap «Turn on notifications» on the home screen. You write a title and message here. Tapping the alert opens the page you choose.",
+      "Visitors tap «Allow notifications» on the home screen. You write a title and message here. Tapping the alert opens the page you choose.",
     sendPassword: "Admin password",
     sendHeadline: "Title",
     sendMessage: "Message",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { IconBell } from "@/components/Icons";
+import { IconBell, IconChevron } from "@/components/Icons";
 import { VAPID_PUBLIC_KEY, urlBase64ToUint8Array } from "@/lib/push";
 import { pickNextMatch } from "@/lib/guide";
 import { GuideCard, useGuide } from "./GuideUi";
@@ -112,23 +112,33 @@ export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" | "heade
   }
 
   if (tone === "hero") {
-    if (state === "on" || state === "denied") return null;
-    const body =
-      state === "need-https" ? g.notifyNeedHttps : state === "error" ? g.notifyError : g.notifyBody;
+    const blocked = state === "denied" || state === "need-https";
+    const body = blocked
+      ? state === "need-https"
+        ? g.notifyNeedHttps
+        : g.notifyDenied
+      : state === "error"
+        ? g.notifyError
+        : null;
     return (
       <button
         type="button"
         onClick={() => {
           if (showButton) void enable();
         }}
-        className="mt-5 flex w-full items-start gap-3 rounded-2xl bg-yellow px-3 py-3 text-left text-ink"
+        className="mt-5 flex w-full items-center gap-3 rounded-full bg-yellow py-3 pr-[5.75rem] pl-3 text-left text-ink shadow-[0_4px_0_#c49212] transition active:translate-y-1 active:shadow-none"
       >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink text-yellow">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-yellow">
           <IconBell className="h-5 w-5" />
         </span>
-        <span className="min-w-0">
-          <span className="block font-display text-lg font-bold leading-tight">{g.notifyTitle}</span>
-          <span className="mt-0.5 block text-[0.78rem] font-medium leading-snug text-ink/65">{body}</span>
+        <span className="min-w-0 flex-1">
+          <span className="flex items-center gap-1">
+            <span className="font-display text-[1.15rem] font-bold leading-tight">{g.notifyEnable}</span>
+            <IconChevron className="h-5 w-5 shrink-0" />
+          </span>
+          {body ? (
+            <span className="mt-0.5 line-clamp-2 block text-[0.72rem] font-medium leading-snug text-ink/60">{body}</span>
+          ) : null}
         </span>
       </button>
     );
