@@ -22,6 +22,12 @@ export type MatchDay = {
 
 export const MATCH_PLAN: MatchDay[] = [
   {
+    dateKey: "25",
+    start: "18:00",
+    total: 0,
+    courts: [],
+  },
+  {
     dateKey: "26",
     start: "10:30",
     total: 8,

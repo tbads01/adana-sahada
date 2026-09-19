@@ -369,14 +369,20 @@ export const content: Record<Locale, Messages> = {
       },
       days: [
         {
+          weekday: "Cuma",
+          date: "25 Eylül",
+          stage: "Basın lansmanı",
+          events: [
+            { time: "18:00", title: "Basın lansmanı · Taş Köprü", tag: "event" },
+          ],
+        },
+        {
           weekday: "Cumartesi",
           date: "26 Eylül",
           stage: "Ön eleme",
           events: [
             { time: "08:00–09:30", title: "Zumba", tag: "event" },
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
-            { time: "08:00–13:00", title: "Lansman · Teras", tag: "event" },
-            { time: "08:00–13:00", title: "Inf Kahve", tag: "event" },
             { time: "10:30", title: "Eleme 1. tur · 3 kort", tag: "match" },
             { time: "13:00–15:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
@@ -807,14 +813,20 @@ export const content: Record<Locale, Messages> = {
       },
       days: [
         {
+          weekday: "Friday",
+          date: "25 September",
+          stage: "Press launch",
+          events: [
+            { time: "18:00", title: "Press launch · Taş Köprü", tag: "event" },
+          ],
+        },
+        {
           weekday: "Saturday",
           date: "26 September",
           stage: "Qualifying",
           events: [
             { time: "08:00–09:30", title: "Zumba", tag: "event" },
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
-            { time: "08:00–13:00", title: "Launch · Terrace", tag: "event" },
-            { time: "08:00–13:00", title: "Inf Kahve", tag: "event" },
             { time: "10:30", title: "Qualifying R1 · 3 courts", tag: "match" },
             { time: "13:00–15:00", title: "Surprise contests · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },

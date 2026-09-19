@@ -101,14 +101,13 @@ export function GuideHome() {
         <div className="relative z-10">
         <div className="flex items-center gap-2">
           <TennisBall className="h-7 w-7 shrink-0" />
-          <p className="text-[0.62rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroKicker}</p>
+          <p className="text-[0.62rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroEyebrow}</p>
         </div>
-        <h1 className="mt-2 font-display text-[2rem] leading-none font-extrabold tracking-[-0.04em]">{g.heroTitle}</h1>
-        <p className="mt-3 max-w-[20rem] text-sm leading-relaxed text-paper/70">{g.heroLead}</p>
+        <h1 className="mt-3 font-display text-[2.15rem] leading-[0.92] font-extrabold tracking-[-0.05em]">
+          {phase === "live" ? g.heroTitleLive : phase === "ended" ? g.heroTitleEnded : g.heroTitleUpcoming}
+        </h1>
 
-        <div className="mt-4">
-          <GuideNotify tone="hero" />
-        </div>
+        <GuideNotify tone="hero" />
 
         <div className="mt-4 rounded-2xl bg-panel p-4">
           {phase === "ended" ? (

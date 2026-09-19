@@ -55,7 +55,8 @@ export function copy(locale: Locale, value: Copy) {
 
 export function dateKeyToIso(dateKey: string) {
   const n = Number(dateKey);
-  return n >= 26 ? `2026-09-${dateKey}` : `2026-10-${dateKey}`;
+  const day = dateKey.padStart(2, "0");
+  return n >= 25 ? `2026-09-${day}` : `2026-10-${day}`;
 }
 
 export function isoToDateKey(iso: string) {
@@ -83,12 +84,19 @@ export function matchDayForDate(iso: string): MatchDay | undefined {
 
 export function activeOrNextMatchDay(now = Date.now()) {
   const today = istanbulIsoDate(now);
-  const todayPlan = matchDayForDate(today);
+  const playable = MATCH_PLAN.filter((day) => day.courts.length);
+  const todayPlan = playable.find((day) => dateKeyToIso(day.dateKey) === today);
   if (todayPlan) return { day: todayPlan, iso: today, isToday: true };
-  const next = MATCH_PLAN.find((day) => dateKeyToIso(day.dateKey) > today);
+  const next = playable.find((day) => dateKeyToIso(day.dateKey) > today);
   if (next) return { day: next, iso: dateKeyToIso(next.dateKey), isToday: false };
-  const last = MATCH_PLAN[MATCH_PLAN.length - 1];
+  const last = playable[playable.length - 1] ?? MATCH_PLAN[MATCH_PLAN.length - 1];
   return { day: last, iso: dateKeyToIso(last.dateKey), isToday: false };
+}
+
+export function activeOrNextProgramDay(now = Date.now()) {
+  const today = istanbulIsoDate(now);
+  if (MATCH_DAYS.some((day) => day.iso === today)) return today;
+  return MATCH_DAYS.find((day) => day.iso > today)?.iso ?? MATCH_DAYS[0]?.iso ?? today;
 }
 
 export function getLiveData(): LiveData {
@@ -104,6 +112,21 @@ export function getLiveData(): LiveData {
 }
 
 export const ANNOUNCEMENTS: Announcement[] = [
+  {
+    id: "press-launch",
+    date: "2026-09-19",
+    pin: true,
+    tag: { tr: "Etkinlik", en: "Events" },
+    title: {
+      tr: "Basın lansmanı Cuma 18:00, Taş Köprü",
+      en: "Press launch Friday 18:00 at Taş Köprü",
+    },
+    body: {
+      tr: "Adana Open basın lansmanı 25 Eylül Cuma 18:00’de Taş Köprü’de. Ertesi sabah eleme 10:30’da ATDSK’de başlar.",
+      en: "The Adana Open press launch is Friday 25 September at 18:00 on Taş Köprü. Qualifying starts 10:30 the next morning at ATDSK.",
+    },
+    href: "/etkinlikler",
+  },
   {
     id: "main-draw",
     date: "2026-09-17",
@@ -129,8 +152,8 @@ export const ANNOUNCEMENTS: Announcement[] = [
       en: "Side events are announced",
     },
     body: {
-      tr: "Yoga, DJ Yusuf Erdem, Inf Kahve ve 3 Ekim Cardio Fitness · Coffee Disco programı yayında. Maç saatleri WTA taslak planına göredir.",
-      en: "Yoga, DJ Yusuf Erdem, Inf Kahve and the 3 October Cardio Fitness · Coffee Disco programme are live. Match times follow the WTA draft plan.",
+      tr: "Yoga, DJ Yusuf Erdem ve 3 Ekim Cardio Fitness · Coffee Disco programı yayında. Maç saatleri WTA taslak planına göredir.",
+      en: "Yoga, DJ Yusuf Erdem and the 3 October Cardio Fitness · Coffee Disco programme are live. Match times follow the WTA draft plan.",
     },
     href: "/etkinlikler",
   },
@@ -223,8 +246,8 @@ export const INFO_ITEMS: InfoItem[] = [
     icon: "food",
     title: { tr: "Yeme-içme", en: "Food & drink" },
     body: {
-      tr: "Food court gün boyu açık. Inf Kahve ve kulüp terası ayrı. Havuz kenarı oturum alanı turnuva boyunca durur.",
-      en: "Food court is open all day. Inf Kahve and the club terrace sit apart. Poolside seating stays open through the week.",
+      tr: "Food court gün boyu açık. Kulüp terası ayrı. Havuz kenarı oturum alanı turnuva boyunca durur.",
+      en: "Food court is open all day. The club terrace sits apart. Poolside seating stays open through the week.",
     },
     href: "/etkinlikler",
     hrefLabel: { tr: "Günün programı", en: "Today’s programme" },

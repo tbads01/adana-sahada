@@ -90,9 +90,7 @@ export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" | "heade
           ? g.notifyNeedHttps
           : state === "error"
             ? g.notifyError
-            : tone === "hero"
-              ? g.notifyHeroHint
-              : g.notifyBody;
+            : g.notifyBody;
 
   const showButton = state === "idle" || state === "error";
 
@@ -114,25 +112,20 @@ export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" | "heade
   }
 
   if (tone === "hero") {
+    if (state === "on" || state === "denied") return null;
+    const label = state === "need-https" ? g.notifyNeedHttps : state === "denied" ? g.notifyDenied : g.notifyEnable;
     return (
       <button
         type="button"
         onClick={() => {
           if (showButton) void enable();
         }}
-        className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left ${
-          state === "on" ? "bg-green text-ink" : "bg-yellow text-ink"
-        }`}
+        className="mt-5 flex w-full items-center gap-3 rounded-2xl bg-yellow px-3 py-3 text-left text-ink"
       >
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink text-yellow">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink text-yellow">
           <IconBell className="h-5 w-5" />
         </span>
-        <span className="min-w-0">
-          <span className="block font-display text-base font-bold leading-tight">
-            {showButton ? g.notifyEnable : g.notifyTitle}
-          </span>
-          <span className="mt-0.5 block text-[0.72rem] font-bold leading-snug text-ink/65">{copy}</span>
-        </span>
+        <span className="font-display text-lg font-bold leading-tight">{label}</span>
       </button>
     );
   }

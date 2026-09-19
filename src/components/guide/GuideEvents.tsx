@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { IconCamera, IconFood, IconLive, IconSpark, IconTrophy } from "@/components/Icons";
-import { ATTRACTIONS, MATCH_DAYS, activeOrNextMatchDay, copy } from "@/lib/guide";
+import { ATTRACTIONS, MATCH_DAYS, activeOrNextProgramDay, copy } from "@/lib/guide";
 import { DayTabs, FoodStands, GuideCard, Pill, SectionHead, useGuide } from "./GuideUi";
 import { AttractionArt } from "./GuideArt";
 import { GuideSponsors } from "./GuideSponsors";
@@ -19,7 +19,7 @@ const ATTRACTION_ICONS = {
 
 export function GuideEvents() {
   const { g, t, locale } = useGuide();
-  const [selected, setSelected] = useState(activeOrNextMatchDay().iso);
+  const [selected, setSelected] = useState(activeOrNextProgramDay());
   const [filter, setFilter] = useState<Tag>("all");
   const dayIndex = MATCH_DAYS.findIndex((d) => d.iso === selected);
   const day = t.schedule.days[dayIndex];

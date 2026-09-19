@@ -107,15 +107,18 @@ export function SectionHead({
 export function DayTabs({
   selected,
   onSelect,
+  days = MATCH_DAYS,
 }: {
   selected: string;
   onSelect: (iso: string) => void;
+  days?: typeof MATCH_DAYS;
 }) {
   const { t } = useLanguage();
 
   return (
     <div className="guide-scroll flex min-w-0 gap-2 overflow-x-auto pb-1">
-      {MATCH_DAYS.map((day, i) => {
+      {days.map((day) => {
+        const i = MATCH_DAYS.findIndex((item) => item.iso === day.iso);
         const meta = t.schedule.days[i];
         const active = day.iso === selected;
         return (

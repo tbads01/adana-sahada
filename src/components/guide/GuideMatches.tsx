@@ -26,10 +26,11 @@ function scoreLine(match: ScoreboardMatch) {
 
 export function GuideMatches() {
   const { g, t, locale } = useGuide();
+  const playable = useMemo(() => MATCH_DAYS.filter((d) => d.courts.length), []);
   const initial = activeOrNextMatchDay().iso;
   const [selected, setSelected] = useState(initial);
   const live = getLiveData();
-  const day = MATCH_DAYS.find((d) => d.iso === selected) ?? MATCH_DAYS[0];
+  const day = playable.find((d) => d.iso === selected) ?? playable[0];
   const dayIndex = MATCH_DAYS.findIndex((d) => d.iso === selected);
   const meta = t.schedule.days[dayIndex];
 
@@ -44,7 +45,7 @@ export function GuideMatches() {
       <p className="mt-1 text-sm text-ink/55">{g.draftNote}</p>
 
       <div className="mt-4">
-        <DayTabs selected={selected} onSelect={setSelected} />
+        <DayTabs selected={selected} onSelect={setSelected} days={playable} />
       </div>
 
       <GuideCard className="mt-4 !bg-surface">
