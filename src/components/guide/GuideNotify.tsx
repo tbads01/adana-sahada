@@ -113,7 +113,7 @@ export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" | "heade
 
   if (tone === "hero") {
     if (state === "on" || state === "denied") return null;
-    const label = state === "need-https" ? g.notifyNeedHttps : state === "denied" ? g.notifyDenied : g.notifyEnable;
+    const label = state === "need-https" ? g.notifyNeedHttps : g.notifyEnable;
     return (
       <button
         type="button"
