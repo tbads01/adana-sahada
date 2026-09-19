@@ -52,7 +52,10 @@ export function GuideMatches() {
         <p className="text-[0.62rem] font-bold tracking-[0.14em] text-ink/40 uppercase">{meta?.stage}</p>
         <p className="mt-1 font-display text-xl font-bold">{meta?.date}</p>
         <p className="mt-2 text-sm text-ink/55">
-          {g.firstBall} {day.start} · {day.total} {g.matchesCount} · {day.courts.length} {g.courtsOn}
+          {g.firstBall} {day.start} · {day.total} {g.matchesCount}
+        </p>
+        <p className="mt-1 text-sm font-bold text-ink/70">
+          {day.courts.map((court) => t.schedule.courts[court.id as CourtId]).join(" · ")}
         </p>
       </GuideCard>
 

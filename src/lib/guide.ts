@@ -166,8 +166,8 @@ export const ANNOUNCEMENTS: Announcement[] = [
       en: "Qualifying 26–27 September, first ball 10:30",
     },
     body: {
-      tr: "Eleme 1. tur üç kortta 26 Eylül 10:30’da başlar. Ana tablo 28 Eylül 16:30, final 4 Ekim 18:00 Merkez Kort.",
-      en: "Qualifying round one starts 26 September at 10:30 on three courts. Main draw 28 September 16:30, final 4 October 18:00 on Centre Court.",
+      tr: "Eleme 1. tur 26 Eylül 10:30’da Merkez Kort, Kort 1 ve Kort 2’de başlar. Ana tablo 28 Eylül 16:30, final 4 Ekim 18:00 Merkez Kort.",
+      en: "Qualifying round one starts 26 September at 10:30 on Centre Court, Court 1 and Court 2. Main draw 28 September 16:30, final 4 October 18:00 on Centre Court.",
     },
     href: "/maclar",
   },

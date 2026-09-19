@@ -229,6 +229,10 @@
   animation-play-state: paused;
 }
 
+.guide-marquee {
+  animation-duration: 72s;
+}
+
 .guide-scroll {
   scrollbar-width: none;
 }

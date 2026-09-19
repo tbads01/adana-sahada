@@ -383,7 +383,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "08:00–09:30", title: "Zumba", tag: "event" },
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
-            { time: "10:30", title: "Eleme 1. tur · 3 kort", tag: "match" },
+            { time: "10:30", title: "Eleme 1. tur · Merkez Kort · Kort 1 · Kort 2", tag: "match" },
             { time: "13:00–15:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
           ],
@@ -394,7 +394,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Ön eleme",
           events: [
             { time: "08:00–10:00", title: "Zumba", tag: "event" },
-            { time: "10:30", title: "Eleme finalleri · 2 kort", tag: "match" },
+            { time: "10:30", title: "Eleme finalleri · Merkez Kort · Kort 1", tag: "match" },
             { time: "13:00–15:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
           ],
@@ -827,7 +827,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "08:00–09:30", title: "Zumba", tag: "event" },
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
-            { time: "10:30", title: "Qualifying R1 · 3 courts", tag: "match" },
+            { time: "10:30", title: "Qualifying R1 · Centre Court · Court 1 · Court 2", tag: "match" },
             { time: "13:00–15:00", title: "Surprise contests · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
           ],
@@ -838,7 +838,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Qualifying",
           events: [
             { time: "08:00–10:00", title: "Zumba", tag: "event" },
-            { time: "10:30", title: "Qualifying finals · 2 courts", tag: "match" },
+            { time: "10:30", title: "Qualifying finals · Centre Court · Court 1", tag: "match" },
             { time: "13:00–15:00", title: "Surprise contests · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
           ],

@@ -113,19 +113,23 @@ export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" | "heade
 
   if (tone === "hero") {
     if (state === "on" || state === "denied") return null;
-    const label = state === "need-https" ? g.notifyNeedHttps : g.notifyEnable;
+    const body =
+      state === "need-https" ? g.notifyNeedHttps : state === "error" ? g.notifyError : g.notifyBody;
     return (
       <button
         type="button"
         onClick={() => {
           if (showButton) void enable();
         }}
-        className="mt-5 flex w-full items-center gap-3 rounded-2xl bg-yellow px-3 py-3 text-left text-ink"
+        className="mt-5 flex w-full items-start gap-3 rounded-2xl bg-yellow px-3 py-3 text-left text-ink"
       >
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink text-yellow">
           <IconBell className="h-5 w-5" />
         </span>
-        <span className="font-display text-lg font-bold leading-tight">{label}</span>
+        <span className="min-w-0">
+          <span className="block font-display text-lg font-bold leading-tight">{g.notifyTitle}</span>
+          <span className="mt-0.5 block text-[0.78rem] font-medium leading-snug text-ink/65">{body}</span>
+        </span>
       </button>
     );
   }

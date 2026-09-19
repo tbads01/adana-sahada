@@ -13,6 +13,7 @@ type Player = {
   name: string;
   country: string;
   rank: number | null;
+  careerHigh?: number | null;
   wtaUrl: string;
   image: string | null;
   entry?: string;
@@ -69,7 +70,8 @@ export function GuidePlayers() {
                   {FLAGS[player.country] ?? ""} {player.name}
                 </span>
                 <span className="text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">
-                  {t.players.rankLabel} {player.rank ?? "—"}
+                  {t.players.nowLabel} {player.rank ?? "—"}
+                  {player.careerHigh ? ` · ${t.players.careerLabel} ${player.careerHigh}` : ""}
                 </span>
               </span>
               <span className="text-[0.62rem] font-bold tracking-wide text-ink/35 uppercase">{g.wtaProfile} ↗</span>
