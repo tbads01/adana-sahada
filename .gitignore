@@ -34,8 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
-# web-push subscriptions (local/server file store)
+# web-push subscriptions and visit stats (local/server file store)
 /data/push-subscriptions.json
+/data/analytics.json
 
 # vercel
 .vercel

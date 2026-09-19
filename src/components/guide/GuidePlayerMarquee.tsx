@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FLAGS } from "@/lib/flags";
+import { flagFor } from "@/lib/flags";
 import data from "@/lib/players.json";
 import { ROUTES } from "@/lib/routes";
 import { useGuide } from "./GuideUi";
@@ -32,10 +32,10 @@ function Chip({ player, nowLabel, careerLabel }: { player: Player; nowLabel: str
       </span>
       <span className="min-w-0">
         <span className="flex items-center gap-1.5">
-          <span className="text-[0.95rem] leading-none">{FLAGS[player.country] ?? ""}</span>
+          <span className="text-[0.95rem] leading-none">{flagFor(player.country)}</span>
           <span className="font-display text-[0.82rem] font-bold whitespace-nowrap">{player.name}</span>
         </span>
-        <span className="mt-0.5 flex gap-1.5 text-[0.58rem] font-bold tracking-wide text-ink/50 uppercase">
+        <span className="mt-0.5 flex gap-1.5 text-[0.65rem] font-bold tracking-wide text-ink/50 uppercase">
           {player.rank ? (
             <span>
               {nowLabel} #{player.rank}

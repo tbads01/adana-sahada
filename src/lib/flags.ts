@@ -1,3 +1,6 @@
+const WORLD_FLAG = "🌍";
+const NEUTRAL_FLAGS = new Set(["RUS", "BLR"]);
+
 export const FLAGS: Record<string, string> = {
   ARG: "🇦🇷",
   ARM: "🇦🇲",
@@ -14,9 +17,13 @@ export const FLAGS: Record<string, string> = {
   LAT: "🇱🇻",
   NED: "🇳🇱",
   POL: "🇵🇱",
-  RUS: "🇷🇺",
   SRB: "🇷🇸",
   SUI: "🇨🇭",
   TUR: "🇹🇷",
   USA: "🇺🇸",
 };
+
+export function flagFor(country: string) {
+  if (NEUTRAL_FLAGS.has(country)) return WORLD_FLAG;
+  return FLAGS[country] ?? "";
+}

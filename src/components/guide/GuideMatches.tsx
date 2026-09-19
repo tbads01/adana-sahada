@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { FLAGS } from "@/lib/flags";
+import { flagFor } from "@/lib/flags";
 import {
   MATCH_DAYS,
   activeOrNextMatchDay,
@@ -156,7 +156,7 @@ function PlayerRow({ name, country, serving }: { name: string; country: string; 
   return (
     <div className="flex items-center justify-between gap-2">
       <p className="font-semibold">
-        <span className="mr-1.5">{FLAGS[country] ?? country}</span>
+        <span className="mr-1.5">{flagFor(country) || country}</span>
         {name}
       </p>
       {serving ? <span className="text-[0.58rem] font-bold tracking-wide text-green-deep uppercase">{g.serving}</span> : null}

@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Outfit } from "next/font/google";
 import { Providers } from "@/components/Providers";
-import { GuideShell } from "@/components/guide/GuideShell";
 import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -65,9 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="tr" className={`${display.variable} ${body.variable} h-full antialiased`}>
       <body className="h-full bg-void text-ink">
-        <Providers>
-          <GuideShell>{children}</GuideShell>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

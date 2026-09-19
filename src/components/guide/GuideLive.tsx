@@ -1,6 +1,6 @@
 "use client";
 
-import { FLAGS } from "@/lib/flags";
+import { flagFor } from "@/lib/flags";
 import { copy, getLiveData, SOCIAL_LINKS } from "@/lib/guide";
 import { INSTAGRAM, WTA_URL } from "@/lib/site";
 import { IconPlay } from "@/components/Icons";
@@ -78,7 +78,7 @@ export function GuideLive() {
                   </Pill>
                 </div>
                 <p className="mt-2 text-sm font-semibold">
-                  {FLAGS[row.a.country] ?? ""} {row.a.name} · {FLAGS[row.b.country] ?? ""} {row.b.name}
+                  {flagFor(row.a.country)} {row.a.name} · {flagFor(row.b.country)} {row.b.name}
                 </p>
                 <p className="mt-1 font-display text-lg font-extrabold tabular-nums">
                   {row.sets.map((set) => set.join("–")).join("  ") || "0–0"}

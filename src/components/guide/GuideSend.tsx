@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
 import { GuideCard, useGuide } from "./GuideUi";
 
@@ -67,6 +68,11 @@ export function GuideSend() {
           {count} {g.sendCount}
         </p>
       ) : null}
+      <p className="mt-2 text-sm">
+        <Link href={ROUTES.admin} prefetch={false} className="font-bold text-ink underline underline-offset-2">
+          İstatistik paneli
+        </Link>
+      </p>
 
       <div className="mt-4 flex flex-wrap gap-2">
         {PRESETS.map((item) => (

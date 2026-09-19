@@ -74,7 +74,7 @@ export function PressConferenceCard({
           <IconMegaphone className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-[0.62rem] font-bold tracking-[0.14em] text-ink/55 uppercase">
+          <p className="text-[0.7rem] font-bold tracking-[0.14em] text-ink/55 uppercase">
             {copy(locale, PRESS_CONFERENCE.when)}
           </p>
           <p className="mt-1 font-display text-xl font-bold tracking-[-0.03em]">
@@ -130,7 +130,7 @@ export function SectionHead({
     <div className="mb-3 flex items-end justify-between gap-3">
       <h2 className="font-display text-lg font-bold tracking-[-0.03em]">{title}</h2>
       {href && action ? (
-        <Link href={href} prefetch={false} className="text-[0.72rem] font-bold tracking-wide text-ink/45 uppercase">
+        <Link href={href} prefetch={false} className="text-[0.82rem] font-bold tracking-wide text-ink/50">
           {action}
         </Link>
       ) : null}
@@ -164,10 +164,10 @@ export function DayTabs({
               active ? "bg-ink text-paper" : "bg-paper-soft text-ink/70"
             }`}
           >
-            <span className="block text-[0.58rem] font-bold tracking-[0.12em] uppercase opacity-70">
+            <span className="block text-[0.68rem] font-bold tracking-[0.12em] uppercase opacity-70">
               {meta?.weekday}
             </span>
-            <span className="block text-[0.78rem] font-bold">{meta?.date}</span>
+            <span className="block text-[0.88rem] font-bold">{meta?.date}</span>
           </button>
         );
       })}

@@ -104,26 +104,27 @@ export function GuideHome() {
 
   return (
     <div>
-      <section className="relative overflow-x-hidden bg-ink px-4 pt-5 pb-6 text-paper">
-        <CourtLines className="pointer-events-none absolute -right-12 -top-10 h-56 w-80 text-white/12" />
+      <section className="relative overflow-visible bg-ink px-4 pt-5 pb-6 text-paper">
+        <CourtLines className="pointer-events-none absolute -right-8 -top-8 h-56 w-80 text-white/12" />
         <div className="relative z-10">
-        <div className="flex items-end gap-2">
-          <div className="min-w-0 flex-1">
+        <div className="flex items-start gap-2">
+          <div className="min-w-0 flex-1 pt-1">
             <div className="flex items-center gap-2">
               <TennisBall className="h-7 w-7 shrink-0" />
-              <p className="text-[0.62rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroEyebrow}</p>
+              <p className="text-[0.7rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroEyebrow}</p>
             </div>
             <h1 className="mt-3 font-display text-[2.15rem] leading-[0.92] font-extrabold tracking-[-0.05em]">
               {phase === "live" ? g.heroTitleLive : phase === "ended" ? g.heroTitleEnded : g.heroTitleUpcoming}
             </h1>
           </div>
-          <div className="relative -mb-3 h-[8.75rem] w-[6.5rem] shrink-0">
+          <div className="w-[9.25rem] shrink-0 overflow-visible">
             <Image
               src="/media/brand/kaplan-bust.webp"
               alt=""
-              fill
-              className="object-contain object-bottom mix-blend-lighten"
-              sizes="104px"
+              width={635}
+              height={720}
+              className="h-auto w-full mix-blend-lighten"
+              sizes="148px"
               priority
             />
           </div>
@@ -173,7 +174,7 @@ export function GuideHome() {
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-yellow text-ink">
                     <Icon className="h-5 w-5" />
                   </span>
-                  <span className="mt-2 w-full truncate text-center text-[0.62rem] font-bold leading-tight text-ink/70">{item.label}</span>
+                  <span className="mt-2 w-full text-center text-[0.7rem] font-bold leading-tight text-ink/70">{item.label}</span>
                 </>
               );
               const cls = "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-paper-soft px-1 py-3";

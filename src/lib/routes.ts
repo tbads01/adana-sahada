@@ -7,6 +7,7 @@ export const ROUTES = {
   info: "/bilgi",
   players: "/oyuncular",
   send: "/gonder",
+  admin: "/admin",
   tickets: "https://adanaopen.com/iletisim",
   site: "https://adanaopen.com",
 } as const;

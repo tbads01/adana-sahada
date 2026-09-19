@@ -1,3 +1,4 @@
+import { recordNotify } from "@/lib/analytics-store";
 import { saveSubscription } from "@/lib/push-store";
 
 export async function POST(request: Request) {
@@ -7,6 +8,7 @@ export async function POST(request: Request) {
   }
   try {
     const count = await saveSubscription({ endpoint: body.endpoint, keys: body.keys });
+    void recordNotify();
     return Response.json({ ok: true, count });
   } catch {
     return Response.json({ ok: false, error: "store" }, { status: 500 });

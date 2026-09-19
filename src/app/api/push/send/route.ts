@@ -1,10 +1,12 @@
 import webpush from "web-push";
+import { isAdminRequest } from "@/lib/admin-auth";
+import { recordSend } from "@/lib/analytics-store";
 import { loadSubscriptions, removeSubscription } from "@/lib/push-store";
 import { VAPID_PUBLIC_KEY } from "@/lib/push";
 import { ROUTES } from "@/lib/routes";
 
 export async function POST(request: Request) {
-  const secret = process.env.PUSH_ADMIN_SECRET;
+  const secret = process.env.PUSH_ADMIN_SECRET || (process.env.NODE_ENV !== "production" ? "dev" : "");
   if (!secret) {
     return Response.json({ ok: false, error: "not-configured" }, { status: 503 });
   }
@@ -16,7 +18,7 @@ export async function POST(request: Request) {
     url?: string;
   };
 
-  if (body.password !== secret) {
+  if (body.password !== secret && !isAdminRequest(request)) {
     return Response.json({ ok: false, error: "auth" }, { status: 401 });
   }
 
@@ -50,5 +52,6 @@ export async function POST(request: Request) {
     }
   }
 
+  await recordSend({ t: Date.now(), title, sent, total: subs.length });
   return Response.json({ ok: true, sent, total: subs.length });
 }

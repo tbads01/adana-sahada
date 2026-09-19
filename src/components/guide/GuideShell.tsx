@@ -53,8 +53,8 @@ export function GuideShell({ children }: { children: ReactNode }) {
                 <Image src="/logo-clear.png" alt="Adana Open" fill className="object-contain object-left" sizes="52px" priority />
               </span>
               <span className="min-w-0">
-                <span className="block text-[0.58rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroKicker}</span>
-                <span className="block truncate text-[0.82rem] font-bold">{g.short}</span>
+                <span className="block text-[0.68rem] font-bold tracking-[0.14em] text-yellow uppercase">{g.heroKicker}</span>
+                <span className="block truncate text-[0.92rem] font-bold">{g.short}</span>
               </span>
             </Link>
             <div className="ml-auto flex items-center gap-1.5">
@@ -65,18 +65,18 @@ export function GuideShell({ children }: { children: ReactNode }) {
                   Live
                 </span>
               ) : null}
-              <div className="flex items-center rounded-full bg-white/10 p-0.5 text-[0.62rem] font-bold">
+              <div className="flex items-center rounded-full bg-white/10 p-0.5 text-[0.72rem] font-bold">
                 <button
                   type="button"
                   onClick={() => setLocale("tr")}
-                  className={`rounded-full px-2 py-1 uppercase ${locale === "tr" ? "bg-yellow text-ink" : "text-paper/50"}`}
+                  className={`rounded-full px-2.5 py-1 uppercase ${locale === "tr" ? "bg-yellow text-ink" : "text-paper/50"}`}
                 >
                   TR
                 </button>
                 <button
                   type="button"
                   onClick={() => setLocale("en")}
-                  className={`rounded-full px-2 py-1 uppercase ${locale === "en" ? "bg-yellow text-ink" : "text-paper/50"}`}
+                  className={`rounded-full px-2.5 py-1 uppercase ${locale === "en" ? "bg-yellow text-ink" : "text-paper/50"}`}
                 >
                   EN
                 </button>
@@ -107,12 +107,12 @@ export function GuideShell({ children }: { children: ReactNode }) {
                   key={tab.href}
                   href={tab.href}
                   prefetch={false}
-                  className={`flex min-w-0 flex-col items-center gap-0.5 px-0.5 py-2 text-[0.5rem] font-bold tracking-normal ${
-                    active ? "text-yellow" : "text-paper/45"
+                  className={`flex min-w-0 flex-col items-center gap-1 px-1 py-2.5 ${
+                    active ? "text-yellow" : "text-paper/55"
                   }`}
                 >
-                  <Icon className="h-5 w-5 shrink-0" />
-                  <span className="w-full px-0.5 text-center text-[0.5rem] font-bold leading-[1.05] normal-case">
+                  <Icon className="h-6 w-6 shrink-0" />
+                  <span className="w-full text-center text-[0.72rem] font-bold leading-tight">
                     {g[tab.key]}
                   </span>
                 </Link>

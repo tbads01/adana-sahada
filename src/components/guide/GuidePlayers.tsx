@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { FLAGS } from "@/lib/flags";
+import { flagFor } from "@/lib/flags";
 import { useGuide } from "./GuideUi";
 import data from "@/lib/players.json";
 
@@ -67,7 +67,7 @@ export function GuidePlayers() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate font-display text-base font-bold">
-                  {FLAGS[player.country] ?? ""} {player.name}
+                  {flagFor(player.country)} {player.name}
                 </span>
                 <span className="text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">
                   {t.players.nowLabel} {player.rank ?? "—"}
