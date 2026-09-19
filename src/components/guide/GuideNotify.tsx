@@ -126,18 +126,18 @@ export function GuideNotify({ tone = "card" }: { tone?: "card" | "hero" | "heade
         onClick={() => {
           if (showButton) void enable();
         }}
-        className="mt-5 flex w-full items-center gap-3 rounded-full bg-yellow py-3 pr-[5.75rem] pl-3 text-left text-ink shadow-[0_4px_0_#c49212] transition active:translate-y-1 active:shadow-none"
+        className="mt-3 inline-flex max-w-[calc(100%-7.75rem)] items-center gap-2 rounded-full bg-green py-2 pr-3 pl-2.5 text-left text-ink shadow-[0_3px_0_#2d6b44] transition active:translate-y-0.5 active:shadow-none"
       >
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-yellow">
-          <IconBell className="h-5 w-5" />
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-green">
+          <IconBell className="h-3.5 w-3.5" />
         </span>
-        <span className="min-w-0 flex-1">
-          <span className="flex items-center gap-1">
-            <span className="font-display text-[1.15rem] font-bold leading-tight">{g.notifyEnable}</span>
-            <IconChevron className="h-5 w-5 shrink-0" />
+        <span className="min-w-0">
+          <span className="flex items-center gap-0.5">
+            <span className="font-display text-[0.92rem] font-bold leading-none">{g.notifyEnable}</span>
+            <IconChevron className="h-4 w-4 shrink-0" />
           </span>
           {body ? (
-            <span className="mt-0.5 line-clamp-2 block text-[0.72rem] font-medium leading-snug text-ink/60">{body}</span>
+            <span className="mt-0.5 line-clamp-2 block text-[0.65rem] font-medium leading-snug text-ink/70">{body}</span>
           ) : null}
         </span>
       </button>

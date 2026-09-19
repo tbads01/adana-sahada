@@ -107,7 +107,7 @@ export function GuideHome() {
       <section className="relative overflow-visible bg-ink px-4 pt-5 pb-6 text-paper">
         <CourtLines className="pointer-events-none absolute -right-8 -top-8 h-56 w-80 text-white/12" />
         <div className="relative z-10">
-        <div className="pr-[6.5rem] pt-1">
+        <div className="pr-[7.75rem] pt-1">
             <div className="flex items-center gap-2">
               <TennisBall className="h-7 w-7 shrink-0" />
               <p className="text-[0.7rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroEyebrow}</p>
@@ -127,16 +127,16 @@ export function GuideHome() {
           ) : (
             <>
               <p className="text-[0.62rem] font-bold tracking-[0.14em] text-yellow uppercase">{g.phaseUpcoming}</p>
-              <div className="mt-3 grid min-w-0 grid-cols-4 gap-1">
+              <div className="mt-3 flex items-end gap-x-3.5">
                 {[
                   [countdown ? pad(countdown.days) : "––", t.countdown.days],
                   [countdown ? pad(countdown.hours) : "––", t.countdown.hours],
                   [countdown ? pad(countdown.minutes) : "––", t.countdown.minutes],
                   [countdown ? pad(countdown.seconds) : "––", t.countdown.seconds],
                 ].map(([value, unit]) => (
-                  <div key={unit} className="min-w-0 overflow-hidden">
-                    <p className="font-display text-[1.55rem] font-extrabold tabular-nums">{value}</p>
-                    <p className="truncate text-[0.52rem] font-bold tracking-normal text-paper/40 uppercase">{unit}</p>
+                  <div key={unit} className="shrink-0">
+                    <p className="font-display text-[1.55rem] leading-none font-extrabold tabular-nums">{value}</p>
+                    <p className="mt-1 text-[0.52rem] font-bold tracking-normal text-paper/40 uppercase">{unit}</p>
                   </div>
                 ))}
               </div>
@@ -151,8 +151,8 @@ export function GuideHome() {
           alt=""
           width={416}
           height={717}
-          className="pointer-events-none absolute -right-4 top-0 z-20 block h-auto w-[6.5rem]"
-          sizes="104px"
+          className="pointer-events-none absolute -right-4 top-0 z-20 block h-auto w-[7.75rem]"
+          sizes="124px"
           priority
         />
         </div>
