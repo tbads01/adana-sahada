@@ -14,6 +14,7 @@ export type Visit = {
   p: string;
   l: "tr" | "en";
   s: string;
+  r?: string;
 };
 
 export type SendLog = {
@@ -30,7 +31,20 @@ export type DayBucket = {
   locales: { tr: number; en: number };
   hours: number[];
   sids: string[];
+  refs: Record<string, number>;
 };
+
+export type LiveSession = {
+  s: string;
+  t: number;
+  p: string;
+  l: "tr" | "en";
+  r: string;
+};
+
+const LIVE_MS = 90_000;
+const liveMap = new Map<string, LiveSession>();
+let livePeak = { iso: "", n: 0 };
 
 export type AnalyticsStore = {
   visits: Visit[];
@@ -99,7 +113,65 @@ function prune(store: AnalyticsStore, now = Date.now()) {
       day.hours = Array.from({ length: 24 }, (_, i) => day.hours?.[i] ?? 0);
     }
     if (iso < today && day.sids?.length) day.sids = [];
+    if (!day.refs) day.refs = {};
   }
+}
+
+export function classifyReferrer(raw: string | undefined, requestHost = "") {
+  const host = requestHost.replace(/:\d+$/, "").replace(/^www\./, "").toLowerCase();
+  const value = (raw || "").trim().slice(0, 300);
+  if (!value) return "direct";
+  if (!/^[a-z0-9.+-]+:\/\//i.test(value) && !value.includes(".")) {
+    const slug = value.toLowerCase().replace(/[^a-z0-9._-]/g, "").slice(0, 40);
+    return slug || "direct";
+  }
+  try {
+    const url = new URL(value);
+    const h = url.hostname.replace(/^www\./, "").toLowerCase();
+    if (!h || h === host || (host && h.endsWith(`.${host}`))) return "direct";
+    if (h.includes("google.") || h === "google.com") return "google";
+    if (h.includes("instagram.") || h === "l.instagram.com") return "instagram";
+    if (h.includes("facebook.") || h === "fb.com" || h === "m.facebook.com") return "facebook";
+    if (h.includes("whatsapp.") || h === "wa.me") return "whatsapp";
+    if (h === "t.co" || h.includes("twitter.") || h === "x.com") return "x";
+    if (h.includes("youtube.") || h === "youtu.be") return "youtube";
+    if (h.includes("bing.")) return "bing";
+    if (h.includes("tiktok.")) return "tiktok";
+    if (h === "adanaopen.com" || h.endsWith(".adanaopen.com")) return "adanaopen.com";
+    return h.slice(0, 48);
+  } catch {
+    return "other";
+  }
+}
+
+function pruneLive(now = Date.now()) {
+  for (const [id, row] of liveMap) {
+    if (now - row.t > LIVE_MS) liveMap.delete(id);
+  }
+}
+
+function bumpPeak(now = Date.now()) {
+  const iso = istanbulIsoDate(now);
+  if (livePeak.iso !== iso) livePeak = { iso, n: 0 };
+  livePeak.n = Math.max(livePeak.n, liveMap.size);
+}
+
+export function touchLive(session: LiveSession) {
+  liveMap.set(session.s, session);
+  pruneLive(session.t);
+  bumpPeak(session.t);
+}
+
+export function listLive(now = Date.now()) {
+  pruneLive(now);
+  bumpPeak(now);
+  return [...liveMap.values()].sort((a, b) => b.t - a.t);
+}
+
+export function livePeakToday(now = Date.now()) {
+  pruneLive(now);
+  bumpPeak(now);
+  return livePeak.iso === istanbulIsoDate(now) ? livePeak.n : 0;
 }
 
 function istanbulHour(now: number) {
@@ -130,11 +202,15 @@ export async function recordVisit(visit: Visit) {
       locales: { tr: 0, en: 0 },
       hours: Array.from({ length: 24 }, () => 0),
       sids: [],
+      refs: {},
     };
+    if (!day.refs) day.refs = {};
     day.views += 1;
     day.pages[visit.p] = (day.pages[visit.p] ?? 0) + 1;
     day.locales[visit.l] += 1;
     day.hours[istanbulHour(visit.t)] += 1;
+    const ref = visit.r || "direct";
+    day.refs[ref] = (day.refs[ref] ?? 0) + 1;
     if (!day.sids.includes(visit.s)) {
       day.sids.push(visit.s);
       day.unique += 1;
@@ -143,6 +219,13 @@ export async function recordVisit(visit: Visit) {
     store.days[iso] = day;
     prune(store, visit.t);
     await writeStore(store);
+    touchLive({
+      s: visit.s,
+      t: visit.t,
+      p: visit.p,
+      l: visit.l,
+      r: visit.r || "direct",
+    });
     return store;
   });
 }

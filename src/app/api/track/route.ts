@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
-import { recordVisit, sessionCookieOptions, sessionFromRequest } from "@/lib/analytics-store";
+import {
+  classifyReferrer,
+  recordVisit,
+  sessionCookieOptions,
+  sessionFromRequest,
+  touchLive,
+} from "@/lib/analytics-store";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +30,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, skipped: "bot" });
   }
 
-  const body = (await request.json().catch(() => ({}))) as { path?: string; locale?: string };
+  const body = (await request.json().catch(() => ({}))) as {
+    path?: string;
+    locale?: string;
+    referrer?: string;
+    ping?: boolean;
+  };
   const path = typeof body.path === "string" ? body.path.split("?")[0].replace(/\/+$/, "") || "/" : "";
   if (!ALLOWED.has(path)) {
     return NextResponse.json({ ok: true, skipped: "path" });
@@ -33,8 +44,15 @@ export async function POST(request: Request) {
   const locale = body.locale === "en" ? "en" : "tr";
   const hadSession = /(?:^|;\s*)ao_sid=/.test(request.headers.get("cookie") || "");
   const session = sessionFromRequest(request);
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host") || "";
+  const referrer = classifyReferrer(typeof body.referrer === "string" ? body.referrer : "", host);
+  const now = Date.now();
 
-  await recordVisit({ t: Date.now(), p: path, l: locale, s: session });
+  if (body.ping) {
+    touchLive({ s: session, t: now, p: path, l: locale, r: referrer });
+  } else {
+    await recordVisit({ t: now, p: path, l: locale, s: session, r: referrer });
+  }
 
   const res = NextResponse.json({ ok: true });
   if (!hadSession) {

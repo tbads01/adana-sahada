@@ -17,7 +17,7 @@ import { MATCH_PLAN, roundKind, type MatchRound } from "./match-plan";
 import playersData from "./players.json";
 import { loadSubscriptions } from "./push-store";
 import { TOURNAMENT_END, TOURNAMENT_START } from "./site";
-import { loadAnalytics, type DayBucket } from "./analytics-store";
+import { loadAnalytics, listLive, livePeakToday, type DayBucket } from "./analytics-store";
 
 export type AdminDashboard = Awaited<ReturnType<typeof buildAdminDashboard>>;
 
@@ -56,6 +56,20 @@ function addDays(iso: string, days: number) {
   return istanbulIsoDate(date.getTime());
 }
 
+const REF_LABELS: Record<string, string> = {
+  direct: "Doğrudan",
+  google: "Google",
+  instagram: "Instagram",
+  facebook: "Facebook",
+  whatsapp: "WhatsApp",
+  x: "X",
+  youtube: "YouTube",
+  bing: "Bing",
+  tiktok: "TikTok",
+  "adanaopen.com": "adanaopen.com",
+  other: "Diğer",
+};
+
 function emptyDay(): DayBucket {
   return {
     views: 0,
@@ -64,6 +78,7 @@ function emptyDay(): DayBucket {
     locales: { tr: 0, en: 0 },
     hours: Array.from({ length: 24 }, () => 0),
     sids: [],
+    refs: {},
   };
 }
 
@@ -131,7 +146,52 @@ export async function buildAdminDashboard() {
       path: visit.p,
       label: PAGE_LABELS[visit.p] ?? visit.p,
       locale: visit.l,
+      ref: REF_LABELS[visit.r || "direct"] ?? visit.r ?? "Doğrudan",
     }));
+
+  const refTotals: Record<string, number> = {};
+  for (const day of Object.values(analytics.days)) {
+    for (const [id, count] of Object.entries(day.refs ?? {})) {
+      refTotals[id] = (refTotals[id] ?? 0) + count;
+    }
+  }
+  const referrers = Object.entries(refTotals)
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, views]) => ({
+      id,
+      label: REF_LABELS[id] ?? id,
+      views,
+    }));
+  const todayRefs = Object.entries(todayBucket.refs ?? {})
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, views]) => ({
+      id,
+      label: REF_LABELS[id] ?? id,
+      views,
+    }));
+
+  const liveNow = listLive(now);
+  const livePagesMap: Record<string, number> = {};
+  const liveLocales = { tr: 0, en: 0 };
+  for (const row of liveNow) {
+    livePagesMap[row.p] = (livePagesMap[row.p] ?? 0) + 1;
+    liveLocales[row.l] += 1;
+  }
+  const online = {
+    now: liveNow.length,
+    peak: livePeakToday(now),
+    locales: liveLocales,
+    pages: Object.entries(livePagesMap)
+      .sort((a, b) => b[1] - a[1])
+      .map(([path, count]) => ({ path, label: PAGE_LABELS[path] ?? path, count })),
+    visitors: liveNow.slice(0, 24).map((row) => ({
+      t: row.t,
+      path: row.p,
+      label: PAGE_LABELS[row.p] ?? row.p,
+      locale: row.l,
+      ref: REF_LABELS[row.r] ?? row.r,
+    })),
+  };
 
   const matchTotal = MATCH_PLAN.reduce((sum, day) => sum + day.total, 0);
   const matchPlayed = MATCH_DAYS.filter((day) => day.iso < today).reduce((sum, day) => sum + day.total, 0);
@@ -241,7 +301,10 @@ export async function buildAdminDashboard() {
       last14,
       pages,
       locales: localeTotals,
+      referrers,
+      todayRefs,
       recent,
+      live: online,
     },
     notify: {
       devices: subs.length,

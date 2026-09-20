@@ -19,7 +19,16 @@ type AdminDashboard = {
     last14: { iso: string; views: number; unique: number }[];
     pages: { path: string; label: string; views: number }[];
     locales: { tr: number; en: number };
-    recent: { t: number; path: string; label: string; locale: string }[];
+    referrers: { id: string; label: string; views: number }[];
+    todayRefs: { id: string; label: string; views: number }[];
+    recent: { t: number; path: string; label: string; locale: string; ref: string }[];
+    live: {
+      now: number;
+      peak: number;
+      locales: { tr: number; en: number };
+      pages: { path: string; label: string; count: number }[];
+      visitors: { t: number; path: string; label: string; locale: string; ref: string }[];
+    };
   };
   notify: {
     devices: number;
@@ -85,6 +94,7 @@ type AdminDashboard = {
 };
 
 const NAV = [
+  { id: "anlik", label: "Anlık" },
   { id: "ozet", label: "Özet" },
   { id: "trafik", label: "Trafik" },
   { id: "bildirim", label: "Bildirim" },
@@ -117,6 +127,20 @@ function when(ts: number | null) {
 function pct(part: number, total: number) {
   if (!total) return 0;
   return Math.round((part / total) * 100);
+}
+
+function ago(ts: number, now: number) {
+  const sec = Math.max(0, Math.round((now - ts) / 1000));
+  if (sec < 10) return "şimdi";
+  if (sec < 60) return `${sec} sn`;
+  return `${Math.floor(sec / 60)} dk`;
+}
+
+function delta(today: number, yesterday: number) {
+  if (!yesterday) return today ? "Düne göre yeni" : "Dünle aynı";
+  const n = Math.round(((today - yesterday) / yesterday) * 100);
+  if (n === 0) return "Dünle aynı";
+  return n > 0 ? `Düne göre +${n}%` : `Düne göre ${n}%`;
 }
 
 function phaseLabel(phase: AdminDashboard["phase"]) {
@@ -219,7 +243,7 @@ export function AdminPanel({ data: initial }: Props) {
   }, [initial]);
 
   useEffect(() => {
-    const id = window.setInterval(() => void load(), 30_000);
+    const id = window.setInterval(() => void load(), 8_000);
     return () => window.clearInterval(id);
   }, [load]);
 
@@ -244,6 +268,8 @@ export function AdminPanel({ data: initial }: Props) {
   }
 
   const maxPage = data.traffic.pages[0]?.views ?? 0;
+  const maxRef = data.traffic.referrers[0]?.views ?? 0;
+  const maxLivePage = data.traffic.live.pages[0]?.count ?? 0;
   const maxCountry = data.players.countries[0]?.count ?? 0;
   const maxDay = useMemo(() => Math.max(1, ...data.traffic.last14.map((d) => d.views)), [data]);
   const maxHour = useMemo(() => Math.max(1, ...data.traffic.today.hours), [data]);
@@ -286,10 +312,61 @@ export function AdminPanel({ data: initial }: Props) {
       </header>
 
       <div className="mx-auto max-w-6xl space-y-4 px-4 py-5">
+        <Card id="anlik">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="flex items-center gap-2 text-[0.68rem] font-bold tracking-[0.12em] text-green uppercase">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green opacity-60" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green" />
+                </span>
+                Canlı ziyaretçi
+              </p>
+              <h2 className="mt-1 font-display text-xl font-extrabold">Şu an sahada</h2>
+            </div>
+            <p className="text-[0.72rem] text-paper/45">8 sn’de bir yenilenir</p>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+            <Kpi label="Anlık kişi" value={fmt(data.traffic.live.now)} hint={data.traffic.live.peak ? `Bugünkü tepe ${fmt(data.traffic.live.peak)}` : "Henüz tepe yok"} />
+            <Kpi label="Türkçe" value={fmt(data.traffic.live.locales.tr)} hint="Açık oturum" />
+            <Kpi label="English" value={fmt(data.traffic.live.locales.en)} hint="Open session" />
+            <Kpi label="Bugün tekil" value={fmt(data.traffic.today.unique)} hint={`${fmt(data.traffic.today.views)} görüntüleme`} />
+          </div>
+          <div className="mt-5 grid gap-6 md:grid-cols-2">
+            <div className="space-y-2">
+              <p className="text-[0.68rem] font-bold tracking-[0.12em] text-paper/40 uppercase">Şu an hangi sayfa</p>
+              {data.traffic.live.pages.length ? (
+                data.traffic.live.pages.map((page) => (
+                  <Bar key={page.path} value={page.count} max={maxLivePage} label={page.label} />
+                ))
+              ) : (
+                <p className="text-sm text-paper/45">Şu an açık oturum yok. Saha uygulamasını açınca burada görünür.</p>
+              )}
+            </div>
+            <div>
+              <p className="text-[0.68rem] font-bold tracking-[0.12em] text-paper/40 uppercase">Açık oturumlar</p>
+              <ul className="mt-2 space-y-1.5">
+                {data.traffic.live.visitors.length ? (
+                  data.traffic.live.visitors.map((row, i) => (
+                    <li key={`${row.t}-${row.path}-${i}`} className="flex items-center justify-between gap-3 text-[0.78rem]">
+                      <span className="min-w-0 truncate font-bold">{row.label}</span>
+                      <span className="shrink-0 text-paper/45">
+                        {row.ref} · {row.locale.toUpperCase()} · {ago(row.t, data.generatedAt)}
+                      </span>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-sm text-paper/45">Kimse bağlı değil.</li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </Card>
+
         <Card id="ozet">
           <h2 className="font-display text-xl font-extrabold">Bugün sahada</h2>
           <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
-            <Kpi label="Bugün ziyaret" value={fmt(data.traffic.today.views)} hint={`${fmt(data.traffic.today.unique)} tekil cihaz`} />
+            <Kpi label="Bugün ziyaret" value={fmt(data.traffic.today.views)} hint={`${fmt(data.traffic.today.unique)} tekil · ${delta(data.traffic.today.views, data.traffic.yesterday.views)}`} />
             <Kpi label="7 gün" value={fmt(data.traffic.d7.views)} hint={`${fmt(data.traffic.d7.unique)} tekil`} />
             <Kpi label="Bildirim cihazı" value={fmt(data.notify.devices)} hint={data.notify.new24h ? `+${data.notify.new24h} son 24 saat` : "Yeni kayıt yok"} />
             <Kpi
@@ -349,20 +426,37 @@ export function AdminPanel({ data: initial }: Props) {
                 <p className="text-sm text-paper/45">Henüz sayfa ziyareti yok. Panel yayına girdikten sonra dolacak.</p>
               )}
             </div>
+            <div className="space-y-2">
+              <p className="text-[0.68rem] font-bold tracking-[0.12em] text-paper/40 uppercase">Nereden geldi</p>
+              {data.traffic.referrers.length ? (
+                data.traffic.referrers.map((row) => <Bar key={row.id} value={row.views} max={maxRef} label={row.label} />)
+              ) : (
+                <p className="text-sm text-paper/45">Referrer kaydı yok. İlk ziyaretlerden sonra Google, Instagram, doğrudan giriş burada toplanır.</p>
+              )}
+              {data.traffic.todayRefs.length ? (
+                <p className="pt-2 text-[0.72rem] text-paper/45">
+                  Bugün: {data.traffic.todayRefs.map((row) => `${row.label} ${fmt(row.views)}`).join(" · ")}
+                </p>
+              ) : null}
+            </div>
+          </div>
+          <div className="mt-5 grid gap-6 md:grid-cols-2">
             <div>
               <p className="text-[0.68rem] font-bold tracking-[0.12em] text-paper/40 uppercase">Dil</p>
               <div className="mt-3 space-y-2">
                 <Bar value={data.traffic.locales.tr} max={data.traffic.locales.tr + data.traffic.locales.en} label={`Türkçe ${pct(data.traffic.locales.tr, data.traffic.locales.tr + data.traffic.locales.en)}%`} />
                 <Bar value={data.traffic.locales.en} max={data.traffic.locales.tr + data.traffic.locales.en} label={`English ${pct(data.traffic.locales.en, data.traffic.locales.tr + data.traffic.locales.en)}%`} />
               </div>
-              <p className="mt-5 text-[0.68rem] font-bold tracking-[0.12em] text-paper/40 uppercase">Son ziyaretler</p>
+            </div>
+            <div>
+              <p className="text-[0.68rem] font-bold tracking-[0.12em] text-paper/40 uppercase">Son ziyaretler</p>
               <ul className="mt-2 space-y-1.5">
                 {data.traffic.recent.length ? (
                   data.traffic.recent.slice(0, 12).map((row, i) => (
-                    <li key={`${row.t}-${i}`} className="flex items-center justify-between text-[0.78rem]">
-                      <span className="font-bold">{row.label}</span>
-                      <span className="text-paper/45">
-                        {row.locale.toUpperCase()} · {when(row.t)}
+                    <li key={`${row.t}-${i}`} className="flex items-center justify-between gap-3 text-[0.78rem]">
+                      <span className="min-w-0 truncate font-bold">{row.label}</span>
+                      <span className="shrink-0 text-paper/45">
+                        {row.ref} · {row.locale.toUpperCase()} · {when(row.t)}
                       </span>
                     </li>
                   ))
