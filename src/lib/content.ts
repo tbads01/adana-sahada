@@ -320,7 +320,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Mekan",
       title: "Seyhan kenarında",
       titleAccent: "dünya sahnesi.",
-      body: "Turnuva ATDSK’de, Seyhan Baraj Gölü kıyısında. 16 kort.",
+      body: "Turnuva, Seyhan Baraj Gölü kıyısındaki Adana Tenis, Dağ ve Su Sporları Kulübü’nde (ATDSK) oynanır. Tesiste 16 kort bulunur.",
       host: "Adana Tenis, Dağ ve Su Sporları Kulübü (ATDSK)",
       addressLabel: "Adres",
       address:
@@ -342,12 +342,12 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Program",
       title: "Dokuz gün,",
       titleAccent: "bir şampiyon.",
-      note: "Yan etkinlikler duyurulmuştur. Maç saatleri aşağıdaki WTA taslak planına göredir.",
+      note: "Yan etkinlik programı açıklanmıştır. Maç saatleri güncellenebilir; güncel program bu sayfada yer alır.",
       matchEyebrow: "Maç takvimi",
       matchTitle: "Saatler ve",
       matchAccent: "turlar.",
       matchNote:
-        "Saatler değişebilir. Eleme ilk top 10:30. Pazartesi’den ana tablo yakında.",
+        "Eleme maçları saat 10:30’da başlar. Ana tablo saatleri 28 Eylül’den itibaren duyurulacaktır. Program değişikliklerinde bu sayfa güncellenir.",
       startsLabel: "İlk maç",
       followedBy: "Ardından",
       matchCount: "maç",
@@ -408,7 +408,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "12:00", title: "Gösteri maçı · Fan Zone", tag: "match" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Yakında", title: "Tekler ve çiftler 1. tur", tag: "match" },
+            { time: "Duyurulacak", title: "Tekler ve çiftler 1. tur", tag: "match" },
           ],
         },
         {
@@ -417,7 +417,7 @@ export const content: Record<Locale, Messages> = {
           stage: "2. gün",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Yakında", title: "Tekler 1. tur", tag: "match" },
+            { time: "Duyurulacak", title: "Tekler 1. tur", tag: "match" },
           ],
         },
         {
@@ -426,7 +426,7 @@ export const content: Record<Locale, Messages> = {
           stage: "3. gün",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Yakında", title: "Tekler 2. tur · Çiftler 1. tur", tag: "match" },
+            { time: "Duyurulacak", title: "Tekler 2. tur · Çiftler 1. tur", tag: "match" },
           ],
         },
         {
@@ -435,7 +435,7 @@ export const content: Record<Locale, Messages> = {
           stage: "4. gün",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Yakında", title: "Tekler 2. tur · Çiftler çeyrek final", tag: "match" },
+            { time: "Duyurulacak", title: "Tekler 2. tur · Çiftler çeyrek final", tag: "match" },
           ],
         },
         {
@@ -444,7 +444,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Çeyrek final",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Yakında", title: "Tekler çeyrek final · Çiftler yarı final", tag: "match" },
+            { time: "Duyurulacak", title: "Tekler çeyrek final · Çiftler yarı final", tag: "match" },
           ],
         },
         {
@@ -455,7 +455,7 @@ export const content: Record<Locale, Messages> = {
             { time: "08:00–10:00", title: "Zumba · Cardio Fitness · Coffee Disco", tag: "event" },
             { time: "11:00–13:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Yakında", title: "Tekler yarı final · Çiftler final", tag: "match" },
+            { time: "Duyurulacak", title: "Tekler yarı final · Çiftler final", tag: "match" },
           ],
         },
         {
@@ -466,7 +466,7 @@ export const content: Record<Locale, Messages> = {
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
             { time: "12:00–14:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Yakında", title: "Tekler final · Merkez Kort", tag: "match" },
+            { time: "Duyurulacak", title: "Tekler final · Merkez Kort", tag: "match" },
           ],
         },
       ],
@@ -475,7 +475,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Deneyim",
       title: "Kortun",
       titleAccent: "ötesi.",
-      body: "Fan Zone, food court, DJ, yoga, gösteri maçları, havuz kenarı.",
+      body: "Tesiste Fan Zone, food court, DJ performansları, yoga seansları, gösteri maçları ve havuz kenarı alanları bulunur.",
       disclaimer:
         "Bazı görseller konsept çalışmasıdır. Kulüp fotoğrafları ATDSK tesislerinden alınmıştır.",
       areas: [
@@ -486,17 +486,17 @@ export const content: Record<Locale, Messages> = {
         },
         {
           title: "Merkez Kort",
-          desc: "Ana kort ve protokol tribünü.",
+          desc: "Ana kort ve protokol tribünü burada yer alır.",
           image: "/media/hero/venue-overview.jpg",
         },
         {
           title: "Kulüp Kortları",
-          desc: "ATDSK’nin 16 kortluk altyapısı.",
+          desc: "ATDSK’nin 16 kortluk altyapısı turnuva boyunca kullanılır.",
           image: "/media/drone/drone-02.jpg",
         },
         {
           title: "Teras & Ağırlama",
-          desc: "Kulüp terası ve misafir ağırlama.",
+          desc: "Kulüp terası ve misafir ağırlama alanları.",
           image: "/media/drone/drone-11.jpg",
         },
         {
@@ -506,7 +506,7 @@ export const content: Record<Locale, Messages> = {
         },
         {
           title: "Havuz Kenarı",
-          desc: "Havuz kenarı oturum alanı.",
+          desc: "Havuz kenarında oturum alanı bulunur.",
           image: "/media/drone/drone-07.jpg",
         },
       ],
@@ -515,7 +515,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Oyuncu listesi",
       title: "Ana tablo",
       titleAccent: "açıklandı.",
-      lead: "Ana tabloya doğrudan kabul edilen 23 oyuncu belli. Dört wildcard, bir special exempt ve dört eleme kazananı henüz açıklanmadı.",
+      lead: "Ana tabloya doğrudan kabul edilen 23 oyuncu açıklandı. Dört wildcard, bir special exempt ve dört eleme kazananı daha sonra duyurulacaktır.",
       note: "Sıralamalar 17 Eylül 2026 tarihli WTA oyuncu profillerine göredir; kura yayınlanana kadar değişebilir.",
       mainLabel: "Ana tablo · doğrudan kabul",
       turkeyLabel: "Türkiye’den",
@@ -542,7 +542,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "İletişim",
       title: "Bize",
       titleAccent: "yazın.",
-      body: "Bilet, basın ve sponsorluk sorularınız için yazın. Duyurular için Instagram hesabını takip edin.",
+      body: "Bilet, basın ve sponsorluk sorularınız için yazabilirsiniz. Duyurular Instagram hesabında paylaşılır.",
       notify: "Haberdar olun",
       emailPlaceholder: "E-posta adresiniz",
       submit: "Kaydet",
@@ -555,7 +555,7 @@ export const content: Record<Locale, Messages> = {
     tickets: {
       title: "Biletler",
       titleAccent: "",
-      body: "Biletler Biletix’te satışta.",
+      body: "Günlük maç biletleri Biletix üzerinden satıştadır.",
     },
     club: {
       metaTitle: "ATDSK | Adana Open",
@@ -765,7 +765,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Venue",
       title: "Lakeside.",
       titleAccent: "World stage.",
-      body: "The tournament is at ATDSK, beside Seyhan Dam Lake. 16 courts.",
+      body: "The tournament is played at ATDSK, beside Seyhan Dam Lake. The club has 16 courts.",
       host: "Adana Tennis, Mountain and Water Sports Club (ATDSK)",
       addressLabel: "Address",
       address:
@@ -787,12 +787,12 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Schedule",
       title: "Nine days.",
       titleAccent: "One champion.",
-      note: "Side events are announced. Match times follow the draft WTA plan below.",
+      note: "The side-event programme has been announced. Match times may be updated; the latest schedule is on this page.",
       matchEyebrow: "Match schedule",
       matchTitle: "Times and",
       matchAccent: "rounds.",
       matchNote:
-        "Times can shift. Qualifying first ball 10:30. Main-draw times from Monday soon.",
+        "Qualifying begins at 10:30. Main-draw start times will be announced from 28 September. This page is updated if the schedule changes.",
       startsLabel: "First match",
       followedBy: "Then",
       matchCount: "matches",
@@ -853,7 +853,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "12:00", title: "Exhibition match · Fan Zone", tag: "match" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Soon", title: "Singles and doubles R1", tag: "match" },
+            { time: "TBA", title: "Singles and doubles R1", tag: "match" },
           ],
         },
         {
@@ -862,7 +862,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Day 2",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Soon", title: "Singles R1", tag: "match" },
+            { time: "TBA", title: "Singles R1", tag: "match" },
           ],
         },
         {
@@ -871,7 +871,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Day 3",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Soon", title: "Singles R2 · Doubles R1", tag: "match" },
+            { time: "TBA", title: "Singles R2 · Doubles R1", tag: "match" },
           ],
         },
         {
@@ -880,7 +880,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Day 4",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Soon", title: "Singles R2 · Doubles quarterfinals", tag: "match" },
+            { time: "TBA", title: "Singles R2 · Doubles quarterfinals", tag: "match" },
           ],
         },
         {
@@ -889,7 +889,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Quarterfinals",
           events: [
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Soon", title: "Singles quarterfinals · Doubles semifinals", tag: "match" },
+            { time: "TBA", title: "Singles quarterfinals · Doubles semifinals", tag: "match" },
           ],
         },
         {
@@ -900,7 +900,7 @@ export const content: Record<Locale, Messages> = {
             { time: "08:00–10:00", title: "Zumba · Cardio Fitness · Coffee Disco", tag: "event" },
             { time: "11:00–13:00", title: "Surprise contests · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Soon", title: "Singles semifinals · Doubles final", tag: "match" },
+            { time: "TBA", title: "Singles semifinals · Doubles final", tag: "match" },
           ],
         },
         {
@@ -911,7 +911,7 @@ export const content: Record<Locale, Messages> = {
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
             { time: "12:00–14:00", title: "Surprise contests · Fan Zone", tag: "event" },
             { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Soon", title: "Singles final · Centre Court", tag: "match" },
+            { time: "TBA", title: "Singles final · Centre Court", tag: "match" },
           ],
         },
       ],
@@ -920,7 +920,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Experience",
       title: "Beyond",
       titleAccent: "the court.",
-      body: "Fan Zone, food court, DJ, yoga, exhibition matches, poolside.",
+      body: "The grounds include a Fan Zone, food court, DJ sets, yoga sessions, exhibition matches and a poolside area.",
       disclaimer:
         "Some visuals are concept studies. Club photos are from ATDSK facilities.",
       areas: [
@@ -931,17 +931,17 @@ export const content: Record<Locale, Messages> = {
         },
         {
           title: "Center Court",
-          desc: "Main court and protocol stand.",
+          desc: "Main court and the protocol stand.",
           image: "/media/hero/venue-overview.jpg",
         },
         {
           title: "Club Courts",
-          desc: "ATDSK’s 16-court infrastructure.",
+          desc: "ATDSK’s 16-court campus is used throughout the tournament.",
           image: "/media/drone/drone-02.jpg",
         },
         {
           title: "Terrace & Hospitality",
-          desc: "Club terrace and guest hospitality.",
+          desc: "Club terrace and guest hospitality areas.",
           image: "/media/drone/drone-11.jpg",
         },
         {
@@ -951,7 +951,7 @@ export const content: Record<Locale, Messages> = {
         },
         {
           title: "Poolside",
-          desc: "Poolside seating area.",
+          desc: "Seating beside the swimming pool.",
           image: "/media/drone/drone-07.jpg",
         },
       ],
@@ -960,7 +960,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Player list",
       title: "The main draw",
       titleAccent: "is set.",
-      lead: "Twenty-three direct acceptances into the main draw are confirmed. Four wildcards, one special exempt and four qualifiers are still to be named.",
+      lead: "Twenty-three direct acceptances into the main draw have been announced. Four wildcards, one special exempt and four qualifying winners will be named later.",
       note: "Rankings as of 17 September 2026 from WTA player profiles. Subject to change until the draw is published.",
       mainLabel: "Main draw · direct acceptances",
       turkeyLabel: "From Türkiye",
@@ -987,7 +987,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Contact",
       title: "Talk",
       titleAccent: "to us.",
-      body: "Write to us for tickets, media and sponsorship. Follow Instagram for announcements.",
+      body: "Write to us for tickets, media and sponsorship. Announcements are posted on Instagram.",
       notify: "Get notified",
       emailPlaceholder: "Your email address",
       submit: "Submit",
@@ -1000,7 +1000,7 @@ export const content: Record<Locale, Messages> = {
     tickets: {
       title: "Tickets",
       titleAccent: "",
-      body: "Tickets are on sale at Biletix.",
+      body: "Daily match tickets are on sale at Biletix.",
     },
     club: {
       metaTitle: "ATDSK | Adana Open",

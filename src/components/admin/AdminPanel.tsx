@@ -90,7 +90,7 @@ const NAV = [
 
 function phaseLabel(phase: AdminDashboard["phase"]) {
   if (phase === "live") return "Turnuva devam ediyor";
-  if (phase === "ended") return "Turnuva bitti";
+  if (phase === "ended") return "Turnuva sona erdi";
   return "Turnuva henüz başlamadı";
 }
 

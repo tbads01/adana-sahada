@@ -77,7 +77,7 @@ export function GuideHome() {
 
   const quick = [
     { href: ROUTES.tickets, label: g.tickets, icon: IconTicket },
-    { href: "#sss", label: g.faq, icon: IconInfo },
+    { href: "#sss", label: g.sss, icon: IconInfo },
     { href: ROUTES.news, label: g.news, icon: IconMegaphone },
     { href: ROUTES.players, label: g.players, icon: IconPlayers },
   ];

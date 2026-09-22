@@ -19,7 +19,7 @@ const body = Manrope({
 });
 
 const title = "Adana Open Sahada";
-const description = "Adana Open: maçlar, bilet, saha bilgisi.";
+const description = "Adana Open WTA 125: maç programı, bilet satışı ve saha bilgileri.";
 
 export const revalidate = 60;
 
