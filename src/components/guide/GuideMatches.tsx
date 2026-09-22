@@ -26,7 +26,7 @@ function scoreLine(match: ScoreboardMatch) {
 }
 
 export function GuideMatches() {
-  const { g, t, locale } = useGuide();
+  const { g, t } = useGuide();
   const playable = useMemo(() => MATCH_DAYS.filter((d) => d.courts.length), []);
   const initial = activeOrNextMatchDay().iso;
   const [selected, setSelected] = useState(initial);
@@ -72,12 +72,10 @@ export function GuideMatches() {
             ))}
           </div>
         </div>
-      ) : (
-        <p className="mt-4 text-sm text-ink/50">{g.scoreboardEmpty}</p>
-      )}
+      ) : null}
 
       <div className="mt-6">
-        <SectionHead title={`${t.schedule.matchTitle} ${t.schedule.matchAccent}`} />
+        <SectionHead title={t.schedule.matchEyebrow} />
         <div className="space-y-3">
           {day.courts.map((court) => (
             <GuideCard key={court.id}>
@@ -117,10 +115,6 @@ export function GuideMatches() {
       >
         {g.officialScores} ↗
       </a>
-      <p className="mt-3 text-center text-[0.7rem] text-ink/40">
-        {g.updated}
-        {locale === "tr" ? " · taslak plan" : " · draft plan"}
-      </p>
     </div>
   );
 }

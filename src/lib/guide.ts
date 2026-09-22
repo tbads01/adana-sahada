@@ -138,7 +138,7 @@ export const ANNOUNCEMENTS: Announcement[] = [
     tag: { tr: "Oyuncular", en: "Players" },
     title: {
       tr: "Ana tablo doğrudan kabul listesi açıklandı",
-      en: "Direct-acceptance main draw is out",
+      en: "Main-draw direct acceptances are out",
     },
     body: {
       tr: "23 oyuncu ana tabloya doğrudan kabul edildi. Dört wildcard, bir special exempt ve dört eleme kazananı henüz açıklanmadı.",
@@ -149,15 +149,14 @@ export const ANNOUNCEMENTS: Announcement[] = [
   {
     id: "side-events",
     date: "2026-09-10",
-    pin: true,
     tag: { tr: "Etkinlik", en: "Events" },
     title: {
-      tr: "Yan etkinlikler duyuruldu",
-      en: "Side events are announced",
+      tr: "Yoga, DJ ve Cardio Fitness programda",
+      en: "Yoga, DJ and Cardio Fitness are on the programme",
     },
     body: {
-      tr: "Yoga, DJ Yusuf Erdem ve 3 Ekim Cardio Fitness · Coffee Disco programı yayında. Maç saatleri WTA taslak planına göredir.",
-      en: "Yoga, DJ Yusuf Erdem and the 3 October Cardio Fitness · Coffee Disco programme are live. Match times follow the WTA draft plan.",
+      tr: "Yogakioo Yoga, DJ Yusuf Erdem ve 3 Ekim Cardio Fitness · Coffee Disco Etkinlikler sayfasında.",
+      en: "Yogakioo Yoga, DJ Yusuf Erdem and 3 October Cardio Fitness · Coffee Disco are on Events.",
     },
     href: "/etkinlikler",
   },
@@ -185,8 +184,8 @@ export const ANNOUNCEMENTS: Announcement[] = [
       en: "Tickets are on sale",
     },
     body: {
-      tr: "Adana Open WTA 125 biletleri Biletix’te. Eleme ve ana tablo maçları için hemen alın.",
-      en: "Adana Open WTA 125 tickets are live on Biletix. Get qualifying and main-draw sessions now.",
+      tr: "Biletler Biletix’te ve kulüpte. Günlük satılır.",
+      en: "Tickets at Biletix and at the club. Sold day by day.",
     },
     href: TICKETS_URL,
   },
@@ -206,8 +205,8 @@ export const INFO_ITEMS: InfoItem[] = [
     icon: "ticket",
     title: { tr: "Bilet al", en: "Buy tickets" },
     body: {
-      tr: "Biletler Biletix’te ve kulüp içi satış noktalarında. Günlük satılır; aldığınız bilet o günün maçlarına girer. Etkinlik alanları ücretsizdir, maç izlemek için bilet gerekir. Tribünde koltuk garantisi yoktur — erken gelin.",
-      en: "Tickets are at Biletix and at desks on site. Sold day by day; your ticket is for that day’s matches. Event areas are free; watching play needs a ticket. A ticket does not guarantee a seat — come early.",
+      tr: "Biletix ve kulüp içi satış noktaları. Günlük bilet.",
+      en: "Biletix and ticket desks at the club. Sold by the day.",
     },
     href: TICKETS_URL,
     hrefLabel: { tr: "Biletix’te al", en: "Buy on Biletix" },
@@ -237,8 +236,8 @@ export const INFO_ITEMS: InfoItem[] = [
     icon: "food",
     title: { tr: "Yeme-içme", en: "Food & drink" },
     body: {
-      tr: "Food court gün boyu açıktır; dokuz stand. Kulüp terası ayrı bir oturum alanıdır. Havuz kenarı turnuva boyunca durur. Stand listesi kartın altındadır.",
-      en: "The food court is open all day with nine stands. The club terrace is a separate seating area. Poolside stays open through the week. Stands are listed below.",
+      tr: "Food court gün boyu açık, dokuz stand. Kulüp terası ve havuz kenarı ayrı.",
+      en: "Food court all day, nine stands. Club terrace and poolside too.",
     },
     href: "/etkinlikler",
     hrefLabel: { tr: "Günün programı", en: "Today’s programme" },
@@ -270,8 +269,8 @@ export const INFO_ITEMS: InfoItem[] = [
     icon: "sun",
     title: { tr: "İklim ve saatler", en: "Heat & session times" },
     body: {
-      tr: "Eylül sonu Adana sıcak olur. Sahaya 10:30’dan itibaren giriş vardır. Elemede ilk top 10:30; ana tablo saatleri değişebilir, bu sitedeki planı takip edin. Şapka, su, güneş kremi.",
-      en: "Late September in Adana is hot. Gates open from 10:30. Qualifying first ball is 10:30; main-draw times can shift — follow the plan on this site. Hat, water, sunscreen.",
+      tr: "Adana sıcak. Kapı 10:30. Şapka, su, güneş kremi.",
+      en: "Adana is hot. Gates 10:30. Hat, water, sunscreen.",
     },
   },
   {
@@ -313,99 +312,99 @@ export const FAQS: Faq[] = [
   {
     q: { tr: "Giriş ücretsiz mi?", en: "Is entry free?" },
     a: {
-      tr: "Etkinlik alanlarına giriş ücretsizdir. Fan Zone, food court ve yan etkinlikleri bilet olmadan dolaşabilirsiniz. Kort kenarında maç izlemek için o günün biletini almanız gerekir. Bilet, tribünde koltuk garantisi vermez: koltuk sayısı sınırlıdır. Erken gelip yer tutmanızı öneririz.",
-      en: "Entry to the event areas is free. You can walk Fan Zone, the food court and side events without a ticket. Watching matches needs that day’s ticket. A ticket does not guarantee a seat in the stands: seating is limited. Come early and save a place.",
+      tr: "Etkinlik alanlarına giriş ücretsiz. Fan Zone, food court ve yan etkinlikler biletsiz. Maç izlemek için o günün bileti gerekir. Bilet tribünde koltuk garantilemez; yerler sınırlı, erken gelin.",
+      en: "Event areas are free — Fan Zone, food court, side events. Watching matches needs that day’s ticket. A ticket does not guarantee a seat; come early.",
     },
   },
   {
     q: { tr: "Bilet nereden alınır?", en: "Where do I buy tickets?" },
     a: {
-      tr: "Biletler Biletix’te satıştadır. Ana sayfadaki Bilet al butonu sizi doğrudan Adana Open WTA 125 etkinlik grubuna götürür. Turnuva süresince kulüp içinde de bilet satış noktaları vardır; sahada aynı günün biletini alabilirsiniz.",
-      en: "Tickets are on sale at Biletix. Buy tickets on the home screen opens the Adana Open WTA 125 event group. There are also ticket desks at the club during the tournament, so you can buy that day’s ticket on site.",
+      tr: "Biletix’te ve kulüp içi satış noktalarında. Ana sayfadaki Bilet al, Adana Open WTA 125 grubunu açar.",
+      en: "On Biletix and at desks in the club. The Buy tickets button opens the Adana Open WTA 125 group.",
     },
   },
   {
     q: { tr: "Biletler günlük mü?", en: "Are tickets sold by the day?" },
     a: {
-      tr: "Evet. Biletler gün gün satılır. Aldığınız bilet yalnızca o günün maçlarına giriş verir; başka bir güne geçmez. Eleme ve ana tablo aynı kuraldadır: her gün için ayrı bilet alınır.",
-      en: "Yes. Tickets are sold day by day. Your ticket is valid only for that day’s matches; it does not carry over. Qualifying and main draw follow the same rule: a separate ticket for each day.",
+      tr: "Evet. Bilet yalnızca o günün maçlarına girer; başka güne geçmez. Eleme ve ana tablo aynı kural.",
+      en: "Yes. A ticket is only for that day’s matches. Same rule for qualifying and main draw.",
     },
   },
   {
     q: { tr: "Maç saatleri kesin mi?", en: "Are match times fixed?" },
     a: {
-      tr: "Şu an sitedeki plan geçerlidir; maç saatleri değişkenlik gösterebilir. Elemede ilk top 10:30’dur. Pazartesi’den ana tablo saatleri henüz netleşmedi. Netleşince ve herhangi bir değişiklik olursa bu siteden ve duyurulardan takip edin.",
-      en: "The plan on this site is current, but session times can shift. Qualifying first ball is 10:30. From Monday, main-draw times are still to be confirmed. When they land, and if anything changes, follow this site and the announcements.",
+      tr: "Şu anki plan bu, saatler değişebilir. Eleme 10:30. Pazartesi’den ana tablo henüz net değil; değişince burada güncellenir.",
+      en: "This is the current plan; times can shift. Qualifying 10:30. Main-draw times from Monday still open; they update here.",
     },
   },
   {
     q: { tr: "Kapılar ne zaman açılır?", en: "When do the gates open?" },
     a: {
-      tr: "Sahaya saat 10:30’dan itibaren giriş yapabilirsiniz.",
-      en: "You can enter the grounds from 10:30.",
+      tr: "Saat 10:30’dan itibaren.",
+      en: "From 10:30.",
     },
   },
   {
     q: { tr: "Turnuva ne zaman, nerede?", en: "When and where is it?" },
     a: {
-      tr: "26 Eylül – 4 Ekim 2026, Adana Tenis, Dağ ve Su Sporları Kulübü (ATDSK). Adres: Adnan Menderes Bulvarı, Seyhan Baraj Gölü yanı, Çukurova / Adana. Yol tarifi Saha sayfasındadır.",
-      en: "26 September – 4 October 2026 at Adana Tennis, Mountain and Water Sports Club (ATDSK). Adnan Menderes Boulevard, beside Seyhan Dam Lake, Çukurova / Adana. Directions are on the Venue page.",
+      tr: "26 Eylül – 4 Ekim, ATDSK. Adnan Menderes Bulvarı, Seyhan Baraj Gölü yanı, Çukurova.",
+      en: "26 September – 4 October at ATDSK, Adnan Menderes Boulevard, beside Seyhan Dam Lake, Çukurova.",
     },
   },
   {
     q: { tr: "Nasıl giderim, otopark var mı?", en: "How do I get there, and is there parking?" },
     a: {
-      tr: "Kulüp girişi Adnan Menderes Bulvarı üzerindendir. Taksi, özel araç veya harita uygulamasıyla ATDSK’ye gelin. Güvenlik gereği çevre otoparklara veya yakındaki uygun yerlere park edip yaya olarak devam etmeniz tavsiye edilir.",
-      en: "The club gate is on Adnan Menderes Boulevard. Come by taxi, car or maps. For security, we recommend parking in surrounding car parks or nearby spots and walking the last stretch.",
+      tr: "Giriş Adnan Menderes Bulvarı. Güvenlik için çevre otoparklara veya yakına park edip yaya devam edin.",
+      en: "Gate on Adnan Menderes Boulevard. For security, park nearby and walk the last stretch.",
     },
   },
   {
     q: { tr: "Yeme-içme var mı?", en: "Is there food and drink?" },
     a: {
-      tr: "Evet. Food court gün boyu açıktır; dokuz stand: Bun the Bun, Taco Maco, Ico Fried Chicken, Hayat Büfe, Bowl Art, Doğan Kaymaklı, Hüsnü Usta Et Döner, Major Chocolate ve Maki. Kulüp terası ayrı bir oturum alanıdır. Havuz kenarı da turnuva boyunca açıktır. Saatler ve yan etkinlikler Etkinlikler sayfasındadır.",
-      en: "Yes. The food court is open all day with nine stands: Bun the Bun, Taco Maco, Ico Fried Chicken, Hayat Büfe, Bowl Art, Doğan Kaymaklı, Hüsnü Usta Et Döner, Major Chocolate and Maki. The club terrace is a separate seating area. Poolside stays open through the week. Times and side events are on Events.",
+      tr: "Food court gün boyu, dokuz stand. Kulüp terası ve havuz kenarı da açık. Standlar Saha ve Etkinlikler’de.",
+      en: "Food court all day, nine stands. Terrace and poolside too. Names are on Venue and Events.",
     },
   },
   {
     q: { tr: "Kort A ve Kort B hangisi?", en: "Which courts are Court A and Court B?" },
     a: {
-      tr: "Ana kort Merkez Kort’tur. Kort A, Çağla Büyükakçay Kortu’dur. Kort B, İpek Soylu Kortu’dur. Hangi kortta hangi tur olduğu Maçlar sayfasında gün gün görünür.",
-      en: "The main court is Centre Court. Court A is Çağla Büyükakçay Court. Court B is İpek Soylu Court. The Matches page shows which round is on which court each day.",
+      tr: "Ana kort Merkez Kort. Kort A Çağla Büyükakçay Kortu, Kort B İpek Soylu Kortu.",
+      en: "Centre Court is the main court. Court A is Çağla Büyükakçay, Court B is İpek Soylu.",
     },
   },
   {
     q: { tr: "Yağmur olursa ne olur?", en: "What if it rains?" },
     a: {
-      tr: "Bu durumlarda kararı baş hakem verir. Maç saati genelde ertelenir ya da oyun kapalı korta alınabilir. Güncel durumu bu siteden ve sahadaki duyurulardan takip edin.",
-      en: "The chief referee decides. Sessions are typically delayed or moved to an indoor court. Follow this site and on-site announcements for the latest.",
+      tr: "Kararı baş hakem verir. Saat genelde ertelenir veya maç kapalı korta alınır.",
+      en: "The chief referee decides. Play is usually delayed or moved indoors.",
     },
   },
   {
     q: { tr: "Canlı skor ve yayın nerede?", en: "Where are live scores and the stream?" },
     a: {
-      tr: "Canlı skor Maçlar ve Canlı sayfalarındadır. Resmi WTA skorları wtatennis.com’da da vardır. Canlı yayın linki turnuva haftasında Canlı sayfasında ve Instagram @adana.open hesabında paylaşılır.",
-      en: "Live scores are on Matches and Live. Official WTA scores are also on wtatennis.com. The livestream link will be posted on Live and Instagram @adana.open during tournament week.",
+      tr: "Skor Maçlar ve Canlı’da. Yayın linki turnuva haftasında Canlı ve Instagram @adana.open’da.",
+      en: "Scores on Matches and Live. Stream link during tournament week on Live and Instagram @adana.open.",
     },
   },
   {
     q: { tr: "Telefona maç saati düşer mi?", en: "Will match times come to my phone?" },
     a: {
-      tr: "Evet. Ana sayfada Bildirim izni ver’e bir kez basmanız yeter. Maç saati, skor ve duyuru telefonunuza gelir. Ayrı bir uygulama indirmeniz gerekmez.",
-      en: "Yes. Tap Allow notifications once on the home screen. Match times, scores and announcements come to your phone. There is no separate app to download.",
+      tr: "Evet. Ana sayfada Bildirim izni ver’e bir kez basın.",
+      en: "Yes. Tap Allow notifications once on the home screen.",
     },
   },
   {
     q: { tr: "Aile ve çocuk için ne var?", en: "What’s on for families?" },
     a: {
-      tr: "Cumartesi ve pazar çocuk kulübü gözetmen eşliğinde açıktır. 26 Eylül ve 4 Ekim’de Yogakioo Yoga, 3 Ekim’de Cardio Fitness vardır. Program Etkinlikler sayfasındadır.",
-      en: "A supervised kids’ club runs on Saturday and Sunday. Yogakioo Yoga is on 26 September and 4 October; Cardio Fitness on 3 October. The programme is on Events.",
+      tr: "Cumartesi–pazar çocuk kulübü. 26 Eylül ve 4 Ekim’de yoga, 3 Ekim’de Cardio Fitness. Program Etkinlikler’de.",
+      en: "Kids’ club Saturday–Sunday. Yoga on 26 September and 4 October; Cardio Fitness on 3 October. Times on Events.",
     },
   },
   {
     q: { tr: "Oyuncu ve basın girişi ayrı mı?", en: "Is there a separate player or media entrance?" },
     a: {
-      tr: `Oyuncu, ekip ve basın girişi akreditasyonla yönetilir; seyirci girişinden ayrıdır. Akreditasyon ve saha içi dolaşım için ${ACCREDITATION_EMAIL} ile yazın.`,
-      en: `Player, team and media access is by accreditation, separate from spectator gates. Write to ${ACCREDITATION_EMAIL} for accreditation and on-site movement.`,
+      tr: `Evet, akreditasyonla. ${ACCREDITATION_EMAIL}`,
+      en: `Yes, by accreditation. ${ACCREDITATION_EMAIL}`,
     },
   },
 ];
@@ -471,8 +470,8 @@ export const ATTRACTIONS: Attraction[] = [
     icon: "photo",
     title: { tr: "Fotoğraf alanları", en: "Photo spots" },
     body: {
-      tr: "Fan Zone ve kort kenarında çekim noktaları. Maskot ve marka duvarları.",
-      en: "Fan Zone and court-side photo points. Mascot and brand walls.",
+      tr: "Fan Zone ve kort kenarı.",
+      en: "Fan Zone and court-side.",
     },
   },
   {
@@ -480,8 +479,8 @@ export const ATTRACTIONS: Attraction[] = [
     icon: "spark",
     title: { tr: "Sürpriz yarışmalar", en: "Surprise contests" },
     body: {
-      tr: "Fan Zone’da gün içinde çekiliş ve yarışmalar. Saatler günlük programda.",
-      en: "Raffles and contests in the Fan Zone. Times are on the daily programme.",
+      tr: "Fan Zone’da çekiliş ve yarışmalar. Saatler günlük programda.",
+      en: "Raffles and contests in the Fan Zone. Times on the daily programme.",
     },
   },
   {

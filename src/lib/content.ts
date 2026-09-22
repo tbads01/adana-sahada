@@ -320,7 +320,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Mekan",
       title: "Seyhan kenarında",
       titleAccent: "dünya sahnesi.",
-      body: "Turnuva, ATDSK’nin Seyhan Baraj Gölü kıyısındaki tesislerinde düzenlenir. 16 kort ve kulüp altyapısıyla uluslararası standartta bir organizasyon.",
+      body: "Turnuva ATDSK’de, Seyhan Baraj Gölü kıyısında. 16 kort.",
       host: "Adana Tenis, Dağ ve Su Sporları Kulübü (ATDSK)",
       addressLabel: "Adres",
       address:
@@ -347,7 +347,7 @@ export const content: Record<Locale, Messages> = {
       matchTitle: "Saatler ve",
       matchAccent: "turlar.",
       matchNote:
-        "Şu anki plan budur; saatler değişebilir. Eleme ilk top 10:30. Pazartesi’den itibaren ana tablo saatleri yakında belli olacak. Günceli bu siteden takip edin.",
+        "Saatler değişebilir. Eleme ilk top 10:30. Pazartesi’den ana tablo yakında.",
       startsLabel: "İlk maç",
       followedBy: "Ardından",
       matchCount: "maç",
@@ -475,7 +475,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Deneyim",
       title: "Kortun",
       titleAccent: "ötesi.",
-      body: "Merkez kort, fan zone, food court, fotoğraf alanları, sürpriz yarışmalar, gösteri maçları, DJ, zumba, yoga ve havuz kenarı.",
+      body: "Fan Zone, food court, DJ, yoga, gösteri maçları, havuz kenarı.",
       disclaimer:
         "Bazı görseller konsept çalışmasıdır. Kulüp fotoğrafları ATDSK tesislerinden alınmıştır.",
       areas: [
@@ -534,7 +534,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "",
       title: "Partnerler ve sponsorlar",
       titleAccent: "",
-      body: "Kort kenarı görünürlüğünde yer alan isimler. Yeni anlaşmalar açıklandıkça bu liste güncellenecek.",
+      body: "",
       mainLabel: "Ana sponsorlar",
       restLabel: "Partnerler",
     },
@@ -765,7 +765,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Venue",
       title: "Lakeside.",
       titleAccent: "World stage.",
-      body: "The tournament is staged at ATDSK’s grounds beside Seyhan Dam Lake. Sixteen courts and full club infrastructure for an international-standard event.",
+      body: "The tournament is at ATDSK, beside Seyhan Dam Lake. 16 courts.",
       host: "Adana Tennis, Mountain and Water Sports Club (ATDSK)",
       addressLabel: "Address",
       address:
@@ -792,7 +792,7 @@ export const content: Record<Locale, Messages> = {
       matchTitle: "Times and",
       matchAccent: "rounds.",
       matchNote:
-        "This is the current plan; times can shift. Qualifying first ball 10:30. From Monday, main-draw start times are to be confirmed. Follow this site for updates.",
+        "Times can shift. Qualifying first ball 10:30. Main-draw times from Monday soon.",
       startsLabel: "First match",
       followedBy: "Then",
       matchCount: "matches",
@@ -920,7 +920,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Experience",
       title: "Beyond",
       titleAccent: "the court.",
-      body: "Centre court, fan zone, food court, photo spots, surprise contests, exhibition matches, DJ, zumba, yoga and poolside.",
+      body: "Fan Zone, food court, DJ, yoga, exhibition matches, poolside.",
       disclaimer:
         "Some visuals are concept studies. Club photos are from ATDSK facilities.",
       areas: [
@@ -979,7 +979,7 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "",
       title: "Partners and sponsors",
       titleAccent: "",
-      body: "Names appearing on court-side branding. This list will grow as further agreements are announced.",
+      body: "",
       mainLabel: "Title partners",
       restLabel: "Partners",
     },

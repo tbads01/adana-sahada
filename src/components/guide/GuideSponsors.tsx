@@ -19,7 +19,9 @@ export function GuideSponsors() {
           sizes="(max-width:448px) 100vw, 448px"
         />
       </div>
-      <p className="mt-2 text-xs leading-relaxed text-ink/45">{t.partners.body}</p>
+      {t.partners.body ? (
+        <p className="mt-2 text-xs leading-relaxed text-ink/45">{t.partners.body}</p>
+      ) : null}
     </div>
   );
 }

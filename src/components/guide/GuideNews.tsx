@@ -10,7 +10,6 @@ export function GuideNews() {
   return (
     <div className="px-4 py-5">
       <h1 className="font-display text-2xl font-extrabold tracking-[-0.04em]">{g.news}</h1>
-      <p className="mt-1 text-sm text-ink/55">{g.tagline}</p>
 
       <div className="mt-5 space-y-3">
         {items.length === 0 ? (

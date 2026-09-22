@@ -128,8 +128,6 @@ export function GuideInfo() {
       <div className="mt-8">
         <GuideSponsors />
       </div>
-
-      <p className="mt-6 text-center text-[0.7rem] text-ink/35">{g.installHint}</p>
     </div>
   );
 }

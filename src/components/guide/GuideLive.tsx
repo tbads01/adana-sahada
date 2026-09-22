@@ -1,13 +1,13 @@
 "use client";
 
 import { flagFor } from "@/lib/flags";
-import { copy, getLiveData, SOCIAL_LINKS } from "@/lib/guide";
+import { getLiveData } from "@/lib/guide";
 import { INSTAGRAM, WTA_URL } from "@/lib/site";
 import { IconPlay } from "@/components/Icons";
 import { GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
 
 export function GuideLive() {
-  const { g, t, locale } = useGuide();
+  const { g, t } = useGuide();
   const live = getLiveData();
   const streamUrl = live.stream.url;
   const liveNow = live.stream.status === "live" && Boolean(streamUrl);
@@ -15,7 +15,6 @@ export function GuideLive() {
   return (
     <div className="px-4 py-5">
       <h1 className="font-display text-2xl font-extrabold tracking-[-0.04em]">{g.live}</h1>
-      <p className="mt-1 text-sm text-ink/55">{g.streamHint}</p>
 
       <div className="mt-5 overflow-hidden rounded-2xl bg-ink text-paper">
         {liveNow ? (
@@ -43,7 +42,6 @@ export function GuideLive() {
             <p className="mt-4 font-display text-xl font-bold">
               {live.stream.status === "ended" ? g.streamEnded : g.streamSoon}
             </p>
-            <p className="mt-2 max-w-xs text-sm text-paper/55">{g.streamOffline}</p>
           </div>
         )}
       </div>
@@ -62,12 +60,10 @@ export function GuideLive() {
         </a>
       </div>
 
+      {live.scoreboard.length ? (
       <div className="mt-8">
         <SectionHead title={g.scoreboard} />
-        {live.scoreboard.length === 0 ? (
-          <p className="text-sm text-ink/50">{g.scoreboardEmpty}</p>
-        ) : (
-          <div className="space-y-2">
+        <div className="space-y-2">
             {live.scoreboard.map((row) => (
               <GuideCard key={`${row.courtId}-${row.a.name}`}>
                 <div className="flex items-center justify-between">
@@ -90,20 +86,9 @@ export function GuideLive() {
                 </p>
               </GuideCard>
             ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mt-8">
-        <SectionHead title={g.social} />
-        <div className="space-y-2">
-          {SOCIAL_LINKS.map((item) => (
-            <GuideCard key={item.id} href={item.href}>
-              <p className="font-display text-base font-bold">{copy(locale, item.label)}</p>
-            </GuideCard>
-          ))}
         </div>
       </div>
+      ) : null}
     </div>
   );
 }

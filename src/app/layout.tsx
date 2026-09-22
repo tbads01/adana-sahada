@@ -19,7 +19,7 @@ const body = Manrope({
 });
 
 const title = "Adana Open Sahada";
-const description = "Adana Open saha uygulaması: maç, etkinlik, duyuru, canlı yayın ve bildirim.";
+const description = "Adana Open: maçlar, bilet, saha bilgisi.";
 
 export const revalidate = 60;
 

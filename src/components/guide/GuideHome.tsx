@@ -4,19 +4,15 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  IconCalendar,
   IconInfo,
   IconLive,
   IconMegaphone,
-  IconPin,
-  IconPlay,
   IconPlayers,
   IconSpark,
   IconTicket,
   IconTrophy,
 } from "@/components/Icons";
 import {
-  ATTRACTIONS,
   MATCH_DAYS,
   activeOrNextMatchDay,
   copy,
@@ -27,11 +23,11 @@ import {
   tournamentPhase,
 } from "@/lib/guide";
 import { ROUTES } from "@/lib/routes";
-import { INSTAGRAM, MAIN_SITE_URL, TOURNAMENT_START } from "@/lib/site";
+import { TOURNAMENT_START } from "@/lib/site";
 import type { CourtId, MatchRound } from "@/lib/match-plan";
 import { GuideSponsors } from "./GuideSponsors";
 import { GuideNotify } from "./GuideNotify";
-import { AttractionArt, CourtLines, TennisBall } from "./GuideArt";
+import { CourtLines } from "./GuideArt";
 import { GuideFaq } from "./GuideFaq";
 import { GuideCard, CourtLabel, Pill, PressConferenceCard, SectionHead, TicketsCard, useGuide } from "./GuideUi";
 
@@ -82,13 +78,8 @@ export function GuideHome() {
   const quick = [
     { href: ROUTES.tickets, label: g.tickets, icon: IconTicket },
     { href: "#sss", label: g.faq, icon: IconInfo },
-    { href: ROUTES.matches, label: g.matches, icon: IconCalendar },
-    { href: ROUTES.events, label: g.events, icon: IconSpark },
-    { href: ROUTES.live, label: g.live, icon: IconPlay },
     { href: ROUTES.news, label: g.news, icon: IconMegaphone },
     { href: ROUTES.players, label: g.players, icon: IconPlayers },
-    { href: ROUTES.info, label: g.maps, icon: IconPin },
-    { href: INSTAGRAM, label: g.instagram, icon: IconLive },
   ];
 
   async function share() {
@@ -112,10 +103,7 @@ export function GuideHome() {
         <CourtLines className="pointer-events-none absolute -right-8 -top-8 h-56 w-80 text-white/12" />
         <div className="relative z-10">
         <div className="pr-[7.75rem] pt-1">
-            <div className="flex items-center gap-2">
-              <TennisBall className="h-7 w-7 shrink-0" />
-              <p className="text-[0.7rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroEyebrow}</p>
-            </div>
+            <p className="text-[0.7rem] font-bold tracking-[0.16em] text-yellow uppercase">{g.heroEyebrow}</p>
             <h1 className="mt-3 font-display text-[2.15rem] leading-[0.92] font-extrabold tracking-[-0.05em]">
               {phase === "live" ? g.heroTitleLive : phase === "ended" ? g.heroTitleEnded : g.heroTitleUpcoming}
             </h1>
@@ -164,9 +152,7 @@ export function GuideHome() {
       </section>
 
       <div className="min-w-0 space-y-6 px-4 py-5">
-        <div>
-          <SectionHead title={g.quick} />
-          <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-2">
             {quick.map((item) => {
               const Icon = item.icon;
               const http = item.href.startsWith("http");
@@ -205,18 +191,16 @@ export function GuideHome() {
                 </Link>
               );
             })}
-          </div>
         </div>
 
-        <GuideFaq />
+        <GuideFaq preview={4} />
 
         {upcoming.day.courts.length ? (
           <div>
             <SectionHead title={g.upcomingMatches} href={ROUTES.matches} action={g.seeAll} />
-            <p className="mb-1 text-sm font-bold text-ink/70">
+            <p className="mb-3 text-sm font-bold text-ink/70">
               {upcoming.isToday ? g.today : upcomingMeta?.weekday} · {upcomingMeta?.date}
             </p>
-            <p className="mb-3 text-sm leading-relaxed text-ink/50">{g.draftNote}</p>
             <div className="space-y-2">
               {upcoming.day.courts.map((court) => {
                 const rounds = uniqueRoundNames(court.slots, t.schedule.rounds);
@@ -232,9 +216,6 @@ export function GuideHome() {
                           {g.firstBall} · {displayStart(court.start, g.timeSoon)}
                         </p>
                         <p className="mt-1 text-sm leading-snug text-ink/70">{rounds.join(" · ")}</p>
-                        <p className="mt-1 text-[0.7rem] font-bold text-ink/40">
-                          {court.slots.length} {g.matchesCount}
-                        </p>
                       </div>
                     </div>
                   </GuideCard>
@@ -252,7 +233,7 @@ export function GuideHome() {
               action={g.seeAll}
             />
             <div className="space-y-2">
-              {sideEvents.slice(0, 5).map((item) => {
+              {sideEvents.slice(0, 4).map((item) => {
                 const Icon = item.tag === "music" ? IconLive : item.tag === "match" ? IconTrophy : IconSpark;
                 return (
                 <GuideCard key={`${item.time}-${item.title}`} href={ROUTES.events}>
@@ -272,21 +253,6 @@ export function GuideHome() {
           </div>
         ) : null}
 
-        <div>
-          <SectionHead title={g.alwaysOn} href={ROUTES.events} action={g.seeAll} />
-          <div className="grid grid-cols-2 gap-2">
-            {ATTRACTIONS.map((item) => (
-              <GuideCard key={item.id} href={ROUTES.events}>
-                <span className="relative mb-2 block h-20 overflow-hidden rounded-xl">
-                  <AttractionArt id={item.icon} />
-                </span>
-                <p className="font-display text-sm font-bold">{copy(locale, item.title)}</p>
-                <p className="mt-1 line-clamp-2 text-[0.7rem] leading-relaxed text-ink/50">{copy(locale, item.body)}</p>
-              </GuideCard>
-            ))}
-          </div>
-        </div>
-
         <GuideSponsors />
 
         <div>
@@ -294,37 +260,20 @@ export function GuideHome() {
           <div className="space-y-2">
             {news.map((item) => (
               <GuideCard key={item.id} href={item.href}>
-                <div className="flex items-start gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-yellow text-ink">
-                    <IconMegaphone className="h-4 w-4" />
-                  </span>
-                  <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <Pill>{copy(locale, item.tag)}</Pill>
                   {item.pin ? <Pill tone="yellow">{g.pinned}</Pill> : null}
                 </div>
                 <p className="mt-2 font-display text-base font-bold tracking-[-0.02em]">{copy(locale, item.title)}</p>
                 <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-ink/55">{copy(locale, item.body)}</p>
-                  </div>
-                </div>
               </GuideCard>
             ))}
           </div>
         </div>
 
-        <div className="space-y-2">
-          <a href={ROUTES.tickets} target="_blank" rel="noreferrer" className="btn btn-primary w-full !py-3">
-            {g.ticketBuy}
-          </a>
-          <div className="flex gap-2">
-            <button type="button" onClick={() => void share()} className="btn btn-dark flex-1 !py-3">
-              {copied ? g.shared : g.share}
-            </button>
-            <Link href={MAIN_SITE_URL} prefetch={false} className="btn btn-ghost flex-1 !py-3">
-              {g.site}
-            </Link>
-          </div>
-        </div>
+        <button type="button" onClick={() => void share()} className="btn btn-dark w-full !py-3">
+          {copied ? g.shared : g.share}
+        </button>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Adana Open Sahada",
     short_name: "Sahada",
-    description: "Adana Open saha uygulaması: maç, etkinlik, duyuru ve canlı yayın.",
+    description: "Adana Open: maçlar, bilet, saha bilgisi.",
     start_url: "/",
     display: "standalone",
     background_color: "#0c1638",

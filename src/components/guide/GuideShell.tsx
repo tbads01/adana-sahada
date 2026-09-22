@@ -22,7 +22,7 @@ const TABS = [
   { href: ROUTES.matches, key: "matches" as const, icon: IconCalendar },
   { href: ROUTES.events, key: "events" as const, icon: IconSpark },
   { href: ROUTES.live, key: "live" as const, icon: IconLive },
-  { href: ROUTES.info, key: "info" as const, icon: IconInfo },
+  { href: ROUTES.info, key: "sss" as const, icon: IconInfo },
 ];
 
 export function GuideShell({ children }: { children: ReactNode }) {
@@ -98,10 +98,11 @@ export function GuideShell({ children }: { children: ReactNode }) {
           <div className="grid w-full grid-cols-5">
             {TABS.map((tab) => {
               const Icon = tab.icon;
+              const path = tab.href.split("#")[0];
               const active =
-                tab.href === ROUTES.home
+                path === ROUTES.home
                   ? pathname === ROUTES.home || pathname === ROUTES.news || pathname === ROUTES.players
-                  : pathname === tab.href;
+                  : pathname === path;
               return (
                 <Link
                   key={tab.href}

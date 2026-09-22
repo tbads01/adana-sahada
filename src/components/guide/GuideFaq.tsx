@@ -3,13 +3,20 @@
 import { useEffect, useState } from "react";
 import { IconChevron } from "@/components/Icons";
 import { FAQS, copy } from "@/lib/guide";
+import { ROUTES } from "@/lib/routes";
 import { GuideCard, SectionHead, useGuide } from "./GuideUi";
 
-export function GuideFaq({ id = "sss" }: { id?: string }) {
+export function GuideFaq({
+  id = "sss",
+  preview,
+}: {
+  id?: string;
+  preview?: number;
+}) {
   const { g, locale } = useGuide();
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const entry = FAQS[0];
-  const rest = FAQS.slice(1);
+  const rest = preview != null ? FAQS.slice(1, 1 + preview) : FAQS.slice(1);
 
   useEffect(() => {
     if (window.location.hash !== `#${id}`) return;
@@ -18,7 +25,7 @@ export function GuideFaq({ id = "sss" }: { id?: string }) {
 
   return (
     <div id={id} className="scroll-mt-4">
-      <SectionHead title={g.faq} />
+      <SectionHead title={g.faq} href={preview != null ? `${ROUTES.info}#sss` : undefined} action={preview != null ? g.seeAll : undefined} />
       <GuideCard className="bg-yellow text-ink">
         <p className="font-display text-lg font-bold tracking-[-0.03em]">{copy(locale, entry.q)}</p>
         <p className="mt-2 text-sm leading-relaxed text-ink/70">{copy(locale, entry.a)}</p>
