@@ -19,14 +19,25 @@ function landingReferrer() {
   }
 }
 
-function ping(path: string, heartbeat: boolean) {
-  const locale = window.localStorage.getItem("adana-open-locale") === "en" ? "en" : "tr";
+function locale() {
+  return window.localStorage.getItem("adana-open-locale") === "en" ? "en" : "tr";
+}
+
+function ping(path: string, extra: Record<string, unknown> = {}) {
   void fetch("/api/track", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ path, locale, referrer: landingReferrer(), ping: heartbeat }),
+    body: JSON.stringify({ path, locale: locale(), referrer: landingReferrer(), ...extra }),
     keepalive: true,
   }).catch(() => undefined);
+}
+
+function isBiletix(href: string) {
+  try {
+    return new URL(href, window.location.href).hostname.replace(/^www\./, "").includes("biletix.");
+  } catch {
+    return false;
+  }
 }
 
 export function VisitTracker() {
@@ -34,11 +45,11 @@ export function VisitTracker() {
 
   useEffect(() => {
     if (!pathname || pathname.startsWith("/admin")) return;
-    ping(pathname, false);
+    ping(pathname);
 
     const beat = () => {
       if (document.visibilityState === "hidden") return;
-      ping(pathname, true);
+      ping(pathname, { ping: true });
     };
     const id = window.setInterval(beat, 20_000);
     const onVis = () => {
@@ -49,6 +60,19 @@ export function VisitTracker() {
       window.clearInterval(id);
       document.removeEventListener("visibilitychange", onVis);
     };
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!pathname || pathname.startsWith("/admin")) return;
+
+    function onClick(event: MouseEvent) {
+      const link = event.target instanceof Element ? event.target.closest("a") : null;
+      if (!link?.href || !isBiletix(link.href)) return;
+      ping(window.location.pathname.split("?")[0] || "/", { event: "ticket" });
+    }
+
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
   }, [pathname]);
 
   return null;

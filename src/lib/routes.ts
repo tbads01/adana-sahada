@@ -1,3 +1,5 @@
+import { MAIN_SITE_URL, TICKETS_URL } from "./site";
+
 export const ROUTES = {
   home: "/",
   matches: "/maclar",
@@ -8,6 +10,6 @@ export const ROUTES = {
   players: "/oyuncular",
   send: "/gonder",
   admin: "/admin",
-  tickets: "https://adanaopen.com/iletisim",
-  site: "https://adanaopen.com",
+  tickets: TICKETS_URL,
+  site: MAIN_SITE_URL,
 } as const;

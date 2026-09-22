@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { IconMegaphone } from "@/components/Icons";
+import { IconMegaphone, IconTicket } from "@/components/Icons";
 import { FOOD_COURT_STANDS, MATCH_DAYS, PRESS_CONFERENCE, copy, pressConferenceUpcoming } from "@/lib/guide";
 import { gCopy } from "@/lib/guide-content";
 import { useLanguage } from "@/lib/i18n";
@@ -83,6 +83,25 @@ export function PressConferenceCard({
           <p className="mt-1 text-sm font-bold text-ink/70">
             {PRESS_CONFERENCE.time} · {copy(locale, PRESS_CONFERENCE.place)}
           </p>
+        </div>
+      </div>
+    </GuideCard>
+  );
+}
+
+export function TicketsCard({ className = "" }: { className?: string }) {
+  const { g } = useGuide();
+
+  return (
+    <GuideCard href={ROUTES.tickets} className={`bg-yellow text-ink ${className}`}>
+      <div className="flex items-center gap-3">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink text-yellow">
+          <IconTicket className="h-5 w-5" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[0.7rem] font-bold tracking-[0.14em] text-ink/55 uppercase">{g.ticketHint}</p>
+          <p className="mt-0.5 font-display text-xl font-bold tracking-[-0.03em]">{g.ticketBuy}</p>
+          <p className="mt-0.5 text-sm font-bold text-ink/70">{g.ticketSub} →</p>
         </div>
       </div>
     </GuideCard>

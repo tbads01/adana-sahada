@@ -30,7 +30,7 @@ import type { CourtId, MatchRound } from "@/lib/match-plan";
 import { GuideSponsors } from "./GuideSponsors";
 import { GuideNotify } from "./GuideNotify";
 import { AttractionArt, CourtLines, TennisBall } from "./GuideArt";
-import { GuideCard, Pill, PressConferenceCard, SectionHead, useGuide } from "./GuideUi";
+import { GuideCard, Pill, PressConferenceCard, SectionHead, TicketsCard, useGuide } from "./GuideUi";
 
 function uniqueRoundNames(slots: MatchRound[], rounds: Record<MatchRound, string>) {
   const names: string[] = [];
@@ -77,13 +77,13 @@ export function GuideHome() {
       };
 
   const quick = [
+    { href: ROUTES.tickets, label: g.tickets, icon: IconTicket },
     { href: ROUTES.matches, label: g.matches, icon: IconCalendar },
     { href: ROUTES.events, label: g.events, icon: IconSpark },
     { href: ROUTES.live, label: g.live, icon: IconPlay },
     { href: ROUTES.news, label: g.news, icon: IconMegaphone },
     { href: ROUTES.players, label: g.players, icon: IconPlayers },
     { href: ROUTES.info, label: g.maps, icon: IconPin },
-    { href: ROUTES.tickets, label: g.tickets, icon: IconTicket },
     { href: INSTAGRAM, label: g.instagram, icon: IconLive },
   ];
 
@@ -144,7 +144,8 @@ export function GuideHome() {
           )}
         </div>
 
-        <PressConferenceCard className="mt-4" />
+        <TicketsCard className="mt-4" />
+        <PressConferenceCard className="mt-3" />
 
         <Image
           src="/media/brand/kaplan.webp"
@@ -165,15 +166,28 @@ export function GuideHome() {
             {quick.map((item) => {
               const Icon = item.icon;
               const external = item.href.startsWith("http");
+              const cls =
+                item.href === ROUTES.tickets
+                  ? "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-yellow px-1 py-3"
+                  : "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-paper-soft px-1 py-3";
               const inner = (
                 <>
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-yellow text-ink">
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
+                      item.href === ROUTES.tickets ? "bg-ink text-yellow" : "bg-yellow text-ink"
+                    }`}
+                  >
                     <Icon className="h-5 w-5" />
                   </span>
-                  <span className="mt-2 w-full text-center text-[0.7rem] font-bold leading-tight text-ink/70">{item.label}</span>
+                  <span
+                    className={`mt-2 w-full text-center text-[0.7rem] font-bold leading-tight ${
+                      item.href === ROUTES.tickets ? "text-ink" : "text-ink/70"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
                 </>
               );
-              const cls = "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-paper-soft px-1 py-3";
               return external ? (
                 <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className={cls}>
                   {inner}
@@ -289,13 +303,18 @@ export function GuideHome() {
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <button type="button" onClick={() => void share()} className="btn btn-dark flex-1 !py-3">
-            {copied ? g.shared : g.share}
-          </button>
-          <Link href={MAIN_SITE_URL} prefetch={false} className="btn btn-ghost flex-1 !py-3">
-            {g.site}
-          </Link>
+        <div className="space-y-2">
+          <a href={ROUTES.tickets} target="_blank" rel="noreferrer" className="btn btn-primary w-full !py-3">
+            {g.ticketBuy}
+          </a>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => void share()} className="btn btn-dark flex-1 !py-3">
+              {copied ? g.shared : g.share}
+            </button>
+            <Link href={MAIN_SITE_URL} prefetch={false} className="btn btn-ghost flex-1 !py-3">
+              {g.site}
+            </Link>
+          </div>
         </div>
       </div>
     </div>

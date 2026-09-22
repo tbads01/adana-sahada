@@ -6,7 +6,9 @@ import { persistFile } from "./persist";
 export const SESSION_COOKIE = "ao_sid";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 180;
 const VISIT_CAP = 25_000;
+const EVENT_CAP = 8_000;
 const DEDUPE_MS = 15_000;
+const EVENT_DEDUPE_MS = 4_000;
 const DAY_KEEP = 45;
 
 export type Visit = {
@@ -15,6 +17,14 @@ export type Visit = {
   l: "tr" | "en";
   s: string;
   r?: string;
+};
+
+export type AnalyticsEvent = {
+  t: number;
+  k: "ticket";
+  p: string;
+  l: "tr" | "en";
+  s: string;
 };
 
 export type SendLog = {
@@ -32,6 +42,8 @@ export type DayBucket = {
   hours: number[];
   sids: string[];
   refs: Record<string, number>;
+  tickets: number;
+  ticketPages: Record<string, number>;
 };
 
 export type LiveSession = {
@@ -48,13 +60,29 @@ let livePeak = { iso: "", n: 0 };
 
 export type AnalyticsStore = {
   visits: Visit[];
+  events: AnalyticsEvent[];
   days: Record<string, DayBucket>;
   sends: SendLog[];
   notify: { lastAt: number | null };
 };
 
+export function emptyDay(): DayBucket {
+  return {
+    views: 0,
+    unique: 0,
+    pages: {},
+    locales: { tr: 0, en: 0 },
+    hours: Array.from({ length: 24 }, () => 0),
+    sids: [],
+    refs: {},
+    tickets: 0,
+    ticketPages: {},
+  };
+}
+
 const emptyStore = (): AnalyticsStore => ({
   visits: [],
+  events: [],
   days: {},
   sends: [],
   notify: { lastAt: null },
@@ -81,6 +109,7 @@ async function readStore(): Promise<AnalyticsStore> {
     const parsed = JSON.parse(raw) as Partial<AnalyticsStore>;
     return {
       visits: Array.isArray(parsed.visits) ? parsed.visits : [],
+      events: Array.isArray(parsed.events) ? parsed.events : [],
       days: parsed.days && typeof parsed.days === "object" ? parsed.days : {},
       sends: Array.isArray(parsed.sends) ? parsed.sends : [],
       notify: parsed.notify ?? { lastAt: null },
@@ -100,6 +129,9 @@ function prune(store: AnalyticsStore, now = Date.now()) {
   if (store.visits.length > VISIT_CAP) {
     store.visits = store.visits.slice(-Math.floor(VISIT_CAP * 0.8));
   }
+  if (store.events.length > EVENT_CAP) {
+    store.events = store.events.slice(-Math.floor(EVENT_CAP * 0.8));
+  }
   if (store.sends.length > 200) store.sends = store.sends.slice(-120);
 
   const cutoff = istanbulIsoDate(now - DAY_KEEP * 86_400_000);
@@ -114,6 +146,8 @@ function prune(store: AnalyticsStore, now = Date.now()) {
     }
     if (iso < today && day.sids?.length) day.sids = [];
     if (!day.refs) day.refs = {};
+    if (day.tickets == null) day.tickets = 0;
+    if (!day.ticketPages) day.ticketPages = {};
   }
 }
 
@@ -137,6 +171,7 @@ export function classifyReferrer(raw: string | undefined, requestHost = "") {
     if (h.includes("youtube.") || h === "youtu.be") return "youtube";
     if (h.includes("bing.")) return "bing";
     if (h.includes("tiktok.")) return "tiktok";
+    if (h.includes("biletix.")) return "biletix";
     if (h === "adanaopen.com" || h.endsWith(".adanaopen.com")) return "adanaopen.com";
     return h.slice(0, 48);
   } catch {
@@ -195,16 +230,10 @@ export async function recordVisit(visit: Visit) {
 
     store.visits.push(visit);
     const iso = istanbulIsoDate(visit.t);
-    const day = store.days[iso] ?? {
-      views: 0,
-      unique: 0,
-      pages: {},
-      locales: { tr: 0, en: 0 },
-      hours: Array.from({ length: 24 }, () => 0),
-      sids: [],
-      refs: {},
-    };
+    const day = store.days[iso] ?? emptyDay();
     if (!day.refs) day.refs = {};
+    if (day.tickets == null) day.tickets = 0;
+    if (!day.ticketPages) day.ticketPages = {};
     day.views += 1;
     day.pages[visit.p] = (day.pages[visit.p] ?? 0) + 1;
     day.locales[visit.l] += 1;
@@ -226,6 +255,27 @@ export async function recordVisit(visit: Visit) {
       l: visit.l,
       r: visit.r || "direct",
     });
+    return store;
+  });
+}
+
+export async function recordEvent(event: AnalyticsEvent) {
+  return withLock(async () => {
+    const store = await readStore();
+    if (!Array.isArray(store.events)) store.events = [];
+    const last = [...store.events].reverse().find((item) => item.s === event.s && item.k === event.k);
+    if (last && event.t - last.t < EVENT_DEDUPE_MS) return store;
+
+    store.events.push(event);
+    const iso = istanbulIsoDate(event.t);
+    const day = store.days[iso] ?? emptyDay();
+    if (!day.ticketPages) day.ticketPages = {};
+    if (day.tickets == null) day.tickets = 0;
+    day.tickets += 1;
+    day.ticketPages[event.p] = (day.ticketPages[event.p] ?? 0) + 1;
+    store.days[iso] = day;
+    prune(store, event.t);
+    await writeStore(store);
     return store;
   });
 }

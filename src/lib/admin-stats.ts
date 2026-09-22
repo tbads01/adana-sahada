@@ -17,7 +17,7 @@ import { MATCH_PLAN, roundKind, type MatchRound } from "./match-plan";
 import playersData from "./players.json";
 import { loadSubscriptions } from "./push-store";
 import { TOURNAMENT_END, TOURNAMENT_START } from "./site";
-import { loadAnalytics, listLive, livePeakToday, type DayBucket } from "./analytics-store";
+import { loadAnalytics, listLive, livePeakToday, emptyDay, type DayBucket } from "./analytics-store";
 
 export type AdminDashboard = Awaited<ReturnType<typeof buildAdminDashboard>>;
 
@@ -66,19 +66,29 @@ const REF_LABELS: Record<string, string> = {
   youtube: "YouTube",
   bing: "Bing",
   tiktok: "TikTok",
+  biletix: "Biletix",
   "adanaopen.com": "adanaopen.com",
   other: "Diğer",
 };
 
-function emptyDay(): DayBucket {
+function ranked(
+  map: Record<string, number> | undefined,
+  labels: Record<string, string>,
+) {
+  return Object.entries(map ?? {})
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, views]) => ({
+      id,
+      label: labels[id] ?? PAGE_LABELS[id] ?? id,
+      views,
+    }));
+}
+
+function dayLabel(iso: string) {
+  const t = Date.parse(`${iso}T12:00:00+03:00`);
   return {
-    views: 0,
-    unique: 0,
-    pages: {},
-    locales: { tr: 0, en: 0 },
-    hours: Array.from({ length: 24 }, () => 0),
-    sids: [],
-    refs: {},
+    weekday: new Intl.DateTimeFormat("tr-TR", { weekday: "short", timeZone: "Europe/Istanbul" }).format(t),
+    label: new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "short", timeZone: "Europe/Istanbul" }).format(t),
   };
 }
 
@@ -109,66 +119,58 @@ export async function buildAdminDashboard() {
   const todayBucket = analytics.days[today] ?? emptyDay();
   const yesterdayBucket = analytics.days[yesterday] ?? emptyDay();
 
-  const last14 = Array.from({ length: 14 }, (_, i) => {
-    const iso = addDays(today, i - 13);
-    const day = analytics.days[iso] ?? emptyDay();
-    return { iso, views: day.views, unique: day.unique };
+  const recorded = Object.keys(analytics.days).sort();
+  const firstIso = recorded[0] ?? addDays(today, -13);
+  const calendar: string[] = [];
+  for (let iso = firstIso; iso <= today; iso = addDays(iso, 1)) {
+    calendar.push(iso);
+    if (calendar.length > 60) break;
+  }
+
+  const days = calendar.map((iso) => {
+    const day: DayBucket = analytics.days[iso] ?? emptyDay();
+    const hours = Array.from({ length: 24 }, (_, i) => day.hours?.[i] ?? 0);
+    const meta = dayLabel(iso);
+    return {
+      iso,
+      weekday: meta.weekday,
+      label: meta.label,
+      views: day.views,
+      unique: day.unique,
+      tickets: day.tickets ?? 0,
+      hours,
+      locales: { tr: day.locales?.tr ?? 0, en: day.locales?.en ?? 0 },
+      pages: ranked(day.pages, PAGE_LABELS),
+      refs: ranked(day.refs, REF_LABELS),
+      ticketPages: ranked(day.ticketPages, PAGE_LABELS),
+    };
   });
 
-  const last7Isos = last14.slice(-7).map((d) => d.iso);
+  const last7Isos = calendar.slice(-7);
   const views7 = last7Isos.reduce((sum, iso) => sum + (analytics.days[iso]?.views ?? 0), 0);
   const unique7 = last7Isos.reduce((sum, iso) => sum + (analytics.days[iso]?.unique ?? 0), 0);
-  const viewsTotal = Object.values(analytics.days).reduce((sum, day) => sum + day.views, 0);
-  const uniqueTotal = Object.values(analytics.days).reduce((sum, day) => sum + day.unique, 0);
+  const tickets7 = last7Isos.reduce((sum, iso) => sum + (analytics.days[iso]?.tickets ?? 0), 0);
+  const viewsTotal = days.reduce((sum, day) => sum + day.views, 0);
+  const uniqueTotal = days.reduce((sum, day) => sum + day.unique, 0);
+  const ticketsTotal = days.reduce((sum, day) => sum + day.tickets, 0);
 
-  const pageTotals: Record<string, number> = {};
-  const localeTotals = { tr: 0, en: 0 };
-  for (const day of Object.values(analytics.days)) {
-    for (const [path, count] of Object.entries(day.pages)) {
-      pageTotals[path] = (pageTotals[path] ?? 0) + count;
-    }
-    localeTotals.tr += day.locales.tr;
-    localeTotals.en += day.locales.en;
-  }
-  const pages = Object.entries(pageTotals)
-    .sort((a, b) => b[1] - a[1])
-    .map(([path, views]) => ({
-      path,
-      label: PAGE_LABELS[path] ?? path,
-      views,
-    }));
-
-  const recent = [...analytics.visits]
-    .slice(-30)
-    .reverse()
-    .map((visit) => ({
-      t: visit.t,
-      path: visit.p,
-      label: PAGE_LABELS[visit.p] ?? visit.p,
-      locale: visit.l,
-      ref: REF_LABELS[visit.r || "direct"] ?? visit.r ?? "Doğrudan",
-    }));
-
-  const refTotals: Record<string, number> = {};
-  for (const day of Object.values(analytics.days)) {
-    for (const [id, count] of Object.entries(day.refs ?? {})) {
-      refTotals[id] = (refTotals[id] ?? 0) + count;
-    }
-  }
-  const referrers = Object.entries(refTotals)
-    .sort((a, b) => b[1] - a[1])
-    .map(([id, views]) => ({
-      id,
-      label: REF_LABELS[id] ?? id,
-      views,
-    }));
-  const todayRefs = Object.entries(todayBucket.refs ?? {})
-    .sort((a, b) => b[1] - a[1])
-    .map(([id, views]) => ({
-      id,
-      label: REF_LABELS[id] ?? id,
-      views,
-    }));
+  const recentVisits = analytics.visits.slice(-60).map((visit) => ({
+    t: visit.t,
+    kind: "view" as const,
+    path: visit.p,
+    label: PAGE_LABELS[visit.p] ?? visit.p,
+    locale: visit.l,
+    ref: REF_LABELS[visit.r || "direct"] ?? visit.r ?? "Doğrudan",
+  }));
+  const recentTickets = (analytics.events ?? []).slice(-40).map((event) => ({
+    t: event.t,
+    kind: "ticket" as const,
+    path: event.p,
+    label: PAGE_LABELS[event.p] ?? event.p,
+    locale: event.l,
+    ref: "Biletix",
+  }));
+  const recent = [...recentVisits, ...recentTickets].sort((a, b) => b.t - a.t).slice(0, 40);
 
   const liveNow = listLive(now);
   const livePagesMap: Record<string, number> = {};
@@ -294,15 +296,21 @@ export async function buildAdminDashboard() {
       hours: Math.floor((msLeft % 86_400_000) / 3_600_000),
     },
     traffic: {
-      today: { views: todayBucket.views, unique: todayBucket.unique, hours: todayBucket.hours, locales: todayBucket.locales },
-      yesterday: { views: yesterdayBucket.views, unique: yesterdayBucket.unique },
-      d7: { views: views7, unique: unique7 },
-      total: { views: viewsTotal, unique: uniqueTotal },
-      last14,
-      pages,
-      locales: localeTotals,
-      referrers,
-      todayRefs,
+      today: {
+        views: todayBucket.views,
+        unique: todayBucket.unique,
+        tickets: todayBucket.tickets ?? 0,
+        hours: todayBucket.hours,
+        locales: todayBucket.locales,
+      },
+      yesterday: {
+        views: yesterdayBucket.views,
+        unique: yesterdayBucket.unique,
+        tickets: yesterdayBucket.tickets ?? 0,
+      },
+      d7: { views: views7, unique: unique7, tickets: tickets7 },
+      total: { views: viewsTotal, unique: uniqueTotal, tickets: ticketsTotal },
+      days,
       recent,
       live: online,
     },

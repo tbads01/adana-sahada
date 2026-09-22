@@ -553,7 +553,7 @@ export const content: Record<Locale, Messages> = {
     tickets: {
       title: "Biletler",
       titleAccent: "",
-      body: "Detaylı bilgi yakında.",
+      body: "Biletler Biletix’te satışta.",
     },
     club: {
       metaTitle: "ATDSK | Adana Open",
@@ -997,7 +997,7 @@ export const content: Record<Locale, Messages> = {
     tickets: {
       title: "Tickets",
       titleAccent: "",
-      body: "Detailed information coming soon.",
+      body: "Tickets are on sale at Biletix.",
     },
     club: {
       metaTitle: "ATDSK | Adana Open",

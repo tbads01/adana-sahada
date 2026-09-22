@@ -1,7 +1,7 @@
 import type { Locale } from "./content";
 import live from "./live.json";
 import { MATCH_PLAN, type CourtId, type MatchDay, type MatchRound } from "./match-plan";
-import { INSTAGRAM, LIVE_STREAM_URL, MAPS_URL, TOURNAMENT_END, TOURNAMENT_START, WTA_URL } from "./site";
+import { INSTAGRAM, LIVE_STREAM_URL, MAPS_URL, TICKETS_URL, TOURNAMENT_END, TOURNAMENT_START, WTA_URL } from "./site";
 
 export type Copy = { tr: string; en: string };
 export type GuidePhase = "upcoming" | "live" | "ended";
@@ -173,17 +173,18 @@ export const ANNOUNCEMENTS: Announcement[] = [
   },
   {
     id: "tickets",
-    date: "2026-09-01",
+    date: "2026-09-21",
+    pin: true,
     tag: { tr: "Bilet", en: "Tickets" },
     title: {
-      tr: "Bilet satışı yakında",
-      en: "Ticket sales coming soon",
+      tr: "Bilet satışı başladı",
+      en: "Tickets are on sale",
     },
     body: {
-      tr: "Koltuk ve giriş bilgisi açıklandığında buradan duyurulacak. Şimdilik info@adanaopen.com ve Instagram @adana.open.",
-      en: "Seat and entry details will land here when they are published. For now: info@adanaopen.com and Instagram @adana.open.",
+      tr: "Adana Open WTA 125 biletleri Biletix’te. Eleme ve ana tablo maçları için hemen alın.",
+      en: "Adana Open WTA 125 tickets are live on Biletix. Get qualifying and main-draw sessions now.",
     },
-    href: "https://adanaopen.com/iletisim",
+    href: TICKETS_URL,
   },
 ];
 
@@ -196,6 +197,17 @@ export function sortedAnnouncements() {
 }
 
 export const INFO_ITEMS: InfoItem[] = [
+  {
+    id: "tickets",
+    icon: "ticket",
+    title: { tr: "Bilet al", en: "Buy tickets" },
+    body: {
+      tr: "Satış Biletix’te açık. Merkez Kort 1.250–1.500, İpek & Çağla kortları yaklaşık 500 kişilik.",
+      en: "On sale now at Biletix. Centre Court 1,250–1,500; İpek & Çağla courts about 500.",
+    },
+    href: TICKETS_URL,
+    hrefLabel: { tr: "Biletix’te al", en: "Buy on Biletix" },
+  },
   {
     id: "venue",
     icon: "pin",
@@ -215,17 +227,6 @@ export const INFO_ITEMS: InfoItem[] = [
       tr: "Giriş Adnan Menderes Bulvarı üzerinden. Kulüp otoparkını kullanın; yoğun maç saatlerinde biraz erken gelin.",
       en: "Enter from Adnan Menderes Boulevard. Use the club car park; arrive a little early on busy session days.",
     },
-  },
-  {
-    id: "tickets",
-    icon: "ticket",
-    title: { tr: "Bilet ve giriş", en: "Tickets & entry" },
-    body: {
-      tr: "Bilet detayı yakında. Merkez Kort 1.250–1.500, İpek & Çağla kortları yaklaşık 500 kişilik.",
-      en: "Ticket details soon. Centre Court 1,250–1,500; İpek & Çağla courts about 500.",
-    },
-    href: "https://adanaopen.com/iletisim",
-    hrefLabel: { tr: "Bilet sor", en: "Ask about tickets" },
   },
   {
     id: "food",
@@ -306,6 +307,13 @@ export const INFO_ITEMS: InfoItem[] = [
 
 export const FAQS: Faq[] = [
   {
+    q: { tr: "Bilet nereden alınır?", en: "Where do I buy tickets?" },
+    a: {
+      tr: "Biletler Biletix’te satışta. Ana sayfadaki Bilet al butonu veya bilgi sayfasından Adana Open WTA 125 etkinlik grubuna gidin.",
+      en: "Tickets are on sale at Biletix. Use Buy tickets on the home screen or the venue page to open the Adana Open WTA 125 event group.",
+    },
+  },
+  {
     q: { tr: "Turnuva nerede?", en: "Where is it?" },
     a: {
       tr: "Adana Tenis, Dağ ve Su Sporları Kulübü (ATDSK), Seyhan Baraj Gölü kıyısı, Çukurova / Adana.",
@@ -343,6 +351,7 @@ export const FAQS: Faq[] = [
 ];
 
 export const SOCIAL_LINKS = [
+  { id: "tickets", href: TICKETS_URL, label: { tr: "Biletix · Bilet al", en: "Biletix · Buy tickets" } },
   { id: "instagram", href: INSTAGRAM, label: { tr: "Instagram · @adana.open", en: "Instagram · @adana.open" } },
   { id: "wta", href: WTA_URL, label: { tr: "WTA turnuva sayfası", en: "WTA tournament page" } },
   { id: "web", href: "https://adanaopen.com", label: { tr: "adanaopen.com", en: "adanaopen.com" } },

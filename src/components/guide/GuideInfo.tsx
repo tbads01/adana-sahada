@@ -20,6 +20,7 @@ import {
   SITE_EMAIL,
   SITE_PHONE,
   SITE_PHONE_TEL,
+  TICKETS_URL,
 } from "@/lib/site";
 import { FoodStands, GuideCard, SectionHead, useGuide } from "./GuideUi";
 import { GuideSponsors } from "./GuideSponsors";
@@ -47,6 +48,9 @@ export function GuideInfo() {
       <p className="mt-1 text-sm text-ink/55">{t.venue.body}</p>
 
       <div className="mt-4 grid gap-2">
+        <a href={TICKETS_URL} target="_blank" rel="noreferrer" className="btn btn-primary w-full">
+          {g.ticketBuy}
+        </a>
         <a href={MAPS_URL} target="_blank" rel="noreferrer" className="btn btn-dark w-full">
           {g.maps}
         </a>

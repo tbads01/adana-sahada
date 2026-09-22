@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   classifyReferrer,
+  recordEvent,
   recordVisit,
   sessionCookieOptions,
   sessionFromRequest,
@@ -25,6 +26,12 @@ function isBot(ua: string) {
   );
 }
 
+function normalizePath(raw: string) {
+  const path = raw.split("?")[0].replace(/\/+$/, "") || "/";
+  if (!path.startsWith("/") || path.startsWith("/admin") || path.startsWith("/api")) return "/";
+  return path.slice(0, 80);
+}
+
 export async function POST(request: Request) {
   if (isBot(request.headers.get("user-agent") || "")) {
     return NextResponse.json({ ok: true, skipped: "bot" });
@@ -35,12 +42,9 @@ export async function POST(request: Request) {
     locale?: string;
     referrer?: string;
     ping?: boolean;
+    event?: string;
   };
-  const path = typeof body.path === "string" ? body.path.split("?")[0].replace(/\/+$/, "") || "/" : "";
-  if (!ALLOWED.has(path)) {
-    return NextResponse.json({ ok: true, skipped: "path" });
-  }
-
+  const path = typeof body.path === "string" ? normalizePath(body.path) : "/";
   const locale = body.locale === "en" ? "en" : "tr";
   const hadSession = /(?:^|;\s*)ao_sid=/.test(request.headers.get("cookie") || "");
   const session = sessionFromRequest(request);
@@ -48,9 +52,13 @@ export async function POST(request: Request) {
   const referrer = classifyReferrer(typeof body.referrer === "string" ? body.referrer : "", host);
   const now = Date.now();
 
-  if (body.ping) {
-    touchLive({ s: session, t: now, p: path, l: locale, r: referrer });
-  } else {
+  if (body.event === "ticket") {
+    await recordEvent({ t: now, k: "ticket", s: session, p: path, l: locale });
+  } else if (body.ping) {
+    if (ALLOWED.has(path)) {
+      touchLive({ s: session, t: now, p: path, l: locale, r: referrer });
+    }
+  } else if (ALLOWED.has(path)) {
     await recordVisit({ t: now, p: path, l: locale, s: session, r: referrer });
   }
 
