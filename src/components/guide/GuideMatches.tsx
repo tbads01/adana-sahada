@@ -5,12 +5,13 @@ import { flagFor } from "@/lib/flags";
 import {
   MATCH_DAYS,
   activeOrNextMatchDay,
+  displayStart,
   getLiveData,
   type ScoreboardMatch,
 } from "@/lib/guide";
 import { roundKind, type CourtId, type MatchRound } from "@/lib/match-plan";
 import { WTA_URL } from "@/lib/site";
-import { DayTabs, GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
+import { DayTabs, CourtLabel, GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
 
 const STATUS_TONE = {
   live: "live",
@@ -52,10 +53,13 @@ export function GuideMatches() {
         <p className="text-[0.62rem] font-bold tracking-[0.14em] text-ink/40 uppercase">{meta?.stage}</p>
         <p className="mt-1 font-display text-xl font-bold">{meta?.date}</p>
         <p className="mt-2 text-sm text-ink/55">
-          {g.firstBall} {day.start} · {day.total} {g.matchesCount}
+          {g.firstBall} · {displayStart(day.start, g.timeSoon)} · {day.total} {g.matchesCount}
         </p>
         <p className="mt-1 text-sm font-bold text-ink/70">
-          {day.courts.map((court) => t.schedule.courts[court.id as CourtId]).join(" · ")}
+          {day.courts.map((court) => {
+            const named = t.schedule.courtNamed[court.id as CourtId];
+            return named ? `${t.schedule.courts[court.id as CourtId]} · ${named}` : t.schedule.courts[court.id as CourtId];
+          }).join(" · ")}
         </p>
       </GuideCard>
 
@@ -77,9 +81,9 @@ export function GuideMatches() {
         <div className="space-y-3">
           {day.courts.map((court) => (
             <GuideCard key={court.id}>
-              <p className="font-display text-lg font-bold">{t.schedule.courts[court.id as CourtId]}</p>
-              <p className="mt-0.5 text-sm font-bold tabular-nums text-ink/50">
-                {g.firstBall} {court.start}
+              <CourtLabel id={court.id as CourtId} />
+              <p className="mt-0.5 text-sm font-bold text-ink/50">
+                {g.firstBall} · {displayStart(court.start, g.timeSoon)}
               </p>
               <ol className="mt-3 space-y-2">
                 {court.slots.map((round, i) => (
@@ -88,7 +92,9 @@ export function GuideMatches() {
                       <RoundChip round={round} />
                       <span className="font-semibold">{t.schedule.rounds[round]}</span>
                     </span>
-                    <span className="text-ink/40">{i === 0 ? court.start : g.followedBy}</span>
+                    <span className="shrink-0 text-right text-ink/40">
+                      {i === 0 ? displayStart(court.start, g.timeSoon) : g.followedBy}
+                    </span>
                   </li>
                 ))}
               </ol>
@@ -134,8 +140,13 @@ function ScoreCard({ match }: { match: ScoreboardMatch }) {
 
   return (
     <GuideCard>
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-sm font-bold">{t.schedule.courts[match.courtId]}</p>
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <p className="text-sm font-bold">{t.schedule.courts[match.courtId]}</p>
+          {t.schedule.courtNamed[match.courtId] ? (
+            <p className="text-[0.7rem] font-bold text-ink/45">{t.schedule.courtNamed[match.courtId]}</p>
+          ) : null}
+        </div>
         <Pill tone={tone}>
           {match.status === "live" ? <LiveDot /> : null}
           {label}

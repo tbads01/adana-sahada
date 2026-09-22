@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   IconCalendar,
+  IconInfo,
   IconLive,
   IconMegaphone,
   IconPin,
@@ -19,6 +20,7 @@ import {
   MATCH_DAYS,
   activeOrNextMatchDay,
   copy,
+  displayStart,
   sortedAnnouncements,
   featuredDayEvents,
   isPressConferenceEvent,
@@ -30,7 +32,8 @@ import type { CourtId, MatchRound } from "@/lib/match-plan";
 import { GuideSponsors } from "./GuideSponsors";
 import { GuideNotify } from "./GuideNotify";
 import { AttractionArt, CourtLines, TennisBall } from "./GuideArt";
-import { GuideCard, Pill, PressConferenceCard, SectionHead, TicketsCard, useGuide } from "./GuideUi";
+import { GuideFaq } from "./GuideFaq";
+import { GuideCard, CourtLabel, Pill, PressConferenceCard, SectionHead, TicketsCard, useGuide } from "./GuideUi";
 
 function uniqueRoundNames(slots: MatchRound[], rounds: Record<MatchRound, string>) {
   const names: string[] = [];
@@ -78,6 +81,7 @@ export function GuideHome() {
 
   const quick = [
     { href: ROUTES.tickets, label: g.tickets, icon: IconTicket },
+    { href: "#sss", label: g.faq, icon: IconInfo },
     { href: ROUTES.matches, label: g.matches, icon: IconCalendar },
     { href: ROUTES.events, label: g.events, icon: IconSpark },
     { href: ROUTES.live, label: g.live, icon: IconPlay },
@@ -165,34 +169,37 @@ export function GuideHome() {
           <div className="grid grid-cols-4 gap-2">
             {quick.map((item) => {
               const Icon = item.icon;
-              const external = item.href.startsWith("http");
-              const cls =
-                item.href === ROUTES.tickets
-                  ? "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-yellow px-1 py-3"
-                  : "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-paper-soft px-1 py-3";
+              const http = item.href.startsWith("http");
+              const highlight = item.href === ROUTES.tickets || item.href === "#sss";
+              const cls = highlight
+                ? "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-yellow px-1 py-3"
+                : "flex min-w-0 flex-col items-center overflow-hidden rounded-2xl bg-paper-soft px-1 py-3";
               const inner = (
                 <>
                   <span
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
-                      item.href === ROUTES.tickets ? "bg-ink text-yellow" : "bg-yellow text-ink"
+                      highlight ? "bg-ink text-yellow" : "bg-yellow text-ink"
                     }`}
                   >
                     <Icon className="h-5 w-5" />
                   </span>
                   <span
                     className={`mt-2 w-full text-center text-[0.7rem] font-bold leading-tight ${
-                      item.href === ROUTES.tickets ? "text-ink" : "text-ink/70"
+                      highlight ? "text-ink" : "text-ink/70"
                     }`}
                   >
                     {item.label}
                   </span>
                 </>
               );
-              return external ? (
-                <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className={cls}>
-                  {inner}
-                </a>
-              ) : (
+              if (http) {
+                return (
+                  <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className={cls}>
+                    {inner}
+                  </a>
+                );
+              }
+              return (
                 <Link key={item.href} href={item.href} prefetch={false} className={cls}>
                   {inner}
                 </Link>
@@ -200,6 +207,8 @@ export function GuideHome() {
             })}
           </div>
         </div>
+
+        <GuideFaq />
 
         {upcoming.day.courts.length ? (
           <div>
@@ -218,9 +227,9 @@ export function GuideHome() {
                         <IconTrophy className="h-4 w-4" />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="font-display text-base font-bold">{t.schedule.courts[court.id as CourtId]}</p>
-                        <p className="mt-0.5 text-sm font-bold tabular-nums text-ink/55">
-                          {g.firstBall} {court.start}
+                        <CourtLabel id={court.id as CourtId} size="sm" />
+                        <p className="mt-0.5 text-sm font-bold text-ink/55">
+                          {g.firstBall} · {displayStart(court.start, g.timeSoon)}
                         </p>
                         <p className="mt-1 text-sm leading-snug text-ink/70">{rounds.join(" · ")}</p>
                         <p className="mt-1 text-[0.7rem] font-bold text-ink/40">

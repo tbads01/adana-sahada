@@ -114,6 +114,7 @@ export async function buildAdminDashboard() {
   const players = playersData.mainDraw as PlayerRow[];
   const program = content.tr.schedule.days;
   const courtNames = content.tr.schedule.courts;
+  const courtNamed = content.tr.schedule.courtNamed;
   const roundNames = content.tr.schedule.rounds;
 
   const todayBucket = analytics.days[today] ?? emptyDay();
@@ -219,12 +220,12 @@ export async function buildAdminDashboard() {
     weekday: program[index]?.weekday ?? "",
     date: program[index]?.date ?? "",
     stage: program[index]?.stage ?? "",
-    start: day.start,
+    start: day.start.trim() ? day.start : "Yakında",
     total: day.total,
     courts: day.courts.map((court) => ({
       id: court.id,
-      name: courtNames[court.id],
-      start: court.start,
+      name: courtNamed[court.id] ? `${courtNames[court.id]} · ${courtNamed[court.id]}` : courtNames[court.id],
+      start: court.start.trim() ? court.start : "Yakında",
       slots: court.slots.length,
     })),
     status: day.iso < today ? "geçti" : day.iso === today ? "bugün" : "bekliyor",

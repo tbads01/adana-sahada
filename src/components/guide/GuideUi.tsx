@@ -6,6 +6,7 @@ import { IconMegaphone, IconTicket } from "@/components/Icons";
 import { FOOD_COURT_STANDS, MATCH_DAYS, PRESS_CONFERENCE, copy, pressConferenceUpcoming } from "@/lib/guide";
 import { gCopy } from "@/lib/guide-content";
 import { useLanguage } from "@/lib/i18n";
+import type { CourtId } from "@/lib/match-plan";
 import { ROUTES } from "@/lib/routes";
 
 export function useGuide() {
@@ -105,6 +106,23 @@ export function TicketsCard({ className = "" }: { className?: string }) {
         </div>
       </div>
     </GuideCard>
+  );
+}
+
+export function CourtLabel({
+  id,
+  size = "md",
+}: {
+  id: CourtId;
+  size?: "sm" | "md";
+}) {
+  const { t } = useGuide();
+  const named = t.schedule.courtNamed[id];
+  return (
+    <div>
+      <p className={`font-display font-bold ${size === "sm" ? "text-base" : "text-lg"}`}>{t.schedule.courts[id]}</p>
+      {named ? <p className="mt-0.5 text-sm font-bold text-ink/55">{named}</p> : null}
+    </div>
   );
 }
 

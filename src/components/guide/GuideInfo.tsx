@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   IconCar,
   IconChild,
@@ -13,7 +12,7 @@ import {
   IconTicket,
   IconTrophy,
 } from "@/components/Icons";
-import { FAQS, INFO_ITEMS, copy } from "@/lib/guide";
+import { INFO_ITEMS, copy } from "@/lib/guide";
 import {
   INSTAGRAM,
   MAPS_URL,
@@ -23,6 +22,7 @@ import {
   TICKETS_URL,
 } from "@/lib/site";
 import { FoodStands, GuideCard, SectionHead, useGuide } from "./GuideUi";
+import { GuideFaq } from "./GuideFaq";
 import { GuideSponsors } from "./GuideSponsors";
 
 const ICONS = {
@@ -40,7 +40,6 @@ const ICONS = {
 
 export function GuideInfo() {
   const { g, t, locale } = useGuide();
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
     <div className="px-4 py-5">
@@ -77,6 +76,10 @@ export function GuideInfo() {
       </GuideCard>
 
       <div className="mt-6">
+        <GuideFaq />
+      </div>
+
+      <div className="mt-8">
         <SectionHead title={g.practical} />
         <div className="space-y-2">
           {INFO_ITEMS.map((item) => {
@@ -101,23 +104,6 @@ export function GuideInfo() {
               </GuideCard>
             );
           })}
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <SectionHead title={g.faq} />
-        <div className="divide-y divide-line-dark overflow-hidden rounded-2xl border border-line-dark">
-          {FAQS.map((faq, i) => (
-            <button
-              key={copy(locale, faq.q)}
-              type="button"
-              onClick={() => setOpenFaq(openFaq === i ? null : i)}
-              className="w-full px-4 py-3 text-left"
-            >
-              <p className="font-display text-base font-bold">{copy(locale, faq.q)}</p>
-              {openFaq === i ? <p className="mt-1 text-sm leading-relaxed text-ink/60">{copy(locale, faq.a)}</p> : null}
-            </button>
-          ))}
         </div>
       </div>
 

@@ -71,7 +71,12 @@ export function GuideLive() {
             {live.scoreboard.map((row) => (
               <GuideCard key={`${row.courtId}-${row.a.name}`}>
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-bold">{t.schedule.courts[row.courtId]}</p>
+                  <div>
+                    <p className="text-sm font-bold">{t.schedule.courts[row.courtId]}</p>
+                    {t.schedule.courtNamed[row.courtId] ? (
+                      <p className="text-[0.7rem] font-bold text-ink/45">{t.schedule.courtNamed[row.courtId]}</p>
+                    ) : null}
+                  </div>
                   <Pill tone={row.status === "live" ? "live" : "muted"}>
                     {row.status === "live" ? <LiveDot /> : null}
                     {row.status === "live" ? g.onCourt : g.upNext}
