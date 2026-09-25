@@ -2,9 +2,10 @@ const WORLD_FLAG = "🌍";
 const NEUTRAL_FLAGS = new Set(["RUS", "BLR"]);
 
 export const FLAGS: Record<string, string> = {
+  AND: "🇦🇩",
   ARG: "🇦🇷",
   ARM: "🇦🇲",
-  AND: "🇦🇩",
+  AUT: "🇦🇹",
   CAN: "🇨🇦",
   COL: "🇨🇴",
   CRO: "🇭🇷",
@@ -19,6 +20,7 @@ export const FLAGS: Record<string, string> = {
   POL: "🇵🇱",
   SRB: "🇷🇸",
   SUI: "🇨🇭",
+  SVK: "🇸🇰",
   TUR: "🇹🇷",
   USA: "🇺🇸",
 };

@@ -117,6 +117,8 @@ export type Messages = {
     lead: string;
     note: string;
     mainLabel: string;
+    qualLabel: string;
+    qualLead: string;
     turkeyLabel: string;
     watchLabel: string;
     rankLabel: string;
@@ -515,9 +517,11 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Oyuncu listesi",
       title: "Ana tablo",
       titleAccent: "açıklandı.",
-      lead: "Ana tabloya doğrudan kabul edilen 23 oyuncu açıklandı. Dört wildcard, bir special exempt ve dört eleme kazananı daha sonra duyurulacaktır.",
-      note: "Sıralamalar 17 Eylül 2026 tarihli WTA oyuncu profillerine göredir; kura yayınlanana kadar değişebilir.",
+      lead: "Ana tabloya doğrudan kabul edilen 23 oyuncu. Sıralamalar 21 Eylül 2026 WTA listesine göredir.",
+      note: "Sıralamalar 21 Eylül 2026 tarihli resmi WTA sıralamasına göredir. Kura yayınlanana kadar liste değişebilir.",
       mainLabel: "Ana tablo · doğrudan kabul",
+      qualLabel: "Eleme",
+      qualLead: "14 oyuncu eleme tablosunda. Dört kazanan ana tabloya yükselir. Wildcard ve special exempt henüz açıklanmadı.",
       turkeyLabel: "Türkiye’den",
       watchLabel: "Takipteki isimler",
       rankLabel: "WTA",
@@ -960,9 +964,11 @@ export const content: Record<Locale, Messages> = {
       eyebrow: "Player list",
       title: "The main draw",
       titleAccent: "is set.",
-      lead: "Twenty-three direct acceptances into the main draw have been announced. Four wildcards, one special exempt and four qualifying winners will be named later.",
-      note: "Rankings as of 17 September 2026 from WTA player profiles. Subject to change until the draw is published.",
+      lead: "Twenty-three players have direct acceptance into the main draw. Rankings are from the official WTA list of 21 September 2026.",
+      note: "Rankings as of 21 September 2026 from the official WTA ranking. The list may change until the draw is published.",
       mainLabel: "Main draw · direct acceptances",
+      qualLabel: "Qualifying",
+      qualLead: "Fourteen players are in the qualifying draw. Four winners will reach the main draw. Wildcards and the special exempt have not yet been named.",
       turkeyLabel: "From Türkiye",
       watchLabel: "Names to watch",
       rankLabel: "WTA",
