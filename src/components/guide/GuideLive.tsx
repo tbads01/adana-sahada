@@ -1,16 +1,22 @@
 "use client";
 
-import { flagFor } from "@/lib/flags";
-import { getLiveData } from "@/lib/guide";
+import { getLiveData, istanbulClock } from "@/lib/guide";
 import { INSTAGRAM, WTA_URL } from "@/lib/site";
 import { IconPlay } from "@/components/Icons";
-import { GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
+import { SectionHead, useGuide } from "./GuideUi";
+import { useWtaScores } from "./useWtaScores";
+import { WtaCourtList, WtaMatchRow } from "./GuideOrder";
+import { pickFocusDay } from "@/lib/wta-scores";
 
 export function GuideLive() {
-  const { g, t } = useGuide();
+  const { g } = useGuide();
   const live = getLiveData();
+  const wta = useWtaScores();
   const streamUrl = live.stream.url;
   const liveNow = live.stream.status === "live" && Boolean(streamUrl);
+  const clock = istanbulClock();
+  const onCourt = wta.matches.filter((row) => row.state === "live");
+  const board = pickFocusDay(wta.days, clock.iso);
 
   return (
     <div className="px-4 py-5">
@@ -60,34 +66,24 @@ export function GuideLive() {
         </a>
       </div>
 
-      {live.scoreboard.length ? (
-      <div className="mt-8">
-        <SectionHead title={g.scoreboard} />
-        <div className="space-y-2">
-            {live.scoreboard.map((row) => (
-              <GuideCard key={`${row.courtId}-${row.a.name}`}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold">{t.schedule.courts[row.courtId]}</p>
-                    {t.schedule.courtNamed[row.courtId] ? (
-                      <p className="text-[0.7rem] font-bold text-ink/45">{t.schedule.courtNamed[row.courtId]}</p>
-                    ) : null}
-                  </div>
-                  <Pill tone={row.status === "live" ? "live" : "muted"}>
-                    {row.status === "live" ? <LiveDot /> : null}
-                    {row.status === "live" ? g.onCourt : g.upNext}
-                  </Pill>
-                </div>
-                <p className="mt-2 text-sm font-semibold">
-                  {flagFor(row.a.country)} {row.a.name} · {flagFor(row.b.country)} {row.b.name}
-                </p>
-                <p className="mt-1 font-display text-lg font-extrabold tabular-nums">
-                  {row.sets.map((set) => set.join("–")).join("  ") || "0–0"}
-                </p>
-              </GuideCard>
+      {onCourt.length && !board ? (
+        <div className="mt-8">
+          <SectionHead title={g.onCourtNow} />
+          <ol className="mt-3 divide-y divide-line-dark rounded-2xl bg-paper-soft px-4 py-3">
+            {onCourt.map((row) => (
+              <WtaMatchRow key={row.id} row={row} />
             ))}
+          </ol>
         </div>
-      </div>
+      ) : null}
+
+      {board ? (
+        <div className="mt-8">
+          <SectionHead title={onCourt.length ? g.onCourtNow : board.iso === clock.iso ? g.todayMatches : g.upcomingMatches} />
+          <div className="mt-3">
+            <WtaCourtList day={board} />
+          </div>
+        </div>
       ) : null}
     </div>
   );

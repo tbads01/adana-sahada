@@ -134,67 +134,16 @@ export const MATCH_PLAN: MatchDay[] = [
         id: "cc",
         start: "10:30",
         slots: ["QS1", "QS1", "QS1"],
-        matches: [
-          {
-            round: "QS1",
-            start: "10:30",
-            a: { name: "Melis Keser", country: "TUR", wc: true },
-            b: { name: "Elena Ruxandra Bertea", country: "ROU", seed: 7 },
-          },
-          {
-            round: "QS1",
-            a: { name: "Ayşegül Mert", country: "TUR", wc: true },
-            b: { name: "Anastasia Tikhonova", country: "RUS", seed: 5 },
-          },
-          {
-            round: "QS1",
-            a: { name: "Piraye Özdemir", country: "TUR", wc: true },
-            b: { name: "Lois Boisson", country: "FRA", seed: 6 },
-          },
-        ],
       },
       {
         id: "c1",
         start: "10:30",
         slots: ["QS1", "QS1"],
-        matches: [
-          {
-            round: "QS1",
-            start: "10:30",
-            a: { name: "Viktoria Hruncakova", country: "SVK", seed: 2 },
-            b: { name: "Jaeda Daniel", country: "USA" },
-          },
-          {
-            round: "QS1",
-            a: { name: "Fiona Crawley", country: "USA", seed: 4 },
-            b: { name: "Adelina Lachinova", country: "LAT" },
-          },
-        ],
       },
       {
         id: "c2",
         start: "10:30",
         slots: ["QS1", "QS1", "QS1"],
-        matches: [
-          {
-            round: "QS1",
-            start: "10:30",
-            a: { name: "Anna Siskova", country: "CZE", seed: 1 },
-            b: { name: "Gina Feistel", country: "POL" },
-          },
-          {
-            round: "QS1",
-            a: { name: "Erika Andreeva", country: "RUS", seed: 3 },
-            b: { name: "İlay Yörük", country: "TUR" },
-          },
-          {
-            round: "QS1",
-            start: "14:00",
-            notBefore: true,
-            a: { name: "Isabella Shinikova", country: "BUL" },
-            b: { name: "Elena Micic", country: "AUS", seed: 8 },
-          },
-        ],
       },
     ],
   },
@@ -207,32 +156,11 @@ export const MATCH_PLAN: MatchDay[] = [
         id: "cc",
         start: "15:00",
         slots: ["QSF", "QSF"],
-        matches: [
-          {
-            round: "QSF",
-            start: "15:00",
-            a: { name: "Viktoria Hruncakova", country: "SVK", seed: 2 },
-            b: { name: "Anastasia Tikhonova", country: "RUS", seed: 5 },
-          },
-          {
-            round: "QSF",
-            a: { name: "Fiona Crawley", country: "USA", seed: 4 },
-            b: { name: "Lois Boisson", country: "FRA", seed: 6 },
-          },
-        ],
       },
       {
         id: "c2",
         start: "16:00",
         slots: ["QSF"],
-        matches: [
-          {
-            round: "QSF",
-            start: "16:00",
-            a: { name: "Erika Andreeva", country: "RUS", seed: 3 },
-            b: { name: "Elena Micic", country: "AUS", seed: 8 },
-          },
-        ],
       },
     ],
   },

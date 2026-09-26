@@ -20,6 +20,7 @@ import {
   featuredDayEvents,
   isPressConferenceEvent,
   namedBoardFor,
+  istanbulClock,
   sortedAnnouncements,
   tournamentPhase,
 } from "@/lib/guide";
@@ -30,7 +31,9 @@ import { GuideSponsors } from "./GuideSponsors";
 import { GuideNotify } from "./GuideNotify";
 import { CourtLines } from "./GuideArt";
 import { GuideFaq } from "./GuideFaq";
-import { NextPlayHero, TodayPlay } from "./GuideOrder";
+import { NextPlayHero, TodayPlay, WtaCourtList, WtaLiveHero, WtaNextHero } from "./GuideOrder";
+import { useWtaScores } from "./useWtaScores";
+import { heroMatches, pickFocusDay } from "@/lib/wta-scores";
 import { GuideCard, CourtLabel, Pill, PressConferenceCard, SectionHead, TicketsCard, useGuide } from "./GuideUi";
 
 function uniqueRoundNames(slots: MatchRound[], rounds: Record<MatchRound, string>) {
@@ -60,9 +63,16 @@ export function GuideHome() {
 
   const phase = tournamentPhase(now ?? Date.now());
   const stamp = now ?? Date.now();
+  const clock = istanbulClock(stamp);
   const board = namedBoardFor(stamp);
   const boardIndex = board ? MATCH_DAYS.findIndex((day) => day.iso === board.iso) : -1;
   const boardMeta = boardIndex >= 0 ? t.schedule.days[boardIndex] : undefined;
+  const wta = useWtaScores();
+  const liveScores = wta.matches.filter((row) => row.state === "live");
+  const focus = pickFocusDay(wta.days, clock.iso);
+  const focusIndex = focus ? MATCH_DAYS.findIndex((day) => day.iso === focus.iso) : -1;
+  const focusMeta = focusIndex >= 0 ? t.schedule.days[focusIndex] : undefined;
+  const upcomingHero = heroMatches(focus, liveScores);
   const featured = featuredDayEvents(t.schedule.days, stamp);
   const sideEvents = featured?.events.filter((item) => item.tag !== "match" && !isPressConferenceEvent(item)) ?? [];
   const upcoming = activeOrNextMatchDay(stamp);
@@ -116,7 +126,14 @@ export function GuideHome() {
 
         <GuideNotify tone="hero" />
 
-        {board ? (
+        {liveScores.length ? (
+          <WtaLiveHero matches={liveScores} />
+        ) : upcomingHero.length ? (
+          <WtaNextHero
+            matches={upcomingHero}
+            kicker={focus && focus.iso !== clock.iso ? `${focusMeta?.weekday} · ${g.nextMatch}` : undefined}
+          />
+        ) : board ? (
           <NextPlayHero
             day={board.day}
             nowMin={board.nowMin}
@@ -165,7 +182,18 @@ export function GuideHome() {
       </section>
 
       <div className="min-w-0 space-y-6 px-4 py-5">
-        {board ? (
+        {focus ? (
+          <div>
+            <SectionHead
+              title={focus.iso === clock.iso ? g.todayMatches : `${focusMeta?.weekday} · ${focusMeta?.date}`}
+              href={ROUTES.matches}
+              action={g.seeAll}
+            />
+            <div className="mt-3">
+              <WtaCourtList day={focus} />
+            </div>
+          </div>
+        ) : board ? (
           <TodayPlay
             day={board.day}
             nowMin={board.nowMin}
@@ -217,7 +245,7 @@ export function GuideHome() {
 
         <GuideFaq preview={4} />
 
-        {!board && upcoming.day.courts.length ? (
+        {!focus && !board && upcoming.day.courts.length ? (
           <div>
             <SectionHead title={g.upcomingMatches} href={ROUTES.matches} action={g.seeAll} />
             <p className="mb-3 text-sm font-bold text-ink/70">

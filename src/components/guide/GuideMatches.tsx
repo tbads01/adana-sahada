@@ -1,63 +1,31 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { flagFor } from "@/lib/flags";
+import { useMemo, useState } from "react";
 import {
   MATCH_DAYS,
   activeOrNextMatchDay,
   displayStart,
-  getLiveData,
-  istanbulClock,
   namedBoardFor,
-  type ScoreboardMatch,
 } from "@/lib/guide";
-import { groupLiveOrder, liveOrder, roundKind, type CourtId, type MatchRound } from "@/lib/match-plan";
+import { roundKind, type CourtId, type MatchRound } from "@/lib/match-plan";
 import { WTA_URL } from "@/lib/site";
-import { MatchPairing, playTimeLabel } from "./GuideOrder";
-import { DayTabs, CourtLabel, GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
-
-const STATUS_TONE = {
-  live: "live",
-  next: "yellow",
-  complete: "muted",
-  warmup: "ink",
-} as const;
-
-function scoreLine(match: ScoreboardMatch) {
-  if (!match.sets.length) return "0–0";
-  return match.sets.map((set) => set.join("–")).join("  ");
-}
+import { WtaCourtList } from "./GuideOrder";
+import { useWtaScores } from "./useWtaScores";
+import { CourtLabel, DayTabs, GuideCard, SectionHead, useGuide } from "./GuideUi";
 
 export function GuideMatches() {
   const { g, t } = useGuide();
   const playable = useMemo(() => MATCH_DAYS.filter((d) => d.courts.length), []);
   const initial = namedBoardFor()?.iso ?? activeOrNextMatchDay().iso;
   const [selected, setSelected] = useState(initial);
-  const [now, setNow] = useState<number | null>(null);
-  const live = getLiveData();
+  const wta = useWtaScores();
   const day = playable.find((d) => d.iso === selected) ?? playable[0];
   const dayIndex = MATCH_DAYS.findIndex((d) => d.iso === selected);
   const meta = t.schedule.days[dayIndex];
-
-  useEffect(() => {
-    const tick = () => setNow(Date.now());
-    tick();
-    const id = window.setInterval(tick, 15_000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const clock = istanbulClock(now ?? Date.now());
-  const isToday = day.iso === clock.iso;
-  const named = Boolean(day.courts.some((court) => court.matches?.length));
-  const remaining = named ? liveOrder(day, isToday ? clock.minutes : null) : [];
-  const exhausted = named && isToday && remaining.length === 0;
-  const plays = exhausted ? liveOrder(day, null) : remaining;
-  const courts = groupLiveOrder(plays);
-
-  const board = useMemo(
-    () => live.scoreboard.filter((row) => day.courts.some((court) => court.id === row.courtId)),
-    [live.scoreboard, day],
-  );
+  const wtaDay = wta.days.find((item) => item.iso === selected);
+  const start = wtaDay?.start || day.start;
+  const total = wtaDay ? wtaDay.courts.reduce((n, court) => n + court.matches.length, 0) : day.total;
+  const courts = wtaDay?.courts.map((court) => court.courtId) ?? day.courts.map((court) => court.id);
 
   return (
     <div className="px-4 py-5">
@@ -72,89 +40,46 @@ export function GuideMatches() {
         <p className="text-[0.62rem] font-bold tracking-[0.14em] text-ink/40 uppercase">{meta?.stage}</p>
         <p className="mt-1 font-display text-xl font-bold">{meta?.date}</p>
         <p className="mt-2 text-sm text-ink/55">
-          {g.firstBall} · {displayStart(day.start, g.timeSoon)} · {day.total} {g.matchesCount}
+          {g.firstBall} · {displayStart(start, g.timeSoon)} · {total} {g.matchesCount}
         </p>
         <p className="mt-1 text-sm font-bold text-ink/70">
-          {day.courts.map((court) => {
-            const named = t.schedule.courtNamed[court.id as CourtId];
-            return named ? `${t.schedule.courts[court.id as CourtId]} · ${named}` : t.schedule.courts[court.id as CourtId];
+          {courts.map((id) => {
+            const named = t.schedule.courtNamed[id as CourtId];
+            return named ? `${t.schedule.courts[id as CourtId]} · ${named}` : t.schedule.courts[id as CourtId];
           }).join(" · ")}
         </p>
       </GuideCard>
 
-      {board.length ? (
-        <div className="mt-6">
-          <SectionHead title={g.scoreboard} />
-          <div className="space-y-2">
-            {board.map((row) => (
-              <ScoreCard key={`${row.courtId}-${row.a.name}`} match={row} />
-            ))}
-          </div>
-        </div>
-      ) : null}
-
       <div className="mt-6">
         <SectionHead title={t.schedule.matchEyebrow} />
-        {named ? (
-          <div className="mt-3 space-y-3">
-            {courts.map(({ courtId, matches }) => {
-              const court = day.courts.find((item) => item.id === courtId);
-              return (
-                <GuideCard key={courtId}>
-                  <CourtLabel id={courtId} />
-                  <p className="mt-0.5 text-sm font-bold text-ink/50">
-                    {g.firstBall} · {displayStart(court?.start ?? day.start, g.timeSoon)}
-                  </p>
-                  <ol className="mt-3 divide-y divide-line-dark">
-                    {matches.map((play) => (
-                      <li key={`${play.courtId}-${play.index}`} className="py-3 first:pt-2 last:pb-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className="text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">
-                            {playTimeLabel(play, court?.start ?? day.start, g.followedBy, g.notBefore)}
-                          </p>
-                          {!exhausted && play.status === "live" ? (
-                            <Pill tone="live">
-                              <LiveDot />
-                              {g.onCourt}
-                            </Pill>
-                          ) : !exhausted && play.status === "next" ? (
-                            <Pill tone="soft">{g.upNext}</Pill>
-                          ) : null}
-                        </div>
-                        <div className={play.status === "later" || exhausted ? "opacity-70" : ""}>
-                          <MatchPairing match={play.match} />
-                        </div>
-                      </li>
-                    ))}
-                  </ol>
-                </GuideCard>
-              );
-            })}
+        {wtaDay ? (
+          <div className="mt-3">
+            <WtaCourtList day={wtaDay} />
           </div>
         ) : (
-        <div className="space-y-3">
-          {day.courts.map((court) => (
-            <GuideCard key={court.id}>
-              <CourtLabel id={court.id as CourtId} />
-              <p className="mt-0.5 text-sm font-bold text-ink/50">
-                {g.firstBall} · {displayStart(court.start, g.timeSoon)}
-              </p>
-              <ol className="mt-3 space-y-2">
-                {court.slots.map((round, i) => (
-                  <li key={`${court.id}-${round}-${i}`} className="flex items-center justify-between gap-3 text-sm">
-                    <span className="flex items-center gap-2">
-                      <RoundChip round={round} />
-                      <span className="font-semibold">{t.schedule.rounds[round]}</span>
-                    </span>
-                    <span className="shrink-0 text-right text-ink/40">
-                      {i === 0 ? displayStart(court.start, g.timeSoon) : g.followedBy}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </GuideCard>
-          ))}
-        </div>
+          <div className="mt-3 space-y-3">
+            {day.courts.map((court) => (
+              <GuideCard key={court.id}>
+                <CourtLabel id={court.id as CourtId} />
+                <p className="mt-0.5 text-sm font-bold text-ink/50">
+                  {g.firstBall} · {displayStart(court.start, g.timeSoon)}
+                </p>
+                <ol className="mt-3 space-y-2">
+                  {court.slots.map((round, i) => (
+                    <li key={`${court.id}-${round}-${i}`} className="flex items-center justify-between gap-3 text-sm">
+                      <span className="flex items-center gap-2">
+                        <RoundChip round={round} />
+                        <span className="font-semibold">{t.schedule.rounds[round]}</span>
+                      </span>
+                      <span className="shrink-0 text-right text-ink/40">
+                        {i === 0 ? displayStart(court.start, g.timeSoon) : g.followedBy}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </GuideCard>
+            ))}
+          </div>
         )}
       </div>
 
@@ -164,12 +89,7 @@ export function GuideMatches() {
         <span className="rounded-full bg-yellow px-2 py-1 text-ink">{g.legendDoubles}</span>
       </div>
 
-      <a
-        href={WTA_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="btn btn-dark mt-6 w-full"
-      >
+      <a href={WTA_URL} target="_blank" rel="noreferrer" className="btn btn-dark mt-6 w-full">
         {g.officialScores} ↗
       </a>
     </div>
@@ -181,47 +101,4 @@ function RoundChip({ round }: { round: MatchRound }) {
   const cls =
     kind === "qual" ? "bg-green/15 text-green-deep" : kind === "doubles" ? "bg-yellow text-ink" : "bg-ink text-paper";
   return <span className={`rounded-full px-2 py-0.5 text-[0.58rem] font-bold ${cls}`}>{round}</span>;
-}
-
-function ScoreCard({ match }: { match: ScoreboardMatch }) {
-  const { g, t } = useGuide();
-  const tone = STATUS_TONE[match.status];
-  const label =
-    match.status === "live" ? g.onCourt : match.status === "next" ? g.upNext : match.status === "warmup" ? g.warmup : g.complete;
-
-  return (
-    <GuideCard>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="text-sm font-bold">{t.schedule.courts[match.courtId]}</p>
-          {t.schedule.courtNamed[match.courtId] ? (
-            <p className="text-[0.7rem] font-bold text-ink/45">{t.schedule.courtNamed[match.courtId]}</p>
-          ) : null}
-        </div>
-        <Pill tone={tone}>
-          {match.status === "live" ? <LiveDot /> : null}
-          {label}
-        </Pill>
-      </div>
-      <p className="mt-1 text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">{t.schedule.rounds[match.round]}</p>
-      <div className="mt-3 space-y-1.5">
-        <PlayerRow name={match.a.name} country={match.a.country} serving={match.serving === "a"} />
-        <PlayerRow name={match.b.name} country={match.b.country} serving={match.serving === "b"} />
-      </div>
-      <p className="mt-3 font-display text-xl font-extrabold tabular-nums">{scoreLine(match)}</p>
-    </GuideCard>
-  );
-}
-
-function PlayerRow({ name, country, serving }: { name: string; country: string; serving: boolean }) {
-  const { g } = useGuide();
-  return (
-    <div className="flex items-center justify-between gap-2">
-      <p className="font-semibold">
-        <span className="mr-1.5">{flagFor(country) || country}</span>
-        {name}
-      </p>
-      {serving ? <span className="text-[0.58rem] font-bold tracking-wide text-green-deep uppercase">{g.serving}</span> : null}
-    </div>
-  );
 }
