@@ -19,7 +19,7 @@ import {
   displayStart,
   featuredDayEvents,
   isPressConferenceEvent,
-  istanbulClock,
+  namedBoardFor,
   sortedAnnouncements,
   tournamentPhase,
 } from "@/lib/guide";
@@ -60,10 +60,9 @@ export function GuideHome() {
 
   const phase = tournamentPhase(now ?? Date.now());
   const stamp = now ?? Date.now();
-  const clock = istanbulClock(stamp);
-  const nowMin = now == null ? null : clock.minutes;
-  const todayDay = MATCH_DAYS.find((day) => day.iso === clock.iso);
-  const namedToday = Boolean(todayDay?.courts.some((court) => court.matches?.length));
+  const board = namedBoardFor(stamp);
+  const boardIndex = board ? MATCH_DAYS.findIndex((day) => day.iso === board.iso) : -1;
+  const boardMeta = boardIndex >= 0 ? t.schedule.days[boardIndex] : undefined;
   const featured = featuredDayEvents(t.schedule.days, stamp);
   const sideEvents = featured?.events.filter((item) => item.tag !== "match" && !isPressConferenceEvent(item)) ?? [];
   const upcoming = activeOrNextMatchDay(stamp);
@@ -117,8 +116,12 @@ export function GuideHome() {
 
         <GuideNotify tone="hero" />
 
-        {namedToday && todayDay ? (
-          <NextPlayHero day={todayDay} nowMin={nowMin} />
+        {board ? (
+          <NextPlayHero
+            day={board.day}
+            nowMin={board.nowMin}
+            kicker={board.isToday ? undefined : `${boardMeta?.weekday} · ${g.nextMatch}`}
+          />
         ) : (
         <div className="mt-4 rounded-2xl bg-panel p-4">
           {phase === "ended" ? (
@@ -162,7 +165,14 @@ export function GuideHome() {
       </section>
 
       <div className="min-w-0 space-y-6 px-4 py-5">
-        {namedToday && todayDay ? <TodayPlay day={todayDay} nowMin={nowMin} href={ROUTES.matches} /> : null}
+        {board ? (
+          <TodayPlay
+            day={board.day}
+            nowMin={board.nowMin}
+            href={ROUTES.matches}
+            title={board.isToday ? g.todayMatches : `${boardMeta?.weekday} · ${boardMeta?.date}`}
+          />
+        ) : null}
 
         <div className="grid grid-cols-4 gap-2">
             {quick.map((item) => {
@@ -207,7 +217,7 @@ export function GuideHome() {
 
         <GuideFaq preview={4} />
 
-        {!namedToday && upcoming.day.courts.length ? (
+        {!board && upcoming.day.courts.length ? (
           <div>
             <SectionHead title={g.upcomingMatches} href={ROUTES.matches} action={g.seeAll} />
             <p className="mb-3 text-sm font-bold text-ink/70">

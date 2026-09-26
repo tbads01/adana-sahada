@@ -200,11 +200,40 @@ export const MATCH_PLAN: MatchDay[] = [
   },
   {
     dateKey: "27",
-    start: "10:30",
-    total: 4,
+    start: "15:00",
+    total: 3,
     courts: [
-      { id: "cc", start: "10:30", slots: ["QSF", "QSF"] },
-      { id: "c1", start: "10:30", slots: ["QSF", "QSF"] },
+      {
+        id: "cc",
+        start: "15:00",
+        slots: ["QSF", "QSF"],
+        matches: [
+          {
+            round: "QSF",
+            start: "15:00",
+            a: { name: "Viktoria Hruncakova", country: "SVK", seed: 2 },
+            b: { name: "Anastasia Tikhonova", country: "RUS", seed: 5 },
+          },
+          {
+            round: "QSF",
+            a: { name: "Fiona Crawley", country: "USA", seed: 4 },
+            b: { name: "Lois Boisson", country: "FRA", seed: 6 },
+          },
+        ],
+      },
+      {
+        id: "c2",
+        start: "16:00",
+        slots: ["QSF"],
+        matches: [
+          {
+            round: "QSF",
+            start: "16:00",
+            a: { name: "Erika Andreeva", country: "RUS", seed: 3 },
+            b: { name: "Elena Micic", country: "AUS", seed: 8 },
+          },
+        ],
+      },
     ],
   },
   {

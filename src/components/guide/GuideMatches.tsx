@@ -8,6 +8,7 @@ import {
   displayStart,
   getLiveData,
   istanbulClock,
+  namedBoardFor,
   type ScoreboardMatch,
 } from "@/lib/guide";
 import { groupLiveOrder, liveOrder, roundKind, type CourtId, type MatchRound } from "@/lib/match-plan";
@@ -30,7 +31,7 @@ function scoreLine(match: ScoreboardMatch) {
 export function GuideMatches() {
   const { g, t } = useGuide();
   const playable = useMemo(() => MATCH_DAYS.filter((d) => d.courts.length), []);
-  const initial = activeOrNextMatchDay().iso;
+  const initial = namedBoardFor()?.iso ?? activeOrNextMatchDay().iso;
   const [selected, setSelected] = useState(initial);
   const [now, setNow] = useState<number | null>(null);
   const live = getLiveData();
@@ -47,9 +48,10 @@ export function GuideMatches() {
 
   const clock = istanbulClock(now ?? Date.now());
   const isToday = day.iso === clock.iso;
-  const nowMin = isToday ? (now == null ? null : clock.minutes) : null;
   const named = Boolean(day.courts.some((court) => court.matches?.length));
-  const plays = named ? liveOrder(day, nowMin) : [];
+  const remaining = named ? liveOrder(day, isToday ? clock.minutes : null) : [];
+  const exhausted = named && isToday && remaining.length === 0;
+  const plays = exhausted ? liveOrder(day, null) : remaining;
   const courts = groupLiveOrder(plays);
 
   const board = useMemo(
@@ -93,9 +95,7 @@ export function GuideMatches() {
 
       <div className="mt-6">
         <SectionHead title={t.schedule.matchEyebrow} />
-        {named && isToday && !plays.length ? (
-          <p className="mt-3 text-sm text-ink/55">{g.playDone}</p>
-        ) : named ? (
+        {named ? (
           <div className="mt-3 space-y-3">
             {courts.map(({ courtId, matches }) => {
               const court = day.courts.find((item) => item.id === courtId);
@@ -112,16 +112,16 @@ export function GuideMatches() {
                           <p className="text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">
                             {playTimeLabel(play, court?.start ?? day.start, g.followedBy, g.notBefore)}
                           </p>
-                          {play.status === "live" ? (
+                          {!exhausted && play.status === "live" ? (
                             <Pill tone="live">
                               <LiveDot />
                               {g.onCourt}
                             </Pill>
-                          ) : play.status === "next" ? (
+                          ) : !exhausted && play.status === "next" ? (
                             <Pill tone="soft">{g.upNext}</Pill>
                           ) : null}
                         </div>
-                        <div className={play.status === "later" ? "opacity-70" : ""}>
+                        <div className={play.status === "later" || exhausted ? "opacity-70" : ""}>
                           <MatchPairing match={play.match} />
                         </div>
                       </li>

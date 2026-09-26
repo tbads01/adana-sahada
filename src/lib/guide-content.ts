@@ -42,7 +42,7 @@ export const guideCopy = {
     warmup: "Isınma",
     serving: "Servis",
     draftNote:
-      "Eleme 1. tur Cumartesi saat 10:30’da başlar. Maçlar süpervizör kararıyla başka korta alınabilir.",
+      "Eleme finalleri Pazar saat 15:00’de Merkez Kort ve İpek Soylu Kortu’nda başlar. Maçlar süpervizör kararıyla başka korta alınabilir.",
     followedBy: "Ardından",
     notBefore: "En erken",
     wildcard: "WC",
@@ -154,7 +154,7 @@ export const guideCopy = {
     warmup: "Warm-up",
     serving: "Serving",
     draftNote:
-      "Qualifying round one begins Saturday at 10:30. Matches may be moved at the supervisor’s discretion.",
+      "Qualifying finals begin Sunday at 15:00 on Centre Court and İpek Soylu Court. Matches may be moved at the supervisor’s discretion.",
     followedBy: "Followed by",
     notBefore: "Not before",
     wildcard: "WC",

@@ -349,7 +349,7 @@ export const content: Record<Locale, Messages> = {
       matchTitle: "Saatler ve",
       matchAccent: "turlar.",
       matchNote:
-        "Eleme maçları saat 10:30’da başlar. Ana tablo saatleri 28 Eylül’den itibaren duyurulacaktır. Program değişikliklerinde bu sayfa güncellenir.",
+        "Eleme 1. tur Cumartesi saat 10:30’da, eleme finalleri Pazar saat 15:00’de başlar. Ana tablo saatleri 28 Eylül’den itibaren duyurulacaktır. Program değişikliklerinde bu sayfa güncellenir.",
       startsLabel: "İlk maç",
       followedBy: "Ardından",
       matchCount: "maç",
@@ -389,7 +389,7 @@ export const content: Record<Locale, Messages> = {
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
             { time: "10:30", title: "Eleme 1. tur · Merkez Kort · Çağla Büyükakçay · İpek Soylu", tag: "match" },
             { time: "13:00–15:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
           ],
         },
         {
@@ -398,9 +398,9 @@ export const content: Record<Locale, Messages> = {
           stage: "Ön eleme",
           events: [
             { time: "08:00–10:00", title: "Zumba", tag: "event" },
-            { time: "10:30", title: "Eleme finalleri · Merkez Kort · Çağla Büyükakçay Kortu", tag: "match" },
             { time: "13:00–15:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00", title: "Eleme finalleri · Merkez Kort · İpek Soylu Kortu", tag: "match" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
           ],
         },
         {
@@ -409,7 +409,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Ana etap · ilk gün",
           events: [
             { time: "12:00", title: "Gösteri maçı · Fan Zone", tag: "match" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "Duyurulacak", title: "Tekler ve çiftler 1. tur", tag: "match" },
           ],
         },
@@ -418,7 +418,7 @@ export const content: Record<Locale, Messages> = {
           date: "29 Eylül",
           stage: "2. gün",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "Duyurulacak", title: "Tekler 1. tur", tag: "match" },
           ],
         },
@@ -427,7 +427,7 @@ export const content: Record<Locale, Messages> = {
           date: "30 Eylül",
           stage: "3. gün",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "Duyurulacak", title: "Tekler 2. tur · Çiftler 1. tur", tag: "match" },
           ],
         },
@@ -436,7 +436,7 @@ export const content: Record<Locale, Messages> = {
           date: "1 Ekim",
           stage: "4. gün",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "Duyurulacak", title: "Tekler 2. tur · Çiftler çeyrek final", tag: "match" },
           ],
         },
@@ -445,7 +445,7 @@ export const content: Record<Locale, Messages> = {
           date: "2 Ekim",
           stage: "Çeyrek final",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "Duyurulacak", title: "Tekler çeyrek final · Çiftler yarı final", tag: "match" },
           ],
         },
@@ -456,7 +456,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "08:00–10:00", title: "Zumba · Cardio Fitness · Coffee Disco", tag: "event" },
             { time: "11:00–13:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "Duyurulacak", title: "Tekler yarı final · Çiftler final", tag: "match" },
           ],
         },
@@ -467,7 +467,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
             { time: "12:00–14:00", title: "Sürpriz yarışmalar · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "Duyurulacak", title: "Tekler final · Merkez Kort", tag: "match" },
           ],
         },
@@ -796,7 +796,7 @@ export const content: Record<Locale, Messages> = {
       matchTitle: "Times and",
       matchAccent: "rounds.",
       matchNote:
-        "Qualifying begins at 10:30. Main-draw start times will be announced from 28 September. This page is updated if the schedule changes.",
+        "Qualifying round one begins Saturday at 10:30; qualifying finals begin Sunday at 15:00. Main-draw start times will be announced from 28 September. This page is updated if the schedule changes.",
       startsLabel: "First match",
       followedBy: "Then",
       matchCount: "matches",
@@ -836,7 +836,7 @@ export const content: Record<Locale, Messages> = {
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
             { time: "10:30", title: "Qualifying R1 · Centre Court · Çağla Büyükakçay · İpek Soylu", tag: "match" },
             { time: "13:00–15:00", title: "Surprise contests · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
           ],
         },
         {
@@ -845,9 +845,9 @@ export const content: Record<Locale, Messages> = {
           stage: "Qualifying",
           events: [
             { time: "08:00–10:00", title: "Zumba", tag: "event" },
-            { time: "10:30", title: "Qualifying finals · Centre Court · Çağla Büyükakçay Court", tag: "match" },
             { time: "13:00–15:00", title: "Surprise contests · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00", title: "Qualifying finals · Centre Court · İpek Soylu Court", tag: "match" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
           ],
         },
         {
@@ -856,7 +856,7 @@ export const content: Record<Locale, Messages> = {
           stage: "Main draw · day 1",
           events: [
             { time: "12:00", title: "Exhibition match · Fan Zone", tag: "match" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "TBA", title: "Singles and doubles R1", tag: "match" },
           ],
         },
@@ -865,7 +865,7 @@ export const content: Record<Locale, Messages> = {
           date: "29 September",
           stage: "Day 2",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "TBA", title: "Singles R1", tag: "match" },
           ],
         },
@@ -874,7 +874,7 @@ export const content: Record<Locale, Messages> = {
           date: "30 September",
           stage: "Day 3",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "TBA", title: "Singles R2 · Doubles R1", tag: "match" },
           ],
         },
@@ -883,7 +883,7 @@ export const content: Record<Locale, Messages> = {
           date: "1 October",
           stage: "Day 4",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "TBA", title: "Singles R2 · Doubles quarterfinals", tag: "match" },
           ],
         },
@@ -892,7 +892,7 @@ export const content: Record<Locale, Messages> = {
           date: "2 October",
           stage: "Quarterfinals",
           events: [
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "TBA", title: "Singles quarterfinals · Doubles semifinals", tag: "match" },
           ],
         },
@@ -903,7 +903,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "08:00–10:00", title: "Zumba · Cardio Fitness · Coffee Disco", tag: "event" },
             { time: "11:00–13:00", title: "Surprise contests · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "TBA", title: "Singles semifinals · Doubles final", tag: "match" },
           ],
         },
@@ -914,7 +914,7 @@ export const content: Record<Locale, Messages> = {
           events: [
             { time: "08:00–13:00", title: "Yogakioo Yoga", tag: "event" },
             { time: "12:00–14:00", title: "Surprise contests · Fan Zone", tag: "event" },
-            { time: "14:00–16:00", title: "DJ Yusuf Erdem", tag: "music" },
+            { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
             { time: "TBA", title: "Singles final · Centre Court", tag: "match" },
           ],
         },

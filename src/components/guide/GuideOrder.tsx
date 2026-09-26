@@ -67,7 +67,15 @@ function statusPill(status: PlayStatus, live: string, next: string) {
   return null;
 }
 
-export function NextPlayHero({ day, nowMin }: { day: MatchDay; nowMin: number | null }) {
+export function NextPlayHero({
+  day,
+  nowMin,
+  kicker,
+}: {
+  day: MatchDay;
+  nowMin: number | null;
+  kicker?: string;
+}) {
   const { g, t } = useGuide();
   const plays = liveOrder(day, nowMin).filter((play) => play.status === "live" || play.status === "next");
   const [focus, setFocus] = useState(0);
@@ -90,7 +98,7 @@ export function NextPlayHero({ day, nowMin }: { day: MatchDay; nowMin: number | 
   if (!plays.length) return null;
 
   const live = plays.some((play) => play.status === "live");
-  const title = live ? g.onCourtNow : g.nextMatch;
+  const title = kicker || (live ? g.onCourtNow : g.nextMatch);
   const active = plays[focus % plays.length];
   const accent = active?.status === "live" ? "bg-green" : "bg-yellow";
 
@@ -146,21 +154,24 @@ export function TodayPlay({
   day,
   nowMin,
   href,
+  title,
 }: {
   day: MatchDay;
   nowMin: number | null;
   href?: string;
+  title?: string;
 }) {
   const { g } = useGuide();
   const plays = liveOrder(day, nowMin);
   const courts = groupLiveOrder(plays);
+  const heading = title || g.todayMatches;
 
   if (!day.courts.some((court) => court.matches?.length)) return null;
 
   if (!plays.length) {
     return (
       <div>
-        <SectionHead title={g.todayMatches} href={href} action={href ? g.seeAll : undefined} />
+        <SectionHead title={heading} href={href} action={href ? g.seeAll : undefined} />
         <p className="mt-2 text-sm text-ink/55">{g.playDone}</p>
       </div>
     );
@@ -168,7 +179,7 @@ export function TodayPlay({
 
   return (
     <div>
-      <SectionHead title={g.todayMatches} href={href} action={href ? g.seeAll : undefined} />
+      <SectionHead title={heading} href={href} action={href ? g.seeAll : undefined} />
       <div className="mt-3 space-y-3">
         {courts.map(({ courtId, matches }) => (
           <CourtPlayCard key={courtId} courtId={courtId} matches={matches} courtStart={day.start} />

@@ -1,6 +1,6 @@
 import type { Locale } from "./content";
 import live from "./live.json";
-import { MATCH_PLAN, isStartTba, type CourtId, type MatchDay, type MatchRound } from "./match-plan";
+import { MATCH_PLAN, isStartTba, liveOrder, type CourtId, type MatchDay, type MatchRound } from "./match-plan";
 import { ACCREDITATION_EMAIL, INSTAGRAM, LIVE_STREAM_URL, MAPS_URL, TICKETS_URL, TOURNAMENT_END, TOURNAMENT_START, WTA_URL } from "./site";
 
 export type Copy = { tr: string; en: string };
@@ -87,12 +87,19 @@ export function matchDayForDate(iso: string): MatchDay | undefined {
 }
 
 export function activeOrNextMatchDay(now = Date.now()) {
-  const today = istanbulIsoDate(now);
+  const clock = istanbulClock(now);
   const playable = MATCH_PLAN.filter((day) => day.courts.length);
-  const todayPlan = playable.find((day) => dateKeyToIso(day.dateKey) === today);
-  if (todayPlan) return { day: todayPlan, iso: today, isToday: true };
-  const next = playable.find((day) => dateKeyToIso(day.dateKey) > today);
-  if (next) return { day: next, iso: dateKeyToIso(next.dateKey), isToday: false };
+  for (const day of playable) {
+    const iso = dateKeyToIso(day.dateKey);
+    if (iso < clock.iso) continue;
+    const isToday = iso === clock.iso;
+    const named = day.courts.some((court) => court.matches?.length);
+    if (named) {
+      const nowMin = isToday ? clock.minutes : null;
+      if (!liveOrder(day, nowMin).length) continue;
+    }
+    return { day, iso, isToday };
+  }
   const last = playable[playable.length - 1] ?? MATCH_PLAN[MATCH_PLAN.length - 1];
   return { day: last, iso: dateKeyToIso(last.dateKey), isToday: false };
 }
@@ -163,7 +170,6 @@ export const ANNOUNCEMENTS: Announcement[] = [
   {
     id: "oop-26",
     date: "2026-09-25",
-    pin: true,
     tag: { tr: "Maç", en: "Matches" },
     title: {
       tr: "Cumartesi eleme programı açıklandı",
@@ -172,6 +178,21 @@ export const ANNOUNCEMENTS: Announcement[] = [
     body: {
       tr: "Eleme 1. tur 26 Eylül saat 10:30’da Merkez Kort, Çağla Büyükakçay Kortu ve İpek Soylu Kortu’nda başlar. Çekişmeler Maçlar sayfasında.",
       en: "Qualifying round one starts on 26 September at 10:30 on Centre Court, Çağla Büyükakçay Court and İpek Soylu Court. The order of play is on Matches.",
+    },
+    href: "/maclar",
+  },
+  {
+    id: "oop-27",
+    date: "2026-09-26",
+    pin: true,
+    tag: { tr: "Maç", en: "Matches" },
+    title: {
+      tr: "Pazar eleme programı açıklandı",
+      en: "Sunday’s qualifying order of play is out",
+    },
+    body: {
+      tr: "Eleme finalleri 27 Eylül’de Merkez Kort’ta saat 15:00’de, İpek Soylu Kortu’nda saat 16:00’da başlar. Çekişmeler Maçlar sayfasında.",
+      en: "Qualifying finals on 27 September start at 15:00 on Centre Court and at 16:00 on İpek Soylu Court. The order of play is on Matches.",
     },
     href: "/maclar",
   },
@@ -348,8 +369,8 @@ export const FAQS: Faq[] = [
   {
     q: { tr: "Maç saatleri kesin mi?", en: "Are match times fixed?" },
     a: {
-      tr: "Maç saatleri günün koşullarına göre değişebilir. Eleme maçları saat 10:30’da başlar. Ana tablo saatleri 28 Eylül’den itibaren bu sitede duyurulur.",
-      en: "Match times may change according to conditions on the day. Qualifying begins at 10:30. Main-draw start times will be published on this site from 28 September.",
+      tr: "Maç saatleri günün koşullarına göre değişebilir. Eleme 1. tur Cumartesi saat 10:30’da, eleme finalleri Pazar saat 15:00’de başlar. Ana tablo saatleri 28 Eylül’den itibaren bu sitede duyurulur.",
+      en: "Match times may change according to conditions on the day. Qualifying round one begins Saturday at 10:30; qualifying finals begin Sunday at 15:00. Main-draw start times will be published on this site from 28 September.",
     },
   },
   {
@@ -436,6 +457,20 @@ export const MATCH_DAYS = MATCH_PLAN.map((day) => ({
   iso: dateKeyToIso(day.dateKey),
 }));
 
+export function namedBoardFor(now = Date.now()) {
+  const clock = istanbulClock(now);
+  for (const day of MATCH_DAYS) {
+    if (day.iso < clock.iso) continue;
+    if (!day.courts.some((court) => court.matches?.length)) continue;
+    const isToday = day.iso === clock.iso;
+    const nowMin = isToday ? clock.minutes : null;
+    const plays = liveOrder(day, nowMin);
+    if (!plays.length) continue;
+    return { day, iso: day.iso, isToday, nowMin, plays };
+  }
+  return null;
+}
+
 export const PRESS_CONFERENCE = {
   iso: "2026-09-25",
   time: "18:00",
@@ -503,8 +538,8 @@ export const ATTRACTIONS: Attraction[] = [
     icon: "music",
     title: { tr: "DJ performansı", en: "DJ sets" },
     body: {
-      tr: "DJ Yusuf Erdem çoğu gün saat 14:00–16:00 arasında sahne alır. 3 Ekim sabahı Coffee Disco vardır.",
-      en: "DJ Yusuf Erdem performs most days from 14:00 to 16:00. Coffee Disco is on the morning of 3 October.",
+      tr: "DJ Yusuf Erdem her gün saat 15:00’den sonra sahne alır. 3 Ekim sabahı Coffee Disco vardır.",
+      en: "DJ Yusuf Erdem performs every day from 15:00. Coffee Disco is on the morning of 3 October.",
     },
   },
   {
@@ -549,9 +584,11 @@ export function eventStartMinutes(time: string) {
 }
 
 export function eventEndMinutes(time: string, tag: TimedEvent["tag"]) {
+  if (/sonrası|onwards/i.test(time)) return 22 * 60;
   if (time.includes("–")) {
     const end = time.split("–")[1].trim();
     const [h, m] = end.split(":").map(Number);
+    if (!end || Number.isNaN(h)) return 22 * 60;
     return h * 60 + (m || 0);
   }
   return eventStartMinutes(time) + (tag === "match" ? 100 : 60);
