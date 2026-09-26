@@ -17,9 +17,10 @@ import {
   activeOrNextMatchDay,
   copy,
   displayStart,
-  sortedAnnouncements,
   featuredDayEvents,
   isPressConferenceEvent,
+  istanbulClock,
+  sortedAnnouncements,
   tournamentPhase,
 } from "@/lib/guide";
 import { ROUTES } from "@/lib/routes";
@@ -29,6 +30,7 @@ import { GuideSponsors } from "./GuideSponsors";
 import { GuideNotify } from "./GuideNotify";
 import { CourtLines } from "./GuideArt";
 import { GuideFaq } from "./GuideFaq";
+import { NextPlayHero, TodayPlay } from "./GuideOrder";
 import { GuideCard, CourtLabel, Pill, PressConferenceCard, SectionHead, TicketsCard, useGuide } from "./GuideUi";
 
 function uniqueRoundNames(slots: MatchRound[], rounds: Record<MatchRound, string>) {
@@ -58,6 +60,10 @@ export function GuideHome() {
 
   const phase = tournamentPhase(now ?? Date.now());
   const stamp = now ?? Date.now();
+  const clock = istanbulClock(stamp);
+  const nowMin = now == null ? null : clock.minutes;
+  const todayDay = MATCH_DAYS.find((day) => day.iso === clock.iso);
+  const namedToday = Boolean(todayDay?.courts.some((court) => court.matches?.length));
   const featured = featuredDayEvents(t.schedule.days, stamp);
   const sideEvents = featured?.events.filter((item) => item.tag !== "match" && !isPressConferenceEvent(item)) ?? [];
   const upcoming = activeOrNextMatchDay(stamp);
@@ -111,6 +117,9 @@ export function GuideHome() {
 
         <GuideNotify tone="hero" />
 
+        {namedToday && todayDay ? (
+          <NextPlayHero day={todayDay} nowMin={nowMin} />
+        ) : (
         <div className="mt-4 rounded-2xl bg-panel p-4">
           {phase === "ended" ? (
             <p className="font-display text-xl font-bold">{g.phaseEnded}</p>
@@ -135,6 +144,7 @@ export function GuideHome() {
             </>
           )}
         </div>
+        )}
 
         <TicketsCard className="mt-4" />
         <PressConferenceCard className="mt-3" />
@@ -152,6 +162,8 @@ export function GuideHome() {
       </section>
 
       <div className="min-w-0 space-y-6 px-4 py-5">
+        {namedToday && todayDay ? <TodayPlay day={todayDay} nowMin={nowMin} href={ROUTES.matches} /> : null}
+
         <div className="grid grid-cols-4 gap-2">
             {quick.map((item) => {
               const Icon = item.icon;
@@ -195,7 +207,7 @@ export function GuideHome() {
 
         <GuideFaq preview={4} />
 
-        {upcoming.day.courts.length ? (
+        {!namedToday && upcoming.day.courts.length ? (
           <div>
             <SectionHead title={g.upcomingMatches} href={ROUTES.matches} action={g.seeAll} />
             <p className="mb-3 text-sm font-bold text-ink/70">
@@ -203,6 +215,8 @@ export function GuideHome() {
             </p>
             <div className="space-y-2">
               {upcoming.day.courts.map((court) => {
+                const first = court.matches?.[0];
+                const extra = (court.matches?.length ?? 0) > 1 ? court.matches!.length - 1 : 0;
                 const rounds = uniqueRoundNames(court.slots, t.schedule.rounds);
                 return (
                   <GuideCard key={court.id} href={ROUTES.matches}>
@@ -215,7 +229,20 @@ export function GuideHome() {
                         <p className="mt-0.5 text-sm font-bold text-ink/55">
                           {g.firstBall} · {displayStart(court.start, g.timeSoon)}
                         </p>
-                        <p className="mt-1 text-sm leading-snug text-ink/70">{rounds.join(" · ")}</p>
+                        {first ? (
+                          <>
+                            <p className="mt-1 text-sm leading-snug text-ink/80">
+                              {first.a.name} · {first.b.name}
+                            </p>
+                            {extra ? (
+                              <p className="mt-0.5 text-[0.7rem] font-bold text-ink/40">
+                                +{extra} {g.matchesCount}
+                              </p>
+                            ) : null}
+                          </>
+                        ) : (
+                          <p className="mt-1 text-sm leading-snug text-ink/70">{rounds.join(" · ")}</p>
+                        )}
                       </div>
                     </div>
                   </GuideCard>

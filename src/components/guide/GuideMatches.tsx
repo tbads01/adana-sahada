@@ -1,16 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { flagFor } from "@/lib/flags";
 import {
   MATCH_DAYS,
   activeOrNextMatchDay,
   displayStart,
   getLiveData,
+  istanbulClock,
   type ScoreboardMatch,
 } from "@/lib/guide";
-import { roundKind, type CourtId, type MatchRound } from "@/lib/match-plan";
+import { groupLiveOrder, liveOrder, roundKind, type CourtId, type MatchRound } from "@/lib/match-plan";
 import { WTA_URL } from "@/lib/site";
+import { MatchPairing, playTimeLabel } from "./GuideOrder";
 import { DayTabs, CourtLabel, GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
 
 const STATUS_TONE = {
@@ -30,10 +32,25 @@ export function GuideMatches() {
   const playable = useMemo(() => MATCH_DAYS.filter((d) => d.courts.length), []);
   const initial = activeOrNextMatchDay().iso;
   const [selected, setSelected] = useState(initial);
+  const [now, setNow] = useState<number | null>(null);
   const live = getLiveData();
   const day = playable.find((d) => d.iso === selected) ?? playable[0];
   const dayIndex = MATCH_DAYS.findIndex((d) => d.iso === selected);
   const meta = t.schedule.days[dayIndex];
+
+  useEffect(() => {
+    const tick = () => setNow(Date.now());
+    tick();
+    const id = window.setInterval(tick, 15_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const clock = istanbulClock(now ?? Date.now());
+  const isToday = day.iso === clock.iso;
+  const nowMin = isToday ? (now == null ? null : clock.minutes) : null;
+  const named = Boolean(day.courts.some((court) => court.matches?.length));
+  const plays = named ? liveOrder(day, nowMin) : [];
+  const courts = groupLiveOrder(plays);
 
   const board = useMemo(
     () => live.scoreboard.filter((row) => day.courts.some((court) => court.id === row.courtId)),
@@ -76,6 +93,45 @@ export function GuideMatches() {
 
       <div className="mt-6">
         <SectionHead title={t.schedule.matchEyebrow} />
+        {named && isToday && !plays.length ? (
+          <p className="mt-3 text-sm text-ink/55">{g.playDone}</p>
+        ) : named ? (
+          <div className="mt-3 space-y-3">
+            {courts.map(({ courtId, matches }) => {
+              const court = day.courts.find((item) => item.id === courtId);
+              return (
+                <GuideCard key={courtId}>
+                  <CourtLabel id={courtId} />
+                  <p className="mt-0.5 text-sm font-bold text-ink/50">
+                    {g.firstBall} · {displayStart(court?.start ?? day.start, g.timeSoon)}
+                  </p>
+                  <ol className="mt-3 divide-y divide-line-dark">
+                    {matches.map((play) => (
+                      <li key={`${play.courtId}-${play.index}`} className="py-3 first:pt-2 last:pb-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">
+                            {playTimeLabel(play, court?.start ?? day.start, g.followedBy, g.notBefore)}
+                          </p>
+                          {play.status === "live" ? (
+                            <Pill tone="live">
+                              <LiveDot />
+                              {g.onCourt}
+                            </Pill>
+                          ) : play.status === "next" ? (
+                            <Pill tone="soft">{g.upNext}</Pill>
+                          ) : null}
+                        </div>
+                        <div className={play.status === "later" ? "opacity-70" : ""}>
+                          <MatchPairing match={play.match} />
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </GuideCard>
+              );
+            })}
+          </div>
+        ) : (
         <div className="space-y-3">
           {day.courts.map((court) => (
             <GuideCard key={court.id}>
@@ -99,6 +155,7 @@ export function GuideMatches() {
             </GuideCard>
           ))}
         </div>
+        )}
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2 text-[0.62rem] font-bold uppercase">

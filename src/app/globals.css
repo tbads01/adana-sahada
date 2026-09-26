@@ -253,6 +253,40 @@
   animation: live-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
+@keyframes order-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes order-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.order-progress {
+  transform-origin: left center;
+  animation: order-progress 4s linear infinite;
+}
+
+.order-pulse {
+  animation: order-pulse 2.2s ease-in-out infinite;
+}
+
+.order-focus {
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -264,6 +298,15 @@
 
   .live-ping {
     animation: none;
+  }
+
+  .order-progress,
+  .order-pulse {
+    animation: none;
+  }
+
+  .order-focus {
+    transition: none;
   }
 
   .marquee-dup {

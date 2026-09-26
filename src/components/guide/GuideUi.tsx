@@ -28,12 +28,13 @@ export function Pill({
   tone = "muted",
 }: {
   children: ReactNode;
-  tone?: "muted" | "live" | "yellow" | "ink";
+  tone?: "muted" | "live" | "yellow" | "soft" | "ink";
 }) {
   const tones = {
     muted: "bg-paper-soft text-ink/55",
     live: "bg-green/15 text-green-deep",
     yellow: "bg-yellow text-ink",
+    soft: "bg-yellow/20 text-ink",
     ink: "bg-ink text-paper",
   };
   return (

@@ -161,6 +161,21 @@ export const ANNOUNCEMENTS: Announcement[] = [
     href: "/etkinlikler",
   },
   {
+    id: "oop-26",
+    date: "2026-09-25",
+    pin: true,
+    tag: { tr: "Maç", en: "Matches" },
+    title: {
+      tr: "Cumartesi eleme programı açıklandı",
+      en: "Saturday’s qualifying order of play is out",
+    },
+    body: {
+      tr: "Eleme 1. tur 26 Eylül saat 10:30’da Merkez Kort, Çağla Büyükakçay Kortu ve İpek Soylu Kortu’nda başlar. Çekişmeler Maçlar sayfasında.",
+      en: "Qualifying round one starts on 26 September at 10:30 on Centre Court, Çağla Büyükakçay Court and İpek Soylu Court. The order of play is on Matches.",
+    },
+    href: "/maclar",
+  },
+  {
     id: "qualifying",
     date: "2026-09-08",
     tag: { tr: "Maç", en: "Matches" },
