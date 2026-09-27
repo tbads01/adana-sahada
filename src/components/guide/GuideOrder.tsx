@@ -6,6 +6,7 @@ import {
   groupLiveOrder,
   liveOrder,
   playerTag,
+  roundKind,
   type CourtId,
   type MatchDay,
   type OrderMatch,
@@ -15,7 +16,7 @@ import {
 } from "@/lib/match-plan";
 import { CourtLabel, GuideCard, LiveDot, Pill, SectionHead, useGuide } from "./GuideUi";
 import { ROUTES } from "@/lib/routes";
-import { findScore, type WtaCourtDay, type WtaDay, type WtaScore, type WtaSide } from "@/lib/wta-scores";
+import { findScore, type WtaCourtDay, type WtaDay, type WtaDrawPair, type WtaScore, type WtaSide } from "@/lib/wta-scores";
 
 const FOCUS_MS = 4000;
 const ROW_PX = 44;
@@ -286,7 +287,7 @@ export function WtaLiveHero({ matches }: { matches: WtaScore[] }) {
             <LiveDot />
             <p className="min-w-0 flex-1 truncate font-display text-[0.92rem] font-bold tracking-[-0.02em] text-paper">
               {row.courtId ? `${t.schedule.courts[row.courtId]} · ` : ""}
-              {row.a.last} · {row.b.last}
+              {row.a.short || row.a.last} · {row.b.short || row.b.last}
             </p>
             <p className="shrink-0 font-display text-sm font-extrabold tabular-nums text-yellow">
               {row.scoreLine || "0–0"}
@@ -300,8 +301,9 @@ export function WtaLiveHero({ matches }: { matches: WtaScore[] }) {
 }
 
 function sideTag(side: WtaSide) {
-  if (side.wc) return "WC";
   if (side.seed) return `[${side.seed}]`;
+  if (side.entry === "WC" || side.wc) return "WC";
+  if (side.entry === "Q" || side.entry === "LL" || side.entry === "SE") return side.entry;
   return "";
 }
 
@@ -356,7 +358,7 @@ function ScoreRow({
       <span className="w-7 shrink-0 text-[0.62rem] font-bold tabular-nums text-ink/40">{sideTag(side)}</span>
       <p className={`min-w-0 flex-1 truncate text-sm font-semibold ${dim ? "opacity-45" : ""}`}>
         <span className="mr-1.5">{flagFor(side.country) || side.country}</span>
-        {side.last || side.name}
+        {side.short || side.last || side.name}
       </p>
       {cells.length ? (
         <p className="flex shrink-0 items-baseline">
@@ -397,7 +399,10 @@ export function WtaMatchRow({
   return (
     <li className="py-2.5 first:pt-0 last:pb-0">
       <div className="mb-1.5 flex items-center justify-between gap-2">
-        <p className="text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">{time}</p>
+        <p className="text-[0.7rem] font-bold tracking-wide text-ink/40 uppercase">
+          {time}
+          {roundKind(row.round) === "doubles" ? ` · ${g.legendDoubles}` : ""}
+        </p>
         {live ? (
           <Pill tone="live">
             <LiveDot />
@@ -431,6 +436,24 @@ export function WtaCourtList({ day }: { day: WtaDay }) {
         <WtaCourtCard key={court.courtId} court={court} nextId={nextIds} />
       ))}
     </div>
+  );
+}
+
+export function WtaDrawList({ pairs }: { pairs: WtaDrawPair[] }) {
+  if (!pairs.length) return null;
+  return (
+    <GuideCard>
+      <ol className="divide-y divide-line-dark">
+        {pairs.map((pair, index) => (
+          <li key={`${pair.a.last}-${pair.b.last}-${index}`} className="py-2.5 first:pt-0 last:pb-0">
+            <div className="space-y-1">
+              <ScoreRow side={pair.a} cells={[]} />
+              <ScoreRow side={pair.b} cells={[]} />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </GuideCard>
   );
 }
 
@@ -511,7 +534,7 @@ export function WtaNextHero({ matches, kicker }: { matches: WtaScore[]; kicker?:
                     {row.courtId ? t.schedule.courts[row.courtId] : ""}
                   </span>
                   <span className={`font-display text-[0.92rem] font-bold tracking-[-0.02em] ${on ? "text-paper" : "text-paper/45"}`}>
-                    {row.a.last} · {row.b.last}
+                    {row.a.short || row.a.last} · {row.b.short || row.b.last}
                   </span>
                 </p>
                 {row.state === "live" ? (

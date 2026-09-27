@@ -2,6 +2,7 @@ import type { CourtId, MatchRound } from "./match-plan";
 
 export const WTA_MATCHES_URL = "https://api.wtatennis.com/tennis/tournaments/1179/2026/matches";
 export const WTA_OOP_URL = "https://api.wtatennis.com/tennis/tournaments/1179/2026/oop";
+export const WTA_DRAW_URL = "https://api.wtatennis.com/tennis/tournaments/1179/2026/draw";
 
 export type WtaState = "live" | "complete" | "scheduled" | "cancelled";
 
@@ -9,9 +10,11 @@ export type WtaSide = {
   name: string;
   last: string;
   lastKey: string;
+  short: string;
   country: string;
   seed?: string;
   wc?: boolean;
+  entry?: string;
 };
 
 export type WtaScore = {
@@ -46,10 +49,16 @@ export type WtaDay = {
   courts: WtaCourtDay[];
 };
 
+export type WtaDrawPair = {
+  a: WtaSide;
+  b: WtaSide;
+};
+
 export type WtaBoard = {
   updatedAt: string | null;
   matches: WtaScore[];
   days: WtaDay[];
+  draw: WtaDrawPair[];
 };
 
 const COURT_ID: Record<number, CourtId> = { 1: "cc", 2: "c2", 3: "c1" };
@@ -220,31 +229,42 @@ function mapCourtName(name?: string | null): CourtId | null {
   return null;
 }
 
+function kindFromMatchId(id?: string | null) {
+  const prefix = (id ?? "").slice(0, 2).toUpperCase();
+  if (prefix === "RS") return { level: "Q", type: "S" };
+  if (prefix === "RD") return { level: "Q", type: "D" };
+  if (prefix === "LD") return { level: "M", type: "D" };
+  return { level: "M", type: "S" };
+}
+
 function mapRound(level?: string | null, roundId?: string | number | null, matchType?: string | null): MatchRound {
   const id = String(roundId ?? "").trim();
+  const n = Number(id);
   const lvl = (level ?? "").toUpperCase();
   const kind = (matchType ?? "S").toUpperCase();
-  if (lvl === "Q" || id === "11") {
-    if (id === "10") return "QSF";
+  if (lvl === "Q" || id === "11" || id === "10") {
+    if (id === "10" || id === "2") return "QSF";
     return "QS1";
   }
   if (kind === "D") {
-    if (id === "5" || id === "1" && lvl === "F") return "MDF";
-    if (id === "4") return "MDSF";
-    if (id === "3" || id === "8") return "MDQF";
+    if (n === 1) return "MDF";
+    if (n === 2) return "MDSF";
+    if (n === 3) return "MDQF";
     return "MD1";
   }
-  if (id === "10") return "QSF";
-  if (id === "11") return "QS1";
-  if (id === "5") return "MSF";
-  if (id === "4") return "MSSF";
-  if (id === "3" || id === "8") return "MSQF";
-  if (id === "2" || id === "16") return "MS2";
+  if (n === 1) return "MSF";
+  if (n === 2) return "MSSF";
+  if (n === 3) return "MSQF";
+  if (n === 4) return "MS2";
   return "MS1";
 }
 
-function isWc(value?: string | null) {
-  return /^w\.?c\.?$/i.test((value ?? "").trim());
+function mapEntry(value?: string | null) {
+  const entry = (value ?? "").trim().toUpperCase();
+  if (!entry) return undefined;
+  if (/^W\.?C\.?$/.test(entry)) return "WC";
+  if (entry === "Q" || entry === "LL" || entry === "SE") return entry;
+  return undefined;
 }
 
 function pairName(first?: string | null, last?: string | null, first2?: string | null, last2?: string | null) {
@@ -264,15 +284,19 @@ function sideFromParts(
   last2?: string | null,
 ): WtaSide {
   const lastName = (last ?? "").trim() || (last2 ?? "").trim();
+  const partnerLast = (last2 ?? "").trim();
   const name = pairName(first, last, first2, last2);
   const seedText = seed == null ? "" : String(seed).trim();
+  const mapped = mapEntry(entry);
   return {
     name,
     last: lastName,
     lastKey: foldName(lastName),
+    short: partnerLast ? `${lastName} / ${partnerLast}` : lastName,
     country: (country ?? "").trim(),
     seed: seedText && seedText !== "0" ? seedText : undefined,
-    wc: isWc(entry) || undefined,
+    wc: mapped === "WC" || undefined,
+    entry: mapped,
   };
 }
 
@@ -430,8 +454,10 @@ function preferSide(primary: WtaSide, fallback: WtaSide): WtaSide {
       ...primary,
       seed: primary.seed || fallback.seed,
       wc: primary.wc || fallback.wc,
+      entry: primary.entry || fallback.entry,
       country: primary.country || fallback.country,
       name: primary.name || fallback.name,
+      short: primary.short || fallback.short,
     };
   }
   return fallback;
@@ -473,8 +499,9 @@ function fromOopMatch(raw: OopMatch, iso: string, courtId: CourtId | null): WtaS
   const notBefore = /not before/i.test(note);
   const start = hhmm(raw.NotBeforeISOTime) || (followed ? undefined : hhmm(raw.NotBefore));
   const id = raw.MatchId || `${a.last}-${b.last}`;
+  const kind = kindFromMatchId(id);
   const oopState = mapOopState(raw.Status);
-  const row = emptyScore(id, mapRound("Q", raw.RoundId, "S"), a.last ? a : oopTeam(players, 1), b.last ? b : oopTeam(players, 2));
+  const row = emptyScore(id, mapRound(kind.level, raw.RoundId, kind.type), a.last ? a : oopTeam(players, 1), b.last ? b : oopTeam(players, 2));
   row.courtId = courtId;
   row.iso = iso;
   row.start = start;
@@ -524,10 +551,56 @@ async function pull(url: string) {
   return res.json();
 }
 
+type DrawLine = {
+  Pos?: number;
+  Seed?: string | number;
+  EntryType?: string;
+  Players?: { Player?: OopPlayer | OopPlayer[] };
+};
+
+function drawSide(line: DrawLine): WtaSide {
+  const people = asList(line.Players?.Player);
+  const first = people[0];
+  const second = people[1];
+  const row = line as DrawLine & { LastName?: string; Nationality?: string; FirstName?: string };
+  return sideFromParts(
+    first?.FirstName ?? row.FirstName,
+    first?.SurName ?? row.LastName,
+    first?.Country ?? row.Nationality,
+    row.Seed,
+    row.EntryType,
+    second?.FirstName,
+    second?.SurName,
+  );
+}
+
+function parseDraw(json: unknown): WtaDrawPair[] {
+  const root = json as { drawInfo?: unknown };
+  const raw = asList(root.drawInfo)[0];
+  if (!raw) return [];
+  const parsed = (typeof raw === "string" ? JSON.parse(raw) : raw) as {
+    Draws?: { Events?: { Event?: { EventTypeCode?: string; Draw?: { DrawLine?: DrawLine | DrawLine[] } } | { EventTypeCode?: string; Draw?: { DrawLine?: DrawLine | DrawLine[] } }[] } };
+  };
+  const events = asList(parsed.Draws?.Events?.Event);
+  const singles = events.find((event) => event.EventTypeCode === "LS");
+  const lines = asList(singles?.Draw?.DrawLine).sort((a, b) => Number(a.Pos ?? 0) - Number(b.Pos ?? 0));
+  const pairs: WtaDrawPair[] = [];
+  for (let i = 0; i + 1 < lines.length; i += 2) {
+    const a = drawSide(lines[i]);
+    const b = drawSide(lines[i + 1]);
+    if (a.last || b.last) pairs.push({ a, b });
+  }
+  return pairs;
+}
+
 export async function getWtaBoard(): Promise<WtaBoard> {
   if (cache && Date.now() - cache.at < TTL_MS) return cache.data;
 
-  const [matchesRes, oopRes] = await Promise.allSettled([pull(WTA_MATCHES_URL), pull(WTA_OOP_URL)]);
+  const [matchesRes, oopRes, drawRes] = await Promise.allSettled([
+    pull(WTA_MATCHES_URL),
+    pull(WTA_OOP_URL),
+    pull(WTA_DRAW_URL),
+  ]);
   const scored = new Map<string, WtaScore>();
   let updatedAt: string | null = null;
 
@@ -560,11 +633,21 @@ export async function getWtaBoard(): Promise<WtaBoard> {
     }
   }
 
+  let draw: WtaDrawPair[] = [];
+  if (drawRes.status === "fulfilled") {
+    try {
+      draw = parseDraw(drawRes.value);
+    } catch {
+      draw = [];
+    }
+  }
+
   const matches = [...merged.values()];
   const data: WtaBoard = {
     updatedAt: updatedAt ?? new Date().toISOString(),
     matches,
     days: buildDays(matches),
+    draw,
   };
   cache = { at: Date.now(), data };
   return data;

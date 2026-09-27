@@ -141,7 +141,6 @@ export const ANNOUNCEMENTS: Announcement[] = [
   {
     id: "main-draw",
     date: "2026-09-17",
-    pin: true,
     tag: { tr: "Oyuncular", en: "Players" },
     title: {
       tr: "Ana tablo doğrudan kabul listesi açıklandı",
@@ -184,7 +183,6 @@ export const ANNOUNCEMENTS: Announcement[] = [
   {
     id: "oop-27",
     date: "2026-09-26",
-    pin: true,
     tag: { tr: "Maç", en: "Matches" },
     title: {
       tr: "Pazar eleme programı açıklandı",
@@ -197,6 +195,21 @@ export const ANNOUNCEMENTS: Announcement[] = [
     href: "/maclar",
   },
   {
+    id: "oop-28",
+    date: "2026-09-27",
+    pin: true,
+    tag: { tr: "Maç", en: "Matches" },
+    title: {
+      tr: "Pazartesi programı ve ana tablo açıklandı",
+      en: "Monday’s order of play and the main draw are out",
+    },
+    body: {
+      tr: "Ana tablo 28 Eylül Pazartesi saat 11:30’da üç kortta başlar. Tekler son 32 çekişmeleri Maçlar sayfasında.",
+      en: "The main draw starts Monday 28 September at 11:30 on three courts. Round-of-32 pairings are on Matches.",
+    },
+    href: "/maclar",
+  },
+  {
     id: "qualifying",
     date: "2026-09-08",
     tag: { tr: "Maç", en: "Matches" },
@@ -205,8 +218,8 @@ export const ANNOUNCEMENTS: Announcement[] = [
       en: "Qualifying 26–27 September, first ball 10:30",
     },
     body: {
-      tr: "Eleme 1. tur 26 Eylül saat 10:30’da Merkez Kort, Çağla Büyükakçay Kortu (Kort A) ve İpek Soylu Kortu’nda (Kort B) başlar. Ana tablo saatleri 28 Eylül’den itibaren duyurulacaktır.",
-      en: "Qualifying round one begins on 26 September at 10:30 on Centre Court, Çağla Büyükakçay Court (Court A) and İpek Soylu Court (Court B). Main-draw start times will be announced from 28 September.",
+      tr: "Eleme 1. tur 26 Eylül saat 10:30’da Merkez Kort, Çağla Büyükakçay Kortu (Kort A) ve İpek Soylu Kortu’nda (Kort B) başlar. Ana tablo Pazartesi 28 Eylül saat 11:30’da üç kortta açılır.",
+      en: "Qualifying round one begins on 26 September at 10:30 on Centre Court, Çağla Büyükakçay Court (Court A) and İpek Soylu Court (Court B). The main draw opens Monday 28 September at 11:30 on three courts.",
     },
     href: "/maclar",
   },
@@ -369,8 +382,8 @@ export const FAQS: Faq[] = [
   {
     q: { tr: "Maç saatleri kesin mi?", en: "Are match times fixed?" },
     a: {
-      tr: "Maç saatleri günün koşullarına göre değişebilir. Eleme 1. tur Cumartesi saat 10:30’da, eleme finalleri Pazar saat 15:00’de başlar. Ana tablo saatleri 28 Eylül’den itibaren bu sitede duyurulur.",
-      en: "Match times may change according to conditions on the day. Qualifying round one begins Saturday at 10:30; qualifying finals begin Sunday at 15:00. Main-draw start times will be published on this site from 28 September.",
+      tr: "Maç saatleri günün koşullarına göre değişebilir. Eleme 1. tur Cumartesi 10:30, eleme finalleri Pazar 15:00, ana tablo Pazartesi 11:30’da başlar.",
+      en: "Match times may change according to conditions on the day. Qualifying round one begins Saturday at 10:30, qualifying finals Sunday at 15:00, and the main draw Monday at 11:30.",
     },
   },
   {

@@ -349,7 +349,7 @@ export const content: Record<Locale, Messages> = {
       matchTitle: "Saatler ve",
       matchAccent: "turlar.",
       matchNote:
-        "Eleme 1. tur Cumartesi saat 10:30’da, eleme finalleri Pazar saat 15:00’de başlar. Ana tablo saatleri 28 Eylül’den itibaren duyurulacaktır. Program değişikliklerinde bu sayfa güncellenir.",
+        "Eleme 1. tur Cumartesi saat 10:30’da, eleme finalleri Pazar saat 15:00’de başlar. Ana tablo Pazartesi saat 11:30’da üç kortta açılır. Program değişikliklerinde bu sayfa güncellenir.",
       startsLabel: "İlk maç",
       followedBy: "Ardından",
       matchCount: "maç",
@@ -796,7 +796,7 @@ export const content: Record<Locale, Messages> = {
       matchTitle: "Times and",
       matchAccent: "rounds.",
       matchNote:
-        "Qualifying round one begins Saturday at 10:30; qualifying finals begin Sunday at 15:00. Main-draw start times will be announced from 28 September. This page is updated if the schedule changes.",
+        "Qualifying round one begins Saturday at 10:30; qualifying finals begin Sunday at 15:00. The main draw opens Monday at 11:30 on three courts. This page is updated if the schedule changes.",
       startsLabel: "First match",
       followedBy: "Then",
       matchCount: "matches",

@@ -5,20 +5,23 @@ import {
   MATCH_DAYS,
   activeOrNextMatchDay,
   displayStart,
+  istanbulClock,
   namedBoardFor,
 } from "@/lib/guide";
 import { roundKind, type CourtId, type MatchRound } from "@/lib/match-plan";
 import { WTA_URL } from "@/lib/site";
-import { WtaCourtList } from "./GuideOrder";
+import { pickFocusDay } from "@/lib/wta-scores";
+import { WtaCourtList, WtaDrawList } from "./GuideOrder";
 import { useWtaScores } from "./useWtaScores";
 import { CourtLabel, DayTabs, GuideCard, SectionHead, useGuide } from "./GuideUi";
 
 export function GuideMatches() {
   const { g, t } = useGuide();
   const playable = useMemo(() => MATCH_DAYS.filter((d) => d.courts.length), []);
-  const initial = namedBoardFor()?.iso ?? activeOrNextMatchDay().iso;
-  const [selected, setSelected] = useState(initial);
+  const fallback = namedBoardFor()?.iso ?? activeOrNextMatchDay().iso;
+  const [picked, setPicked] = useState<string | null>(null);
   const wta = useWtaScores();
+  const selected = picked ?? pickFocusDay(wta.days, istanbulClock().iso)?.iso ?? fallback;
   const day = playable.find((d) => d.iso === selected) ?? playable[0];
   const dayIndex = MATCH_DAYS.findIndex((d) => d.iso === selected);
   const meta = t.schedule.days[dayIndex];
@@ -33,7 +36,7 @@ export function GuideMatches() {
       <p className="mt-1 text-sm text-ink/55">{g.draftNote}</p>
 
       <div className="mt-4">
-        <DayTabs selected={selected} onSelect={setSelected} days={playable} />
+        <DayTabs selected={selected} onSelect={setPicked} days={playable} />
       </div>
 
       <GuideCard className="mt-4 !bg-surface">
@@ -82,6 +85,16 @@ export function GuideMatches() {
           </div>
         )}
       </div>
+
+      {wta.draw.length ? (
+        <div className="mt-8">
+          <SectionHead title={g.mainDraw} />
+          <p className="mt-1 text-sm text-ink/55">{g.mainDrawNote}</p>
+          <div className="mt-3">
+            <WtaDrawList pairs={wta.draw} />
+          </div>
+        </div>
+      ) : null}
 
       <div className="mt-4 flex flex-wrap gap-2 text-[0.62rem] font-bold uppercase">
         <span className="rounded-full bg-green/15 px-2 py-1 text-green-deep">{g.legendQual}</span>

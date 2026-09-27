@@ -8,6 +8,6 @@ export async function GET() {
     const data = await getWtaBoard();
     return NextResponse.json(data);
   } catch {
-    return NextResponse.json({ updatedAt: null, matches: [], days: [] });
+    return NextResponse.json({ updatedAt: null, matches: [], days: [], draw: [] });
   }
 }
