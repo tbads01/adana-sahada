@@ -1,5 +1,5 @@
 import { content } from "./content";
-import { FOOD_COURT_STANDS } from "./guide";
+import { FAQS, FOOD_COURT_STANDS, sortedAnnouncements } from "./guide";
 import { MATCH_PLAN, type MatchDay } from "./match-plan";
 import players from "./players.json";
 import { TICKETS_URL } from "./site";
@@ -24,6 +24,16 @@ export type SharedFacts = {
   matchPlan: MatchDay[];
   foodCourtStands: string[];
   players: typeof players;
+  faqs: { q: { tr: string; en: string }; a: { tr: string; en: string } }[];
+  announcements: {
+    id: string;
+    date: string;
+    pin?: boolean;
+    tag: { tr: string; en: string };
+    title: { tr: string; en: string };
+    body: { tr: string; en: string };
+    href?: string;
+  }[];
 };
 
 function neutralizeCountry<T extends { country?: string }>(row: T): T {
@@ -58,7 +68,7 @@ function publicPlan(plan: MatchDay[]): MatchDay[] {
 export function getSharedFacts(): SharedFacts {
   return {
     source: "m.adanaopen.com",
-    updatedAt: players.updated,
+    updatedAt: "2026-09-27",
     ticketsUrl: {
       tr: TICKETS_URL,
       en: TICKETS_URL.replace("/TURKIYE/tr/", "/TURKIYE/en/"),
@@ -82,5 +92,15 @@ export function getSharedFacts(): SharedFacts {
     matchPlan: publicPlan(MATCH_PLAN),
     foodCourtStands: [...FOOD_COURT_STANDS],
     players: neutralizePlayers(players),
+    faqs: FAQS,
+    announcements: sortedAnnouncements().map((item) => ({
+      id: item.id,
+      date: item.date,
+      pin: item.pin,
+      tag: item.tag,
+      title: item.title,
+      body: item.body,
+      href: item.href,
+    })),
   };
 }
