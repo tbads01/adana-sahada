@@ -1,5 +1,7 @@
-const WORLD_FLAG = "🌍";
-const NEUTRAL_FLAGS = new Set(["RUS", "BLR"]);
+/** Neutral world mark used where national flags are barred (RUS / BLR). */
+export const WORLD_FLAG = "🌐";
+
+const NEUTRAL_CODES = new Set(["RUS", "BLR", "WLD"]);
 
 export const FLAGS: Record<string, string> = {
   AND: "🇦🇩",
@@ -26,9 +28,16 @@ export const FLAGS: Record<string, string> = {
   SVK: "🇸🇰",
   TUR: "🇹🇷",
   USA: "🇺🇸",
+  BLR: WORLD_FLAG,
+  RUS: WORLD_FLAG,
+  WLD: WORLD_FLAG,
 };
 
 export function flagFor(country: string) {
-  if (NEUTRAL_FLAGS.has(country)) return WORLD_FLAG;
+  if (NEUTRAL_CODES.has(country)) return WORLD_FLAG;
   return FLAGS[country] ?? "";
+}
+
+export function countryLabel(code: string, world: string) {
+  return NEUTRAL_CODES.has(code) ? world : code;
 }

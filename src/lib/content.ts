@@ -408,9 +408,9 @@ export const content: Record<Locale, Messages> = {
           date: "28 Eylül",
           stage: "Ana etap · ilk gün",
           events: [
+            { time: "11:30", title: "Tekler 1. tur · üç kort", tag: "match" },
             { time: "12:00", title: "Gösteri maçı · Fan Zone", tag: "match" },
             { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Duyurulacak", title: "Tekler ve çiftler 1. tur", tag: "match" },
           ],
         },
         {
@@ -559,7 +559,7 @@ export const content: Record<Locale, Messages> = {
     tickets: {
       title: "Biletler",
       titleAccent: "",
-      body: "Günlük maç biletleri Biletix üzerinden satıştadır.",
+      body: "Günlük maç biletleri Biletix üzerinden ve kulüp satış noktalarından alınabilir. Fan Zone, food court ve yan etkinlikler için bilet gerekmez. Maç izlemek için ilgili günün bileti alınmalıdır. Bilet tribünde koltuk garantisi vermez.",
     },
     club: {
       metaTitle: "ATDSK | Adana Open",
@@ -855,9 +855,9 @@ export const content: Record<Locale, Messages> = {
           date: "28 September",
           stage: "Main draw · day 1",
           events: [
+            { time: "11:30", title: "Singles round 1 · three courts", tag: "match" },
             { time: "12:00", title: "Exhibition match · Fan Zone", tag: "match" },
             { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "TBA", title: "Singles and doubles R1", tag: "match" },
           ],
         },
         {
@@ -1006,7 +1006,7 @@ export const content: Record<Locale, Messages> = {
     tickets: {
       title: "Tickets",
       titleAccent: "",
-      body: "Daily match tickets are on sale at Biletix.",
+      body: "Daily match tickets are available on Biletix and at club sales points. Fan Zone, food court and side events are free. A match ticket is required to watch matches. Tickets do not guarantee a reserved seat.",
     },
     club: {
       metaTitle: "ATDSK | Adana Open",
