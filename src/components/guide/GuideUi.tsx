@@ -110,19 +110,6 @@ export function TicketsCard({ className = "" }: { className?: string }) {
   );
 }
 
-export function OranionCard({ className = "" }: { className?: string }) {
-  const { g } = useGuide();
-
-  return (
-    <GuideCard href={ROUTES.oranion} className={`bg-paper text-ink ${className}`}>
-      <div className="flex items-center justify-between gap-3">
-        <p className="font-display text-xl font-bold tracking-[-0.03em]">{g.oranion}</p>
-        <span className="text-sm font-bold text-ink/55">→</span>
-      </div>
-    </GuideCard>
-  );
-}
-
 export function CourtLabel({
   id,
   size = "md",

@@ -1,4 +1,4 @@
-import { MAIN_SITE_URL, ORANION_URL, TICKETS_URL } from "./site";
+import { MAIN_SITE_URL, TICKETS_URL } from "./site";
 
 export const ROUTES = {
   home: "/",
@@ -11,6 +11,5 @@ export const ROUTES = {
   send: "/gonder",
   admin: "/admin",
   tickets: TICKETS_URL,
-  oranion: ORANION_URL,
   site: MAIN_SITE_URL,
 } as const;

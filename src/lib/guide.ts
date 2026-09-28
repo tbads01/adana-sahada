@@ -1,7 +1,7 @@
 import type { Locale } from "./content";
 import live from "./live.json";
 import { MATCH_PLAN, isStartTba, liveOrder, type CourtId, type MatchDay, type MatchRound } from "./match-plan";
-import { ACCREDITATION_EMAIL, INSTAGRAM, LIVE_STREAM_URL, MAPS_URL, ORANION_URL, TICKETS_URL, TOURNAMENT_END, TOURNAMENT_START, WTA_URL } from "./site";
+import { ACCREDITATION_EMAIL, INSTAGRAM, LIVE_STREAM_URL, MAPS_URL, TICKETS_URL, TOURNAMENT_END, TOURNAMENT_START, WTA_URL } from "./site";
 
 export type Copy = { tr: string; en: string };
 export type GuidePhase = "upcoming" | "live" | "ended";
@@ -474,7 +474,6 @@ export const FAQS: Faq[] = [
 
 export const SOCIAL_LINKS = [
   { id: "tickets", href: TICKETS_URL, label: { tr: "Biletix · Bilet al", en: "Biletix · Buy tickets" } },
-  { id: "oranion", href: ORANION_URL, label: { tr: "Oranion", en: "Oranion" } },
   { id: "instagram", href: INSTAGRAM, label: { tr: "Instagram · @adana.open", en: "Instagram · @adana.open" } },
   { id: "wta", href: WTA_URL, label: { tr: "WTA turnuva sayfası", en: "WTA tournament page" } },
   { id: "web", href: "https://adanaopen.com", label: { tr: "adanaopen.com", en: "adanaopen.com" } },
