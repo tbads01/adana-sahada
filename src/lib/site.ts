@@ -8,6 +8,7 @@ export const SITE_PHONE_TEL = "+903222341155";
 export const INSTAGRAM = "https://www.instagram.com/adana.open";
 export const INSTAGRAM_HANDLE = "@adana.open";
 export const WTA_URL = "https://www.wtatennis.com/tournaments/1179/adana-125/2026";
+export const ORANION_URL = "https://oranion.com";
 export const TICKETS_URL =
   "https://www.biletix.com/etkinlik-grup/5638498105/TURKIYE/tr/adana-open-wta-125";
 export const MAPS_URL =

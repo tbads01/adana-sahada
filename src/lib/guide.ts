@@ -1,7 +1,7 @@
 import type { Locale } from "./content";
 import live from "./live.json";
 import { MATCH_PLAN, isStartTba, liveOrder, type CourtId, type MatchDay, type MatchRound } from "./match-plan";
-import { ACCREDITATION_EMAIL, INSTAGRAM, LIVE_STREAM_URL, MAPS_URL, TICKETS_URL, TOURNAMENT_END, TOURNAMENT_START, WTA_URL } from "./site";
+import { ACCREDITATION_EMAIL, INSTAGRAM, LIVE_STREAM_URL, MAPS_URL, ORANION_URL, TICKETS_URL, TOURNAMENT_END, TOURNAMENT_START, WTA_URL } from "./site";
 
 export type Copy = { tr: string; en: string };
 export type GuidePhase = "upcoming" | "live" | "ended";
@@ -140,15 +140,15 @@ export const ANNOUNCEMENTS: Announcement[] = [
   },
   {
     id: "main-draw",
-    date: "2026-09-17",
+    date: "2026-09-28",
     tag: { tr: "Oyuncular", en: "Players" },
     title: {
-      tr: "Ana tablo doğrudan kabul listesi açıklandı",
-      en: "Main-draw direct acceptances announced",
+      tr: "Ana tablo 32 oyuncuyla kesinleşti",
+      en: "The 32-player main draw is set",
     },
     body: {
-      tr: "Ana tabloya doğrudan kabul edilen 23 oyuncu açıklandı. Dört wildcard, bir special exempt ve dört eleme kazananı daha sonra duyurulacaktır.",
-      en: "Twenty-three players have been accepted directly into the main draw. Four wildcards, one special exempt and four qualifying winners will be announced later.",
+      tr: "WTA resmi tekler kurası yayımlandı. Sıralamalar kura üzerindeki güncel rakamlara göredir.",
+      en: "The official WTA singles draw is out. Rankings follow the current figures on the draw.",
     },
     href: "/oyuncular",
   },
@@ -474,6 +474,7 @@ export const FAQS: Faq[] = [
 
 export const SOCIAL_LINKS = [
   { id: "tickets", href: TICKETS_URL, label: { tr: "Biletix · Bilet al", en: "Biletix · Buy tickets" } },
+  { id: "oranion", href: ORANION_URL, label: { tr: "Oranion", en: "Oranion" } },
   { id: "instagram", href: INSTAGRAM, label: { tr: "Instagram · @adana.open", en: "Instagram · @adana.open" } },
   { id: "wta", href: WTA_URL, label: { tr: "WTA turnuva sayfası", en: "WTA tournament page" } },
   { id: "web", href: "https://adanaopen.com", label: { tr: "adanaopen.com", en: "adanaopen.com" } },

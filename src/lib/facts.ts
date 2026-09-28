@@ -68,7 +68,7 @@ function publicPlan(plan: MatchDay[]): MatchDay[] {
 export function getSharedFacts(): SharedFacts {
   return {
     source: "m.adanaopen.com",
-    updatedAt: "2026-09-27",
+    updatedAt: "2026-09-28",
     ticketsUrl: {
       tr: TICKETS_URL,
       en: TICKETS_URL.replace("/TURKIYE/tr/", "/TURKIYE/en/"),
