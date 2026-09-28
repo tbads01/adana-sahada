@@ -418,8 +418,8 @@ export const content: Record<Locale, Messages> = {
           date: "29 Eylül",
           stage: "2. gün",
           events: [
+            { time: "12:00", title: "Tekler 1. tur · Çiftler 1. tur · üç kort", tag: "match" },
             { time: "15:00 sonrası", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "Duyurulacak", title: "Tekler 1. tur", tag: "match" },
           ],
         },
         {
@@ -865,8 +865,8 @@ export const content: Record<Locale, Messages> = {
           date: "29 September",
           stage: "Day 2",
           events: [
+            { time: "12:00", title: "Singles round 1 · Doubles round 1 · three courts", tag: "match" },
             { time: "15:00 onwards", title: "DJ Yusuf Erdem", tag: "music" },
-            { time: "TBA", title: "Singles R1", tag: "match" },
           ],
         },
         {

@@ -4,7 +4,7 @@ export const WTA_MATCHES_URL = "https://api.wtatennis.com/tennis/tournaments/117
 export const WTA_OOP_URL = "https://api.wtatennis.com/tennis/tournaments/1179/2026/oop";
 export const WTA_DRAW_URL = "https://api.wtatennis.com/tennis/tournaments/1179/2026/draw";
 
-export type WtaState = "live" | "complete" | "scheduled" | "cancelled";
+export type WtaState = "live" | "complete" | "scheduled" | "cancelled" | "suspended";
 
 export type WtaSide = {
   name: string;
@@ -26,6 +26,7 @@ export type WtaScore = {
   start?: string;
   notBefore?: boolean;
   followed?: boolean;
+  afterRest?: boolean;
   seq: number;
   a: WtaSide;
   b: WtaSide;
@@ -137,6 +138,7 @@ type OopMatch = {
   NotBefore?: string;
   NotBeforeText?: string;
   NotBeforeISOTime?: string;
+  FreeText?: string;
   Players?: OopPlayerWrap[] | OopPlayerWrap;
 };
 
@@ -213,9 +215,13 @@ function istanbulIso(stamp?: string | null) {
 }
 
 function hhmm(value?: string | null) {
-  const m = (value ?? "").match(/(\d{1,2}):(\d{2})/);
+  const m = (value ?? "").match(/(\d{1,2})[:.](\d{2})\s*(AM|PM)?/i);
   if (!m) return undefined;
-  return `${m[1].padStart(2, "0")}:${m[2]}`;
+  let hour = Number(m[1]);
+  const ap = (m[3] || "").toUpperCase();
+  if (ap === "PM" && hour < 12) hour += 12;
+  if (ap === "AM" && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, "0")}:${m[2]}`;
 }
 
 function mapCourtName(name?: string | null): CourtId | null {
@@ -353,6 +359,7 @@ function mapState(raw: RawMatch, sets: [string, string][]): WtaState {
   const state = (raw.MatchState ?? "").toUpperCase();
   if (state === "F") return "complete";
   if (state === "C") return "cancelled";
+  if (state === "S") return "suspended";
   if (state === "U" || state === "") {
     if (sets.length || (raw.PointA && raw.PointA !== "")) return "live";
     return "scheduled";
@@ -366,6 +373,7 @@ function mapOopState(status?: string | null): WtaState | null {
   const s = (status ?? "").toLowerCase();
   if (!s) return null;
   if (s.includes("progress") || s === "playing" || s === "live") return "live";
+  if (s.includes("suspend")) return "suspended";
   if (s.includes("cancel") || s.includes("walkover") || s === "wo") return "cancelled";
   if (s.includes("complete") || s.includes("retired")) return "complete";
   return null;
@@ -468,11 +476,13 @@ function mergeRow(score: WtaScore, oop: WtaScore): WtaScore {
     ...score,
     courtId: oop.courtId ?? score.courtId,
     iso: oop.iso ?? score.iso,
-    start: oop.followed ? oop.start : oop.start || score.start,
-    notBefore: oop.notBefore ?? score.notBefore,
-    followed: oop.followed ?? score.followed,
+    start: oop.start,
+    notBefore: oop.notBefore,
+    followed: oop.followed,
+    afterRest: oop.afterRest,
+    state: score.state === "complete" || score.state === "cancelled" ? score.state : oop.state === "suspended" || score.state === "suspended" ? "suspended" : score.state,
     seq: oop.seq || score.seq,
-    round: score.round || oop.round,
+    round: oop.round || score.round,
     a: preferSide(score.a, oop.a),
     b: preferSide(score.b, oop.b),
   };
@@ -494,10 +504,11 @@ function fromOopMatch(raw: OopMatch, iso: string, courtId: CourtId | null): WtaS
     const loose = players.flatMap((item) => asList(item.Player));
     if (loose.length < 2) return null;
   }
-  const note = `${raw.NotBefore ?? ""} ${raw.NotBeforeText ?? ""}`;
+  const note = `${raw.NotBefore ?? ""} ${raw.NotBeforeText ?? ""} ${raw.FreeText ?? ""}`;
   const followed = /followed/i.test(note);
-  const notBefore = /not before/i.test(note);
-  const start = hhmm(raw.NotBeforeISOTime) || (followed ? undefined : hhmm(raw.NotBefore));
+  const afterRest = /suitable rest/i.test(note);
+  const notBefore = /not before|\bnb\b/i.test(note);
+  const start = hhmm(raw.NotBeforeISOTime) || hhmm(raw.FreeText) || (followed ? undefined : hhmm(raw.NotBefore));
   const id = raw.MatchId || `${a.last}-${b.last}`;
   const kind = kindFromMatchId(id);
   const oopState = mapOopState(raw.Status);
@@ -507,6 +518,7 @@ function fromOopMatch(raw: OopMatch, iso: string, courtId: CourtId | null): WtaS
   row.start = start;
   row.notBefore = notBefore || undefined;
   row.followed = followed || undefined;
+  row.afterRest = afterRest || undefined;
   row.seq = Number(raw.seq) || 0;
   if (oopState) row.state = oopState;
   return row;
@@ -655,7 +667,9 @@ export async function getWtaBoard(): Promise<WtaBoard> {
 
 export function pickFocusDay(days: WtaDay[], iso: string) {
   const open = (day: WtaDay) =>
-    day.courts.some((court) => court.matches.some((row) => row.state === "live" || row.state === "scheduled"));
+    day.courts.some((court) =>
+      court.matches.some((row) => row.state === "live" || row.state === "scheduled" || row.state === "suspended"),
+    );
   const today = days.find((day) => day.iso === iso);
   if (today && open(today)) return today;
   return days.find((day) => day.iso > iso && day.courts.some((court) => court.matches.length)) ?? today ?? null;
@@ -665,7 +679,7 @@ export function heroMatches(day: WtaDay | null, live: WtaScore[]) {
   if (live.length) return live;
   if (!day) return [];
   return day.courts
-    .map((court) => court.matches.find((row) => row.state === "scheduled" || row.state === "live"))
+    .map((court) => court.matches.find((row) => row.state === "scheduled" || row.state === "live" || row.state === "suspended"))
     .filter((row): row is WtaScore => Boolean(row));
 }
 

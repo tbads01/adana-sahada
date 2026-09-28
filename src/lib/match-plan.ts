@@ -176,12 +176,12 @@ export const MATCH_PLAN: MatchDay[] = [
   },
   {
     dateKey: "29",
-    start: TBA_START,
-    total: 9,
+    start: "12:00",
+    total: 14,
     courts: [
-      { id: "cc", start: TBA_START, slots: ["MS1", "MS1", "MS1"] },
-      { id: "c1", start: TBA_START, slots: ["MS1", "MS1", "MS1"] },
-      { id: "c2", start: TBA_START, slots: ["MS1", "MS1", "MS1"] },
+      { id: "cc", start: "12:00", slots: ["MS1", "MS1", "MS1", "MS1", "MS1"] },
+      { id: "c2", start: "12:00", slots: ["MS1", "MS1", "MD1", "MD1", "MD1"] },
+      { id: "c1", start: "12:00", slots: ["MS1", "MS1", "MD1", "MD1"] },
     ],
   },
   {

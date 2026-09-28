@@ -374,7 +374,10 @@ function ScoreRow({
   );
 }
 
-function matchTime(row: WtaScore, index: number, courtStart: string, followedBy: string, notBefore: string) {
+function matchTime(row: WtaScore, index: number, courtStart: string, followedBy: string, notBefore: string, afterRest: string) {
+  if (row.afterRest && row.notBefore && row.start) return `${afterRest} · ${notBefore} ${row.start}`;
+  if (row.afterRest && row.start) return `${afterRest} · ${row.start}`;
+  if (row.afterRest) return afterRest;
   if (row.notBefore && row.start) return `${notBefore} ${row.start}`;
   if (row.start) return row.start;
   if (index === 0) return courtStart;
@@ -393,6 +396,7 @@ export function WtaMatchRow({
   const { g } = useGuide();
   const live = row.state === "live";
   const cancelled = row.state === "cancelled";
+  const suspended = row.state === "suspended";
   const sets = setCells(row.sets);
   const aCells = sets.map((set) => ({ ...set.a, won: set.aWon }));
   const bCells = sets.map((set) => ({ ...set.b, won: set.bWon }));
@@ -410,6 +414,8 @@ export function WtaMatchRow({
           </Pill>
         ) : cancelled ? (
           <Pill tone="muted">{g.cancelled}</Pill>
+        ) : suspended ? (
+          <Pill tone="soft">{g.toFinish}</Pill>
         ) : row.retired ? (
           <Pill tone="muted">{g.retired}</Pill>
         ) : next ? (
@@ -417,8 +423,8 @@ export function WtaMatchRow({
         ) : null}
       </div>
       <div className="space-y-1">
-        <ScoreRow side={row.a} cells={aCells} points={live ? row.points?.[0] : undefined} dim={row.winner === "b"} serving={row.serving === "a"} />
-        <ScoreRow side={row.b} cells={bCells} points={live ? row.points?.[1] : undefined} dim={row.winner === "a"} serving={row.serving === "b"} />
+        <ScoreRow side={row.a} cells={aCells} points={live || suspended ? row.points?.[0] : undefined} dim={row.winner === "b"} serving={row.serving === "a"} />
+        <ScoreRow side={row.b} cells={bCells} points={live || suspended ? row.points?.[1] : undefined} dim={row.winner === "a"} serving={row.serving === "b"} />
       </div>
     </li>
   );
@@ -467,7 +473,7 @@ function WtaCourtCard({ court, nextId }: { court: WtaCourtDay; nextId: Set<strin
           <WtaMatchRow
             key={row.id}
             row={row}
-            time={matchTime(row, index, court.start, g.followedBy, g.notBefore)}
+            time={matchTime(row, index, court.start, g.followedBy, g.notBefore, g.afterRest)}
             next={nextId.has(row.id)}
           />
         ))}
