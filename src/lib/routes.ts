@@ -14,17 +14,3 @@ export const ROUTES = {
   oranion: ORANION_URL,
   site: MAIN_SITE_URL,
 } as const;
-
-export const ROUTES = {
-  home: "/",
-  matches: "/maclar",
-  events: "/etkinlikler",
-  news: "/duyurular",
-  live: "/canli",
-  info: "/bilgi",
-  players: "/oyuncular",
-  send: "/gonder",
-  admin: "/admin",
-  tickets: TICKETS_URL,
-  site: MAIN_SITE_URL,
-} as const;
