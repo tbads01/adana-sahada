@@ -211,7 +211,6 @@ export const ANNOUNCEMENTS: Announcement[] = [
   {
     id: "oop-29",
     date: "2026-09-28",
-    pin: true,
     tag: { tr: "Maç", en: "Matches" },
     title: {
       tr: "Salı programı açıklandı",
@@ -220,6 +219,21 @@ export const ANNOUNCEMENTS: Announcement[] = [
     body: {
       tr: "Ana tablo 29 Eylül Salı saat 12:00’de üç kortta devam eder. Çekişmeler Maçlar sayfasında.",
       en: "The main draw continues Tuesday 29 September at 12:00 on three courts. The order of play is on Matches.",
+    },
+    href: "/maclar",
+  },
+  {
+    id: "oop-30",
+    date: "2026-09-29",
+    pin: true,
+    tag: { tr: "Maç", en: "Matches" },
+    title: {
+      tr: "Çarşamba programı açıklandı",
+      en: "Wednesday’s order of play is out",
+    },
+    body: {
+      tr: "Ana tablo 30 Eylül Çarşamba saat 12:00’de üç kortta devam eder. Çekişmeler Maçlar sayfasında.",
+      en: "The main draw continues Wednesday 30 September at 12:00 on three courts. The order of play is on Matches.",
     },
     href: "/maclar",
   },
@@ -396,8 +410,8 @@ export const FAQS: Faq[] = [
   {
     q: { tr: "Maç saatleri kesin mi?", en: "Are match times fixed?" },
     a: {
-      tr: "Maç saatleri günün koşullarına göre değişebilir. Eleme 1. tur Cumartesi 10:30, eleme finalleri Pazar 15:00, ana tablo Pazartesi 11:30 ve Salı 12:00’de başlar.",
-      en: "Match times may change according to conditions on the day. Qualifying round one begins Saturday at 10:30, qualifying finals Sunday at 15:00, and the main draw Monday at 11:30 and Tuesday at 12:00.",
+      tr: "Maç saatleri günün koşullarına göre değişebilir. Eleme 1. tur Cumartesi 10:30, eleme finalleri Pazar 15:00, ana tablo Pazartesi 11:30, Salı ve Çarşamba 12:00’de başlar.",
+      en: "Match times may change according to conditions on the day. Qualifying round one begins Saturday at 10:30, qualifying finals Sunday at 15:00, and the main draw Monday at 11:30 and Tuesday and Wednesday at 12:00.",
     },
   },
   {
