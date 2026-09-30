@@ -124,6 +124,21 @@ export function getLiveData(): LiveData {
 
 export const ANNOUNCEMENTS: Announcement[] = [
   {
+    id: "tahmin-yarismasi",
+    date: "2026-09-30",
+    pin: true,
+    tag: { tr: "Yarışma", en: "Contest" },
+    title: {
+      tr: "Adana Open Tahmin Yarışması",
+      en: "Adana Open Prediction Contest",
+    },
+    body: {
+      tr: "Turnuvaya dair tahminlerini paylaş. Doğru veya en yakın tahminler çekilişe girer; toplam 20 kişiye sürpriz hediye. Ödüller değişkenlik gösterebilir. Son katılım 4 Ekim 2026, 10:00.",
+      en: "Share your tournament predictions. The closest answers enter a raffle; surprise gifts for 20 people. Prizes may vary. Entries close 4 October 2026 at 10:00.",
+    },
+    href: "/tahmin",
+  },
+  {
     id: "press-launch",
     date: "2026-09-19",
     pin: true,

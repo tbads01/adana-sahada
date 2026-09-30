@@ -18,6 +18,7 @@ const ALLOWED = new Set([
   "/bilgi",
   "/oyuncular",
   "/duyurular",
+  "/tahmin",
 ]);
 
 function isBot(ua: string) {

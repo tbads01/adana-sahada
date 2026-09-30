@@ -35,6 +35,7 @@ import { NextPlayHero, TodayPlay, WtaCourtList, WtaLiveHero, WtaNextHero } from 
 import { useWtaScores } from "./useWtaScores";
 import { heroMatches, pickFocusDay } from "@/lib/wta-scores";
 import { GuideCard, CourtLabel, Pill, PressConferenceCard, SectionHead, TicketsCard, useGuide } from "./GuideUi";
+import { ContestPromo } from "./ContestPromo";
 
 function uniqueRoundNames(slots: MatchRound[], rounds: Record<MatchRound, string>) {
   const names: string[] = [];
@@ -167,6 +168,7 @@ export function GuideHome() {
         )}
 
         <TicketsCard className="mt-4" />
+        <ContestPromo className="mt-3" />
         <PressConferenceCard className="mt-3" />
 
         <Image

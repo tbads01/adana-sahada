@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
 import { AdminStats, type AdminTraffic } from "./AdminStats";
+import { AdminContest } from "./AdminContest";
 import { Bar, Card, fmt, Kpi, when } from "./admin-ui";
 
 type Props = { data: AdminDashboard };
@@ -86,6 +87,7 @@ const NAV = [
   { id: "oyuncular", label: "Oyuncular" },
   { id: "icerik", label: "İçerik" },
   { id: "canli", label: "Canlı" },
+  { id: "yarisma", label: "Yarışma" },
 ];
 
 function phaseLabel(phase: AdminDashboard["phase"]) {
@@ -401,6 +403,8 @@ export function AdminPanel({ data: initial }: Props) {
           </div>
           <p className="mt-3 text-[0.72rem] text-paper/40">Canlı skor güncellemesi: {data.live.updatedAt || "—"}</p>
         </Card>
+
+        <AdminContest />
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ export const ROUTES = {
   players: "/oyuncular",
   send: "/gonder",
   admin: "/admin",
+  contest: "/tahmin",
   tickets: TICKETS_URL,
   site: MAIN_SITE_URL,
 } as const;

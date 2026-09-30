@@ -37,6 +37,8 @@ yarn-error.log*
 # web-push subscriptions and visit stats (local/server file store)
 /data/push-subscriptions.json
 /data/analytics.json
+/data/contest-entries.json
+/data/contest-legal.json
 
 # vercel
 .vercel

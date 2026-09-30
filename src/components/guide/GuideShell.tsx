@@ -14,6 +14,7 @@ import {
 import { ROUTES } from "@/lib/routes";
 import { tournamentPhase } from "@/lib/guide";
 import { LiveDot, useGuide } from "./GuideUi";
+import { ContestLaunchDialog } from "./ContestPromo";
 import { GuideNotify } from "./GuideNotify";
 import { GuidePlayerMarquee } from "./GuidePlayerMarquee";
 
@@ -90,6 +91,7 @@ export function GuideShell({ children }: { children: ReactNode }) {
         <main id="main-content" className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden">
           {children}
         </main>
+        <ContestLaunchDialog />
 
         <nav
           className="min-w-0 shrink-0 overflow-hidden border-t border-white/10 bg-ink text-paper pb-[env(safe-area-inset-bottom)]"
