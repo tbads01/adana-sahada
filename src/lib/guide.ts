@@ -240,7 +240,6 @@ export const ANNOUNCEMENTS: Announcement[] = [
   {
     id: "oop-30",
     date: "2026-09-29",
-    pin: true,
     tag: { tr: "Maç", en: "Matches" },
     title: {
       tr: "Çarşamba programı açıklandı",
@@ -249,6 +248,21 @@ export const ANNOUNCEMENTS: Announcement[] = [
     body: {
       tr: "Ana tablo 30 Eylül Çarşamba saat 12:00’de üç kortta devam eder. Çekişmeler Maçlar sayfasında.",
       en: "The main draw continues Wednesday 30 September at 12:00 on three courts. The order of play is on Matches.",
+    },
+    href: "/maclar",
+  },
+  {
+    id: "oop-02",
+    date: "2026-10-01",
+    pin: true,
+    tag: { tr: "Maç", en: "Matches" },
+    title: {
+      tr: "Cuma programı açıklandı",
+      en: "Friday’s order of play is out",
+    },
+    body: {
+      tr: "Çeyrek finaller 2 Ekim Cuma saat 15:00’de Merkez Kort ve Kort B’de (İpek Soylu) başlar. Çekişmeler Maçlar sayfasında.",
+      en: "The quarterfinals start Friday 2 October at 15:00 on Centre Court and Court B (İpek Soylu). The order of play is on Matches.",
     },
     href: "/maclar",
   },
