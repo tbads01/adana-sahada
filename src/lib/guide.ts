@@ -172,12 +172,12 @@ export const ANNOUNCEMENTS: Announcement[] = [
     date: "2026-09-10",
     tag: { tr: "Etkinlik", en: "Events" },
     title: {
-      tr: "Yoga, DJ ve Cardio Fitness programda",
-      en: "Yoga, DJ and Cardio Fitness on the programme",
+      tr: "Hafta sonu sahada programda",
+      en: "Weekend programme on the grounds",
     },
     body: {
-      tr: "Yogakioo Yoga, DJ Yusuf Erdem ve 3 Ekim Cardio Fitness · Coffee Disco seansları Etkinlikler sayfasında yayımlanmıştır.",
-      en: "Yogakioo Yoga, DJ Yusuf Erdem and the 3 October Cardio Fitness · Coffee Disco sessions are listed on the Events page.",
+      tr: "3 Ekim sabahı Hasan Kılınçer & Ayaz ve Coffee Disco, 4 Ekim’de kortta pilates ve yoga Etkinlikler sayfasındadır.",
+      en: "Saturday morning Hasan Kılınçer & Ayaz and Coffee Disco, and Sunday on-court pilates and yoga, are listed on Events.",
     },
     href: "/etkinlikler",
   },
@@ -254,7 +254,6 @@ export const ANNOUNCEMENTS: Announcement[] = [
   {
     id: "oop-02",
     date: "2026-10-01",
-    pin: true,
     tag: { tr: "Maç", en: "Matches" },
     title: {
       tr: "Cuma programı açıklandı",
@@ -263,6 +262,21 @@ export const ANNOUNCEMENTS: Announcement[] = [
     body: {
       tr: "Çeyrek finaller 2 Ekim Cuma saat 15:00’de Merkez Kort ve Kort B’de (İpek Soylu) başlar. Çekişmeler Maçlar sayfasında.",
       en: "The quarterfinals start Friday 2 October at 15:00 on Centre Court and Court B (İpek Soylu). The order of play is on Matches.",
+    },
+    href: "/maclar",
+  },
+  {
+    id: "oop-03",
+    date: "2026-10-02",
+    pin: true,
+    tag: { tr: "Maç", en: "Matches" },
+    title: {
+      tr: "Cumartesi programı açıklandı",
+      en: "Saturday’s order of play is out",
+    },
+    body: {
+      tr: "Yarı finaller 3 Ekim Cumartesi saat 15:00’de Merkez Kort’ta başlar. Sabah Hasan Kılınçer & Ayaz ve Coffee Disco; ardından dev raket gösteri maçları. Dress code: mavi veya yeşil. Çekişmeler Maçlar sayfasında.",
+      en: "The semifinals start Saturday 3 October at 15:00 on Centre Court. Morning: Hasan Kılınçer & Ayaz and Coffee Disco, then giant-racket exhibitions. Dress code: blue or green. The order of play is on Matches.",
     },
     href: "/maclar",
   },
@@ -384,8 +398,8 @@ export const INFO_ITEMS: InfoItem[] = [
     icon: "child",
     title: { tr: "Aile ve çocuk", en: "Families" },
     body: {
-      tr: "Cumartesi ve pazar günleri gözetmen eşliğinde çocuk kulübü hizmet verir. 26 Eylül ve 4 Ekim’de Yogakioo Yoga, 3 Ekim’de Cardio Fitness programdadır.",
-      en: "A supervised children’s club is open on Saturdays and Sundays. Yogakioo Yoga is on 26 September and 4 October; Cardio Fitness is on 3 October.",
+      tr: "Cumartesi ve pazar günleri gözetmen eşliğinde çocuk kulübü hizmet verir. 3 Ekim sabahı Hasan Kılınçer & Ayaz ve Coffee Disco, 4 Ekim’de kortta pilates ve yoga programdadır.",
+      en: "A supervised children’s club is open on Saturdays and Sundays. Saturday morning is Hasan Kılınçer & Ayaz and Coffee Disco; Sunday has on-court pilates and yoga.",
     },
     href: "/etkinlikler",
     hrefLabel: { tr: "Etkinlikler", en: "Events" },
@@ -502,8 +516,8 @@ export const FAQS: Faq[] = [
   {
     q: { tr: "Aile ve çocuk için ne var?", en: "What’s on for families?" },
     a: {
-      tr: "Cumartesi ve pazar günleri gözetmen eşliğinde çocuk kulübü vardır. 26 Eylül ve 4 Ekim’de yoga, 3 Ekim’de Cardio Fitness programdadır. Saatler Etkinlikler sayfasındadır.",
-      en: "A supervised children’s club is open on Saturdays and Sundays. Yoga is on 26 September and 4 October; Cardio Fitness is on 3 October. Times are listed on Events.",
+      tr: "Cumartesi ve pazar günleri gözetmen eşliğinde çocuk kulübü vardır. 3 Ekim sabahı Hasan Kılınçer & Ayaz ve Coffee Disco, 4 Ekim’de kortta pilates ve yoga vardır. Saatler Etkinlikler sayfasındadır.",
+      en: "A supervised children’s club is open on Saturdays and Sundays. Saturday morning is Hasan Kılınçer & Ayaz and Coffee Disco; Sunday has on-court pilates and yoga. Times are listed on Events.",
     },
   },
   {
@@ -608,8 +622,8 @@ export const ATTRACTIONS: Attraction[] = [
     icon: "music",
     title: { tr: "DJ performansı", en: "DJ sets" },
     body: {
-      tr: "DJ Yusuf Erdem her gün saat 15:00’den sonra sahne alır. 3 Ekim sabahı Coffee Disco vardır.",
-      en: "DJ Yusuf Erdem performs every day from 15:00. Coffee Disco is on the morning of 3 October.",
+      tr: "3 Ekim sabahı Coffee Disco · Morning Party saat 10:00’da. 4 Ekim’de 10:15’te Morning Party ve gün boyu Fan Zone’da DJ müzik vardır.",
+      en: "Coffee Disco · Morning Party is Saturday 3 October at 10:00. On Sunday, Morning Party is at 10:15 and there is DJ music in the Fan Zone all day.",
     },
   },
   {
@@ -617,8 +631,8 @@ export const ATTRACTIONS: Attraction[] = [
     icon: "court",
     title: { tr: "Gösteri maçları", en: "Exhibition matches" },
     body: {
-      tr: "Ana tablo öncesinde Fan Zone’da gösteri maçı oynanır. Tarih günlük programda yer alır.",
-      en: "An exhibition match is played in the Fan Zone before the main session. The date is on the daily programme.",
+      tr: "3 Ekim’de yarı finaller arasında iki dev raket gösteri maçı vardır. 4 Ekim’de 16:00’da dev raket, 16:30’da Serkay Tütüncü, 17:00’de ikinci dev raket gösterisi oynanır.",
+      en: "On Saturday two giant-racket exhibitions sit between the singles semifinals. On Sunday: giant racket at 16:00, Serkay Tütüncü at 16:30, second giant racket at 17:00.",
     },
   },
 ];

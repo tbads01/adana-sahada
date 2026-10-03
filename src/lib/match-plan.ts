@@ -215,15 +215,15 @@ export const MATCH_PLAN: MatchDay[] = [
   },
   {
     dateKey: "03",
-    start: TBA_START,
+    start: "15:00",
     total: 3,
-    courts: [{ id: "cc", start: TBA_START, slots: ["MSSF", "MSSF", "MDF"] }],
+    courts: [{ id: "cc", start: "15:00", slots: ["MSSF", "MSSF", "MDF"] }],
   },
   {
     dateKey: "04",
-    start: TBA_START,
+    start: "18:00",
     total: 1,
-    courts: [{ id: "cc", start: TBA_START, slots: ["MSF"] }],
+    courts: [{ id: "cc", start: "18:00", slots: ["MSF"] }],
   },
 ];
 
